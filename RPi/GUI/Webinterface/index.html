@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+
+<head>
+    <script src="myscripts.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<div id="output"></div>
+<h2 style="text-align: center">Indtast spillernes navne:</h2>
+<div container-fluid>
+    <form id="names">
+        <div class="row justify-content-md-center">
+            <fieldset class="blue">
+                <label for="blue">First name:</label><br>
+                <input type="text" id="blue" value="John"><br>
+            </fieldset>
+
+            <fieldset class="brown">
+                <label for="brown">First name:</label><br>
+                <input type="text" id="brown" value="John"><br>
+            </fieldset>
+
+            <fieldset class="black">
+                <label for="black">First name:</label><br>
+                <input type="text" id="black" value="John"><br>
+            </fieldset>
+
+            <fieldset class="orange">
+                <label for="orange">First name:</label><br>
+                <input type="text" id="orange" value="John"><br>
+            </fieldset>
+        </div>
+        <div class="row justify-content-md-center">
+            <fieldset class="purple">
+                <label for="purple">First name:</label><br>
+                <input type="text" id="purple" value="John"><br>
+            </fieldset>
+
+            <fieldset class="red">
+                <label for="red">First name:</label><br>
+                <input type="text" id="red" value="John"><br>
+            </fieldset>
+
+            <fieldset class="green">
+                <label for="green">First name:</label><br>
+                <input type="text" id="green" value="John"><br>
+            </fieldset>
+
+            <fieldset class="yellow">
+                <label for="yellow">First name:</label><br>
+                <input type="text" id="yellow" value="John"><br>
+            </fieldset>
+    </form>
+    </div>
+</div>
+<div container-fluid>
+    <form id="Penalty">
+        <div class="row justify-content-md-center">
+            <label for="Penalty">Max antal strafpoint:</label><br>
+            <input type="number" id="maxPenalty" value="10"><br>
+        </div><br>
+    </form>
+
+    <div class="row justify-content-md-center">
+        <a class="btn-lg btn-success" href="gameOn.html" role="button" onclick="createPlayers()">Start the game</a>
+    </div>
+</div>
