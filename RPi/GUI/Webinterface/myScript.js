@@ -1,4 +1,4 @@
-var wsUri = "ws://10.9.8.2:3000/";
+var wsUri = "ws://192.168.0.1:3000/";
 var output;
 var counter = 0;
 
@@ -18,7 +18,7 @@ function testWebSocket() {
 // Websocket connected
 function onOpen(evt) {
     writeToScreen("The Game is Online and ready to play..!");
-    doSend("WebSocket rocks");
+    doSend("User connected from webinterface");
 }
 // Websocket disconnected
 function onClose(evt) {
@@ -27,7 +27,7 @@ function onClose(evt) {
 // check for penalty or AVGtime
 function onMessage(evt) {
     writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
-    websocket.close();
+    // websocket.close();
 }
 
 // Error Message to screen
@@ -76,7 +76,29 @@ function createPlayers() {
 
     var penalty = document.getElementById("maxPenalty");
     localStorage.setItem('penalty', penalty.value);
+
+    startGame();
 }
+
+function startGame() {
+
+    var JSON_start = {
+        "gameCommand" : "start",
+        "penalty" : localStorage.getItem('penalty')
+    }
+
+    doSend(JSON.stringify(JSON_start));
+}
+
+function stopGame() {
+
+    var JSON_stop = {
+        "gameCommand" : "stop"
+    }
+
+    doSend(JSON.stringify(JSON_stop));
+}
+
 
 // Create cards from input
 function Cards() {
@@ -177,7 +199,7 @@ function updatePenalty(me) {
     players[index].penalty++;
     // Check if the game is over...!
     if (players[index].penalty == localStorage.getItem('penalty')) {
-        window.location.href = "endgame.html";
+        window.location.href = "endGame.html";
     }
 
     localStorage.setItem('players', JSON.stringify(players));

@@ -3,18 +3,18 @@
 <title>WebSocket Test</title>
 
 <head>
-    <script src="myscripts.js"></script>
+    <script src="myScript.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-<h2 style="text-align: center">Spillerne er:</h2>
-
 <body onload="Cards()">
+    <h2 style="text-align: center">Spillerne er:</h2>
+
     <div class="container">
         <div container-fluid>
             <div class="row justify-content-md-center">
-                <a class="btn-lg btn-danger" href="endGame.html" role="button">Afslut Spillet</a>
+                <a class="btn-lg btn-danger" href="endGame.html" role="button" onclick="stopGame()">Afslut Spillet</a>
             </div>
         </div>
         <div class="row justify-content-around">

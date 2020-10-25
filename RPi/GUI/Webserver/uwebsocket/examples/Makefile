@@ -1,5 +1,5 @@
 # What you set
-SRC=echo.cpp
+SRC=myEcho.cpp
 # Name of your exe file
 EXE_NAME=main
 # Path to where UWS source is

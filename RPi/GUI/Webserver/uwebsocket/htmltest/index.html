@@ -1,69 +1,73 @@
-<!DOCTYPE html>
-<meta charset="utf-8" />
-<title>WebSocket Test</title>
+  <!DOCTYPE html>
+  <meta charset="utf-8" />
+  <title>WebSocket Test</title>
+  <script language="javascript" type="text/javascript">
 
-<head>
-    <script src="myscripts.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<div id="output"></div>
-<h2 style="text-align: center">Indtast spillernes navne:</h2>
-<div container-fluid>
-    <form id="names">
-        <div class="row justify-content-md-center">
-            <fieldset class="blue">
-                <label for="blue">First name:</label><br>
-                <input type="text" id="blue" value="John"><br>
-            </fieldset>
+  var wsUri = "ws://192.168.0.1:3000/";
+  var output;
+  var counter = 0;
 
-            <fieldset class="brown">
-                <label for="brown">First name:</label><br>
-                <input type="text" id="brown" value="John"><br>
-            </fieldset>
+  function init()
+  {
+    output = document.getElementById("output");
+    testWebSocket();
+  }
 
-            <fieldset class="black">
-                <label for="black">First name:</label><br>
-                <input type="text" id="black" value="John"><br>
-            </fieldset>
+  function testWebSocket()
+  {
+    websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+  }
 
-            <fieldset class="orange">
-                <label for="orange">First name:</label><br>
-                <input type="text" id="orange" value="John"><br>
-            </fieldset>
-        </div>
-        <div class="row justify-content-md-center">
-            <fieldset class="purple">
-                <label for="purple">First name:</label><br>
-                <input type="text" id="purple" value="John"><br>
-            </fieldset>
+  function onOpen(evt)
+  {
+    writeToScreen("CONNECTED");
+    doSend("WebSocket rocks");
+  }
 
-            <fieldset class="red">
-                <label for="red">First name:</label><br>
-                <input type="text" id="red" value="John"><br>
-            </fieldset>
+  function onClose(evt)
+  {
+    writeToScreen("DISCONNECTED");
+  }
 
-            <fieldset class="green">
-                <label for="green">First name:</label><br>
-                <input type="text" id="green" value="John"><br>
-            </fieldset>
+  function onMessage(evt)
+  {
+    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+    //websocket.close();
+  }
 
-            <fieldset class="yellow">
-                <label for="yellow">First name:</label><br>
-                <input type="text" id="yellow" value="John"><br>
-            </fieldset>
-    </form>
-    </div>
-</div>
-<div container-fluid>
-    <form id="Penalty">
-        <div class="row justify-content-md-center">
-            <label for="Penalty">Max antal strafpoint:</label><br>
-            <input type="number" id="maxPenalty" value="10"><br>
-        </div><br>
-    </form>
+  function onError(evt)
+  {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
 
-    <div class="row justify-content-md-center">
-        <a class="btn-lg btn-success" href="gameOn.html" role="button" onclick="createPlayers()">Start the game</a>
-    </div>
-</div>
+  function doSend(message)
+  {
+    writeToScreen("SENT: " + message);
+    websocket.send(message);
+  }
+
+  function writeToScreen(message)
+  {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+  }
+
+  window.addEventListener("load", init, false);
+
+  function clicker()
+  {
+    counter = counter+1;
+    doSend("Hello with count: " + counter);
+  }
+  </script>
+
+  <h2>WebSocket Test</h2>
+
+  <button type="button" onclick="clicker()">Click Me!</button>
+  <div id="output"></div>
