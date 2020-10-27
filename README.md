@@ -1,1 +1,46 @@
 # Chase
+
+## RPI Setup
+
+### Wifi hotspot
+
+Rediger indstillingerne for RPI hotspot:
+```bash
+nano /etc/connman-hotspot.conf
+```
+Indsæt følgende
+```
+SSID=Chase
+PASSWORD=12345678
+```
+Start RPI Hotspot
+```bash
+connman-hotspot enable
+```
+
+### Compile and Copy files
+
+VMware download Repo:
+```bash
+git clone https://github.com/alassesen/Chase.git
+```
+Kopier GUI til RPI:
+```bash
+scp Chase/RPi/GUI/Webinterface/* root@10.9.8.2:/www/pages/
+```
+Byg Websocket:
+```bash
+cd Chase/RPi/GUI/Webserver/uwebsocket
+make TARGET=rpi MODE=release
+cd examples
+make TARGET=rpi MODE=release
+```
+Kopier Websocket main-fil:
+```bash
+scp bin/rpi/release/main root@10.9.8.2:
+```
+Start Websocket main:
+```bash
+ssh root@10.9.8.2
+./main
+```
