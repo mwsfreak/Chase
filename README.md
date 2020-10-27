@@ -39,8 +39,17 @@ Kopier Websocket main-fil:
 ```bash
 scp bin/rpi/release/main root@10.9.8.2:
 ```
-Start Websocket main:
+Genstart RPI
+```bash
+ssh root@10.9.8.2:
+reboot
+```
+
+### Start Websocket main:
 ```bash
 ssh root@10.9.8.2
 ./main
 ```
+
+Log på WiFi Hotspot "Chase" med Password "12345678"
+Åben en browser og skriv adressen "192.168.0.1"
