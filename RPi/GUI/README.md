@@ -20,7 +20,7 @@ connman-hotspot enable
 
 VMware download Repo:
 ```bash
-git clone https://github.com/alassesen/Chase.git
+git clone https://github.com/mwsfreak/Chase.git
 ```
 Kopier GUI til RPI:
 ```bash
