@@ -51,5 +51,6 @@ ssh root@10.9.8.2
 ./main
 ```
 
-Log på WiFi Hotspot "Chase" med Password "12345678"
-Åben en browser og skriv adressen "192.168.0.1"
+Log på WiFi Hotspot "Chase" med Password "12345678".
+
+Åben en browser og skriv adressen "192.168.0.1".
