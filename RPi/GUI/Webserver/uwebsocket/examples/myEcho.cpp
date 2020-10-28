@@ -1,10 +1,8 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <uWS/uWS.h>
 #include <thread>
-// JSON Manipulation
-#include <sstream>
-#include <iomanip>
 #include "../src/json.hpp"
 
 // 8 bit UART beskeder: bit 0 - 2 -> spiller strafpoint, bit 3 - 5 -> spiller AVGT, bit 6 - 7  -> time
@@ -15,26 +13,24 @@ struct Data
   void operator()(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
     std::string messageString(message, length);
 
-    if(message[0] == '{') // jason Package
+    if ((messageString.front() == '{' && messageString.back() == '}') || //JSON Package
+        (messageString.front() == '[' && messageString.back() == ']')) 
     {
-      nlohmann::json tempJson;
-      std::stringstream ss;
-      ss << message;
-      ss >> tempJson;
-      std::cout << "JSON: " << tempJson << std::endl;
+      nlohmann::json receivedJson = nlohmann::json::parse(messageString);
+      std::cout << "JSON: " << receivedJson << std::endl;
     }
-    else                  // Simple text
+    else  // Simple text 
     {
-      std::cout << "Data: " << messageString << std::endl;
-      // console.log(message);
-      ws->send(message, length, opCode);
+      std::cout << "TEXT: " << messageString << std::endl;     
     }
+
+    ws->send(message, length, opCode); //DEBUG: Echo message
   }
 };
 
-
-void compute() {
-
+//Test of multi-threading
+void compute() 
+{
    while(1) {
       for (int i = 0; i<50; i++) {
         sleep(1);
@@ -49,10 +45,12 @@ void async(uWS::Hub* h)
 
   std::ostringstream ss1;
   std::ostringstream ss2;
+
   nlohmann::json penJson= {
     {"gameCommand" , "penalty"},
     {"index", 1}
   };
+
   nlohmann::json avgJson = {
     {"gameCommand" , "AVGtime"},
     {"index", 1}
