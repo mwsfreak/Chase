@@ -24,7 +24,7 @@ git clone https://github.com/mwsfreak/Chase.git
 ```
 Kopier GUI til RPI:
 ```bash
-scp Chase/RPi/GUI/Webinterface/* root@10.9.8.2:/www/pages/
+scp Chase/RPi/GUI/Webinterface/* -r root@10.9.8.2:/www/pages/
 ```
 Byg Websocket:
 ```bash
