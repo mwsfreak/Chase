@@ -2,9 +2,10 @@
 #include <string>
 #include <uWS/uWS.h>
 #include <thread>
+// JSON Manipulation
 #include <sstream>
+#include <iomanip>
 #include "../src/json.hpp"
-
 
 // 8 bit UART beskeder: bit 0 - 2 -> spiller strafpoint, bit 3 - 5 -> spiller AVGT, bit 6 - 7  -> time
 
@@ -14,43 +15,26 @@ struct Data
   void operator()(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
     std::string messageString(message, length);
 
-    std::cout << "Data: " << messageString << std::endl;
-
-    nlohmann::json receivedJson = nlohmann::json::parse(message);
-
-    std::cout << "Received JSON: " << receivedJson << std::endl;
-
-    ws->send(message, length, opCode);
+    if(message[0] == '{') // jason Package
+    {
+      nlohmann::json tempJson;
+      std::stringstream ss;
+      ss << message;
+      ss >> tempJson;
+      std::cout << "JSON: " << tempJson << std::endl;
+    }
+    else                  // Simple text
+    {
+      std::cout << "Data: " << messageString << std::endl;
+      // console.log(message);
+      ws->send(message, length, opCode);
+    }
   }
 };
 
 
-void async(uWS::Hub* h)
-{
-  char byte1 = 0;
-  char byte2 = 0;
-
-  for(;;)
-  {
-    sleep(1);
-    
-    std::cout << "First byte value: " << std::endl;
-    std::cin >> byte1;
-    std::cout << "Second byte value: " << std::endl;
-    std::cin >>byte2;    
-
-    // byte1 = 'A';
-    // byte2 = 'B';
-    
-    std::ostringstream ss;
-    ss << "Value 1 is: " << byte1 << " Value 2 is: " << byte2;
-    // hub pointer to broadcast   // v, Send the length   // v, send TEXT
-    h->broadcast(ss.str().c_str(), ss.str().length(), uWS::OpCode::TEXT);
-}                // ^,create a char string with null-terminated sequence
-
-}
-
 void compute() {
+
    while(1) {
       for (int i = 0; i<50; i++) {
         sleep(1);
@@ -59,6 +43,40 @@ void compute() {
     }
 }
 
+void async(uWS::Hub* h)
+{
+  int counter = 0;
+
+  std::ostringstream ss1;
+  std::ostringstream ss2;
+  nlohmann::json penJson= {
+    {"gameCommand" , "penalty"},
+    {"index", 1}
+  };
+  nlohmann::json avgJson = {
+    {"gameCommand" , "AVGtime"},
+    {"index", 1}
+  };
+
+  ss1 << penJson;
+  ss2 << avgJson;
+
+  for(;;)
+  {
+    sleep(2);
+
+    std::ostringstream ss;
+    ss << "Number of broadcasts #" << counter++;
+
+    h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
+    h->broadcast(ss1.str().c_str(),ss1.str().length(), uWS::OpCode::TEXT);
+    h->broadcast(ss2.str().c_str(),ss2.str().length(), uWS::OpCode::TEXT);
+  }
+
+}
+
+
+
 int main()
 {
   uWS::Hub hub;
@@ -66,13 +84,9 @@ int main()
   Data d { hub };
   hub.onMessage(d);
   if (hub.listen(3000)) {
-    std::thread th(async, &hub); // execute async, with reference to hub as parameter
-    
-    std::thread th2(compute);
-
+    std::thread th(async, &hub);
     hub.run();
   }
-
 }
 
 

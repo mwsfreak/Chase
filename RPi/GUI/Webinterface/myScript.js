@@ -2,6 +2,8 @@ var wsUri = "ws://192.168.0.1:3000/";
 var output;
 var counter = 0;
 
+var colorIndex = ["blue","brown","black", "orange", "purple","red","green","yellow"];
+
 function init() {
     output = document.getElementById("output");
     testWebSocket();
@@ -26,8 +28,25 @@ function onClose(evt) {
 }
 // check for penalty or AVGtime
 function onMessage(evt) {
-    writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
-    // websocket.close();
+    if (evt.data[0] == "{")
+    {
+        var package = JSON.parse(event.data);
+        switch (package.gameCommand) {
+          case "penalty":
+          console.log("Update penalty: " + colorIndex[package.index]);
+          updatePenalty(colorIndex[package.index]);
+            break;
+          case "AVGtime":
+            console.log("Update AVGtime: "+ colorIndex[package.index]);
+            updateAvgTime(colorIndex[package.index]);
+            break;
+          default:
+        }
+    }
+    else
+    {
+        writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+    }
 }
 
 // Error Message to screen
@@ -83,9 +102,10 @@ function createPlayers() {
 function startGame() {
 
     var JSON_start = {
-        "gameCommand" : "start",
-        "penalty" : localStorage.getItem('penalty')
+        gameCommand : "start",
+        penalty : localStorage.getItem('penalty')
     }
+    console.log(JSON.stringify(JSON_start));
 
     doSend(JSON.stringify(JSON_start));
 }
@@ -93,9 +113,9 @@ function startGame() {
 function stopGame() {
 
     var JSON_stop = {
-        "gameCommand" : "stop"
+        gameCommand : "stop"
     }
-
+    console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
 }
 
@@ -112,9 +132,10 @@ function Cards() {
     document.getElementById("penaltyTitle").appendChild(penaltyHeader);
 }
 
-// Create cards input/sort with column 
+// Create cards input/sort with column
 // location penalty column or AVGtime column
 function createCards(players, location) {
+
     for (i = 0; i < players.length; i++) {
         if ((i + 1) % 2 && i != 0) {
             var newline = document.createElement('div');
@@ -191,7 +212,8 @@ function updatePenalty(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        // if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        if (players[i].color === me) {
             index = i;
         }
     }
@@ -214,7 +236,8 @@ function updateAvgTime(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        //if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        if (players[i].color === me) {
             index = i;
         }
     }
