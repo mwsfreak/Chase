@@ -81,16 +81,23 @@ Log på WiFi Hotspot "Chase" med Password "12345678".
 ```
 
 # Byggeplads: 
-RPi.Webserver
-    I2C.slave
-    Websocket / JSON
-    GPIO.write
+## RPi.Webserver
 
-RPi.Webinterface
-    Websocket
-    Spilfunktioner
-    GUI
+I2C.slave
+
+Websocket / JSON
+
+GPIO.write
+
+## RPi.Webinterface
+
+Websocket
+
+Spilfunktioner
+
+GUI
 
 # Diverse TODO:
 RPi.Webserver
+
     STATE laves om til bool
