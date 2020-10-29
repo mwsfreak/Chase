@@ -4,8 +4,11 @@
 #include <uWS/uWS.h>
 #include <thread>
 #include "../src/json.hpp"
+using json = nlohmann::json;
 
 // 8 bit UART beskeder: bit 0 - 2 -> spiller strafpoint, bit 3 - 5 -> spiller AVGT, bit 6 - 7  -> time
+
+enum STATE {STOPPED, STARTED} gameState;
 
 struct Data
 {
@@ -16,9 +19,22 @@ struct Data
     if ((messageString.front() == '{' && messageString.back() == '}') || //JSON Package
         (messageString.front() == '[' && messageString.back() == ']')) 
     {
-      nlohmann::json receivedJson = nlohmann::json::parse(messageString);
+      json receivedJson = json::parse(messageString);
       std::cout << "JSON: " << receivedJson << std::endl;
-    }
+
+      if (receivedJson["gameStarted"].is_boolean()) {
+        bool gameStarted = receivedJson.at("gameStarted");
+
+        if (gameStarted == false) {
+          gameState = STOPPED;
+          std::cout << "Game stopped" << std::endl;
+        } else if (gameStarted == true) {
+          gameState = STARTED;
+          std::cout << "Game started" << std::endl;
+        }
+
+      }
+    } 
     else  // Simple text 
     {
       std::cout << "TEXT: " << messageString << std::endl;     
@@ -46,12 +62,12 @@ void async(uWS::Hub* h)
   std::ostringstream ss1;
   std::ostringstream ss2;
 
-  nlohmann::json penJson= {
+  json penJson= {
     {"gameCommand" , "penalty"},
     {"index", 1}
   };
 
-  nlohmann::json avgJson = {
+  json avgJson = {
     {"gameCommand" , "AVGtime"},
     {"index", 1}
   };
@@ -65,15 +81,15 @@ void async(uWS::Hub* h)
 
     std::ostringstream ss;
     ss << "Number of broadcasts #" << counter++;
-
-    h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
-    h->broadcast(ss1.str().c_str(),ss1.str().length(), uWS::OpCode::TEXT);
-    h->broadcast(ss2.str().c_str(),ss2.str().length(), uWS::OpCode::TEXT);
+    
+    if (gameState == STARTED) {
+      h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
+      h->broadcast(ss1.str().c_str(),ss1.str().length(), uWS::OpCode::TEXT);
+      h->broadcast(ss2.str().c_str(),ss2.str().length(), uWS::OpCode::TEXT);
+    }
   }
 
 }
-
-
 
 int main()
 {

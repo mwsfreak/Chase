@@ -28,9 +28,9 @@ function onClose(evt) {
 }
 // check for penalty or AVGtime
 function onMessage(evt) {
-    if (evt.data[0] == "{")
+    if (isJSON(evt.data))
     {
-        var package = JSON.parse(event.data);
+        var package = JSON.parse(evt.data);
         switch (package.gameCommand) {
           case "penalty":
           console.log("Update penalty: " + colorIndex[package.index]);
@@ -102,7 +102,7 @@ function createPlayers() {
 function startGame() {
 
     var JSON_start = {
-        gameCommand : "start",
+        gameStarted : true,
         penalty : localStorage.getItem('penalty')
     }
     console.log(JSON.stringify(JSON_start));
@@ -113,7 +113,7 @@ function startGame() {
 function stopGame() {
 
     var JSON_stop = {
-        gameCommand : "stop"
+        gameStarted : false
     }
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
@@ -283,4 +283,13 @@ function sortAVGtime() {
 
 function deleteStorage() {
     localStorage.clear();
+}
+
+function isJSON(data) {
+    if ((data[0] == '{' && data[data.length-1] == '}') ||
+        (data[0] == '[' && data[data.length-1] == ']')) {
+        return true
+    } else {
+        return false
+    }
 }
