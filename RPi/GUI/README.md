@@ -1,5 +1,3 @@
-{toc}
-
 # RPI Setup
 
 ## Wifi hotspot
@@ -57,7 +55,7 @@ Log på WiFi Hotspot "Chase" med Password "12345678".
 
 
 
-# Protokol (Pseudo)
+# Protokol (Pseudo) - HUSK OPDATERING AF DOKUMENTATION/ARKITEKTUR
 ## Psoc --> RPi.Webserver
     GPIO styrer start/stop (Høj = spillet kører)
     I2c sender data fra Psoc til RPi
