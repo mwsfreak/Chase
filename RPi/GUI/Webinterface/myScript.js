@@ -102,7 +102,7 @@ function createPlayers() {
 function startGame() {
 
     var JSON_start = {
-        gameStarted : true,
+        gameRunning : true,
         penalty : localStorage.getItem('penalty')
     }
     console.log(JSON.stringify(JSON_start));
@@ -113,7 +113,7 @@ function startGame() {
 function stopGame() {
 
     var JSON_stop = {
-        gameStarted : false
+        gameRunning : false
     }
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
