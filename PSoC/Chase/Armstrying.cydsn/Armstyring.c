@@ -24,24 +24,28 @@ void decrease (void)
      }
 }
 
-   void direction(uint8 dir)
+void direction(uint8 dir)
 {
-    UART_1_PutString("Direction changed\r\n");
+   UART_1_PutString("Direction changed\r\n");
    Control_Reg_1_Write(dir);
+}
+
+void pickarm(uint8 choose)
+{
+    Control_Reg_2_Write(choose);
+    armtomove = choose;
+    char arr3[20];
+    choose = choose+1;
+    sprintf(arr3,"Arm %d er valgt\r\n", choose);
+    UART_1_PutString(arr3);
 }
 
    void off(void)
 {
     UART_1_PutString("Sluk\r\n");
     PWM_1_Stop();
-    speed = 0;
 }
 
-void move(void)
-{
-    UART_1_PutString("Full Step Mode one round\r\n");
-    steps = 1;
-}
 
 void handleByteReceived(uint8_t byteReceived)
 {
@@ -57,14 +61,14 @@ void handleByteReceived(uint8_t byteReceived)
             decrease();
          }
         break;
-        case '0' :
+        case 'e' :
          {
-            off();
+            pickarm(0); // vælger arm 1
          }
         break;
-        case 'i' :
+        case 'r' :
          {
-            move();
+            pickarm(1); // vælger arm 2
          }
         break;
         case '1' :
@@ -102,10 +106,10 @@ void handleByteReceived(uint8_t byteReceived)
             flyttil = 7;
          }
         break;
-          case '8' :
-         {
+        case '8' :
+        {
             flyttil = 8;
-         }
+        }
         
     }
  }

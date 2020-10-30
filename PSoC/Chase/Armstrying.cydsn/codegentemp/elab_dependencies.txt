@@ -1,7 +1,7 @@
-C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\TopDesign\TopDesign.cysch
-C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\TopDesign\TopDesign.cyudb
-C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep\Fullstep.cyudb
-C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep\Fullstep.cysym
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\TopDesign\TopDesign.cysch
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\TopDesign\TopDesign.cyudb
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep\Fullstep.cyudb
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep\Fullstep.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.cystate
@@ -135,33 +135,39 @@ C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrim
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\version.cypatch
-C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Armstrying.cydwr
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cm3gcc.ld
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3RealView.scat
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3Start.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cm3.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cm3_psoc5.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyBootAsmGnu.s
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyBootAsmRv.s
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyDmac.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyDmac.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyFlash.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyFlash.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyLib.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyLib.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cypins.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cyPm.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cyPm.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CySpc.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CySpc.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cytypes.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cyutils.c
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cmFunc.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cmInstr.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3Iar.icf
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyBootAsmIar.s
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cmsis_armcc.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cmsis_gcc.h
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cmsis_compiler.h
+C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.cysym
+C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.v
+C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.cystate
+C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.pdf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\version.cypatch
+C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\Custom\custom.cs
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Armstrying.cydwr
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cm3gcc.ld
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3RealView.scat
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3Start.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cm3.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cm3_psoc5.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyBootAsmGnu.s
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyBootAsmRv.s
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyDmac.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyDmac.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyFlash.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyFlash.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyLib.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyLib.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cypins.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cyPm.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cyPm.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CySpc.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CySpc.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cytypes.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cyutils.c
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cmFunc.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\core_cmInstr.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3Iar.icf
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\CyBootAsmIar.s
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cmsis_armcc.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cmsis_gcc.h
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cmsis_compiler.h
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\Em_EEPROM_Dynamic_v2_20\API\cy_em_eeprom.c
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\Em_EEPROM_Dynamic_v2_20\API\cy_em_eeprom.h
