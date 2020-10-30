@@ -21,5 +21,5 @@ volatile int8 move1;
 volatile int8 move2;
 
 
-int checkNumbersofSteps(int, int, int);
-bool checkStack(int, int, int);
+int checkNumbersofSteps(int8, int8, int8);
+bool checkStack(int8, int8, int8);

@@ -10,8 +10,8 @@ int main(void)
     isr_uart_rx_StartEx(ISR_UART_rx_handler);
     isr_1_StartEx(Count_Handler);
     UART_1_Start();
-    PWM_1_Start();
     
+     
     speed = 1;
     steps = 0;
     arm1 = 1;
@@ -30,13 +30,17 @@ int main(void)
     
    for(;;)
     {
-        if (flyttil != 0)
+        
+        if (flyttil != 0 && flyttil != arm1)
         {
+            PWM_1_Start(); 
             move1 = checkNumbersofSteps(arm1, arm2, flyttil);
+            
             if (move1 != 10)
             {
             arm1 = arm1+move1;
-                
+             
+            
             if (arm1 > 8)
             {
                 arm1 = arm1-8;
@@ -58,9 +62,9 @@ int main(void)
             
             flyttil = 0;
             steps = 1;
-            sprintf(arr1,"Arm 1 nye plads: %d\r\n", arm1);
+            sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
             UART_1_PutString(arr1);
-            sprintf(arr2,"Flytter: %d\r\n", move1);
+            sprintf(arr2,"Flytter %d pladser\r\n", move1);
             UART_1_PutString(arr2);
             }
         }
@@ -72,7 +76,7 @@ CY_ISR(Count_Handler)
     
     if(steps >= 1) 
     {
-        if(steps == (75*move1)+1) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
+        if(steps == (25*move1)+1) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
         {
             off();
             steps = 0;   

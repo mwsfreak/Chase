@@ -33,6 +33,7 @@ void decrease (void)
    void off(void)
 {
     UART_1_PutString("Sluk\r\n");
+    PWM_1_Stop();
     speed = 0;
 }
 
@@ -109,7 +110,7 @@ void handleByteReceived(uint8_t byteReceived)
     }
  }
 
-int checkNumbersofSteps(int Arm1, int Arm2, int FlytTil)
+int checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil)
 {
 	
 	if (Arm2 == FlytTil && Arm2 == (Arm1 + 1))
@@ -142,7 +143,7 @@ int checkNumbersofSteps(int Arm1, int Arm2, int FlytTil)
 	return Arm1;
 }
 
-bool checkStack(int numberOfSteps, int Arm1, int Arm2)
+bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2)
 {
 	if (numberOfSteps == 1 && Arm2 == (Arm1+1))
 		return true;
