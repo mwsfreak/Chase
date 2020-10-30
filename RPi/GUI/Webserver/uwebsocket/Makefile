@@ -5,10 +5,10 @@ DEPS=$(addprefix ${OBJ_DEST_DIR}/,$(notdir ${SRC:%.cpp=%.d}))
 
 # Which target? set default
 ifndef TARGET
-TARGET=host
+TARGET=rpi
 endif
 
-# Debug build? debug is default
+# Debug build? Release is default
 ifdef DEBUG
 CXXFLAGS=-g -I . -Isrc -std=c++14 -DUWS_THREADSAFE
 MODE=debug
