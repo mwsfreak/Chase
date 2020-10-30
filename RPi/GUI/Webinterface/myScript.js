@@ -1,71 +1,10 @@
-var wsUri = "ws://192.168.0.1:3000/";
-var output;
-
-/********************************************************************
- *
- *                       GAME STATES
- *
- ********************************************************************/
-function stateShift(newState) {
-    localStorage.removeItem("state");
-    localStorage.setItem("state", newState);
-    checkState();
-}
-
-function checkState() {
-    var state = localStorage.getItem("state");
-    switch (state) {
-        case "PlayerNames":
-            // Hide section gameOn og endGame ************************/
-            deleteStorage();
-            document.getElementById("gameOn").style.display = "none";
-            document.getElementById("endGame").style.display = "none";
-            /*********************************************************/
-            // Show section PlayerNames ******************************/
-            document.getElementById("PlayerNames").style.display = "block";
-            /*********************************************************/
-            break;
-        case "gameOn":
-            // Hide section PlayerNames og endGame *******************/
-            document.getElementById("PlayerNames").style.display = "none";
-            document.getElementById("endGame").style.display = "none";
-            /*********************************************************/
-            // Show section gameOn ***********************************/
-            document.getElementById("gameOn").style.display = "block";
-            Cards();
-            /*********************************************************/
-            break;
-        case "endGame":
-            // Delete cards *****************************************/
-            deletePenaltyList();
-            deleteavgTimeList();
-            // Hide section PlayerNames og gameOn *******************/
-            document.getElementById("PlayerNames").style.display = "none";
-            document.getElementById("gameOn").style.display = "none";
-            /********************************************************/
-            // Show section endGame *********************************/
-            document.getElementById("endGame").style.display = "block";
-            /********************************************************/
-            break;
-        default:
-            // Hide section gameOn og endGame ************************/
-            deleteStorage();
-            document.getElementById("gameOn").style.display = "none";
-            document.getElementById("endGame").style.display = "none";
-            /*********************************************************/
-            // Show section PlayerNames ******************************/
-            document.getElementById("PlayerNames").style.display = "block";
-            /*********************************************************/
-            break;
-    }
-
-}
-
 /********************************************************************
  *
  *                       WEBSOCKET SECTION
  *
  ********************************************************************/
+
+var wsUri = "ws://192.168.0.1:3000/";
 
 function init() {
     output = document.getElementById("output");
@@ -124,7 +63,8 @@ function writeToScreen(message) {
     var pre = document.createElement("h1"); // Create element
     pre.style.wordWrap = "break-word"; // Wrap text to fit on page
     pre.innerHTML = message; // Pu recieved message in inner HTML
-    output.appendChild(pre); // Apped to "output" on page
+    document.getElementById("output").appendChild(pre); // Apped to "output" on page
+    console.log(message);
 }
 
 window.addEventListener("load", init, false);
@@ -138,6 +78,86 @@ function isJSON(data) {
     }
 }
 
+/********************************************************************
+ *
+ *                       GAME STATES
+ *
+ *              Write debug(true/fasle) in console
+ *              activate/deactivate output logging
+ * 
+ ********************************************************************/
+
+function stateShift(newState) {
+    console.log(newState);
+    switch (newState) {
+        case "PlayerNames":
+            localStorage.setItem("state", newState);
+            checkState();
+            break;
+        case "gameOn":
+            localStorage.setItem("state", newState);
+            checkState();
+            break;
+        case "endGame":
+            localStorage.setItem("state", newState);
+            checkState();
+            break;
+        default:
+            break;
+    }
+
+}
+
+function checkState() {
+    var state = localStorage.getItem("state");
+    switch (state) {
+        case "PlayerNames":
+            // Hide section gameOn og endGame ************************/
+            deleteStorage();
+            document.getElementById("gameOn").style.display = "none";
+            document.getElementById("endGame").style.display = "none";
+            /*********************************************************/
+            // Show section PlayerNames ******************************/
+            document.getElementById("PlayerNames").style.display = "block";
+            /*********************************************************/
+            break;
+        case "gameOn":
+            // Hide section PlayerNames og endGame *******************/
+            document.getElementById("PlayerNames").style.display = "none";
+            document.getElementById("endGame").style.display = "none";
+            /*********************************************************/
+            // Show section gameOn ***********************************/
+            document.getElementById("gameOn").style.display = "block";
+            Cards();
+            /*********************************************************/
+            break;
+        case "endGame":
+            // Delete cards *****************************************/
+            deletePenaltyList();
+            deleteavgTimeList();
+            // Hide section PlayerNames og gameOn *******************/
+            document.getElementById("PlayerNames").style.display = "none";
+            document.getElementById("gameOn").style.display = "none";
+            /********************************************************/
+            // Show section endGame *********************************/
+            document.getElementById("endGame").style.display = "block";
+            /********************************************************/
+            break;
+        default:
+            // Hide section gameOn og endGame ************************/
+            deleteStorage();
+            document.getElementById("gameOn").style.display = "none";
+            document.getElementById("endGame").style.display = "none";
+            /*********************************************************/
+            // Show section PlayerNames ******************************/
+            document.getElementById("PlayerNames").style.display = "block";
+            /*********************************************************/
+            localStorage.setItem("debug", true);
+            break;
+    }
+
+}
+
 
 /*******************************************************************
  *
@@ -149,8 +169,8 @@ function newGame() {
 }
 
 function startGame() {
-    createPlayers();
     stateShift("gameOn");
+    createPlayers();
     var JSON_start = {
         gameRunning: true,
         penalty: localStorage.getItem('penalty')
@@ -167,6 +187,19 @@ function stopGame() {
     }
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
+}
+
+function debug(me) {
+    switch (me) {
+        case true:
+            document.getElementById("output").style.display = "block";
+            localStorage.setItem("debug", true);
+            break;
+        default:
+            document.getElementById("output").style.display = "none";
+            localStorage.setItem("debug", false);
+            break;
+    }
 }
 
 /*******************************************************************
