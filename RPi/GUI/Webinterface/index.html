@@ -8,65 +8,106 @@
     <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css">
 </head>
 
-<body>
-    <div id="output"></div>
-    <h2 style="text-align: center">Indtast spillernes navne:</h2>
-    <div container-fluid>
-        <form id="names">
-            <div class="row justify-content-md-center">
-                <fieldset class="blue">
-                    <label for="blue">First name:</label><br>
-                    <input type="text" id="blue" value="John"><br>
-                </fieldset>
+<body onload="newGame()">
+    <div id="PlayerNames" style="display: none;">
+        <h2 style="text-align: center">Indtast spillernes navne:</h2>
+        <div container-fluid>
+            <form id="names">
+                <fieldset id="playerInput">
+                    <div class="row justify-content-md-center">
+                        <fieldset class="blue">
+                            <label for="blue">First name:</label><br>
+                            <input type="text" id="blue" value="John"><br>
+                        </fieldset>
 
-                <fieldset class="brown">
-                    <label for="brown">First name:</label><br>
-                    <input type="text" id="brown" value="John"><br>
-                </fieldset>
+                        <fieldset class="brown">
+                            <label for="brown">First name:</label><br>
+                            <input type="text" id="brown" value="John"><br>
+                        </fieldset>
 
-                <fieldset class="black">
-                    <label for="black">First name:</label><br>
-                    <input type="text" id="black" value="John"><br>
-                </fieldset>
+                        <fieldset class="black">
+                            <label for="black">First name:</label><br>
+                            <input type="text" id="black" value="John"><br>
+                        </fieldset>
 
-                <fieldset class="orange">
-                    <label for="orange">First name:</label><br>
-                    <input type="text" id="orange" value="John"><br>
+                        <fieldset class="orange">
+                            <label for="orange">First name:</label><br>
+                            <input type="text" id="orange" value="John"><br>
+                        </fieldset>
+                    </div>
+                    <div class="row justify-content-md-center">
+                        <fieldset class="purple">
+                            <label for="purple">First name:</label><br>
+                            <input type="text" id="purple" value="John"><br>
+                        </fieldset>
+
+                        <fieldset class="red">
+                            <label for="red">First name:</label><br>
+                            <input type="text" id="red" value="John"><br>
+                        </fieldset>
+
+                        <fieldset class="green">
+                            <label for="green">First name:</label><br>
+                            <input type="text" id="green" value="John"><br>
+                        </fieldset>
+
+                        <fieldset class="yellow">
+                            <label for="yellow">First name:</label><br>
+                            <input type="text" id="yellow" value="John"><br>
+                        </fieldset>
                 </fieldset>
+                </div>
+
+                <div container-fluid>
+                    <fieldset id="PenaltyLimit">
+                        <div class="row justify-content-md-center">
+                            <label for="Penalty">Max antal strafpoint:</label><br>
+                            <input type="number" id="maxPenalty" value="10"><br>
+                        </div><br>
+
+                        <div class="row justify-content-md-center">
+                            <input class="btn-lg btn-success" type="reset" role="button" onclick="startGame()" value="Start the game">
+                        </div>
+                    </fieldset>
+            </form>
             </div>
-            <div class="row justify-content-md-center">
-                <fieldset class="purple">
-                    <label for="purple">First name:</label><br>
-                    <input type="text" id="purple" value="John"><br>
-                </fieldset>
-
-                <fieldset class="red">
-                    <label for="red">First name:</label><br>
-                    <input type="text" id="red" value="John"><br>
-                </fieldset>
-
-                <fieldset class="green">
-                    <label for="green">First name:</label><br>
-                    <input type="text" id="green" value="John"><br>
-                </fieldset>
-
-                <fieldset class="yellow">
-                    <label for="yellow">First name:</label><br>
-                    <input type="text" id="yellow" value="John"><br>
-                </fieldset>
-        </form>
         </div>
     </div>
-    <div container-fluid>
-        <form id="Penalty">
-            <div class="row justify-content-md-center">
-                <label for="Penalty">Max antal strafpoint:</label><br>
-                <input type="number" id="maxPenalty" value="10"><br>
-            </div><br>
-        </form>
 
-        <div class="row justify-content-md-center">
-            <a class="btn-lg btn-success" href="gameOn.html" role="button" onclick="createPlayers()">Start the game</a>
+    <div id="gameOn" style="display: none;">
+        <h2 style="text-align: center">Spillerne er:</h2>
+
+        <div class="container">
+            <div container-fluid>
+                <div class="row justify-content-md-center">
+                    <a class="btn-lg btn-danger" role="button" onclick="stopGame()">Afslut Spillet</a>
+                </div>
+            </div>
+            <div class="row justify-content-around">
+                <div class="col-6">
+                    <div id="penaltyTitle">
+                        <h3 id="PenaltyHeader">test</h3>
+                    </div>
+                    <div id="Penalty"></div>
+                </div>
+
+                <div class="col-6">
+                    <h3>Gennemsnits Tid</h3>
+                    <div id="avgTime"></div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <div id="endGame" style="display: none;">
+        <h2 style="text-align: center">Spillet er slut</h2>
+        <div container-fluid>
+            <div class="row justify-content-md-center">
+                <a class="btn-lg btn-success" role="button" onclick="newGame()">Start nyt Spil</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="output"></div>
 </body>

@@ -2,7 +2,11 @@ var wsUri = "ws://192.168.0.1:3000/";
 var output;
 var counter = 0;
 
-var colorIndex = ["blue","brown","black", "orange", "purple","red","green","yellow"];
+/********************************************************************
+ *
+ *                       WEBSOCKET SECTION
+ *
+ ********************************************************************/
 
 function init() {
     output = document.getElementById("output");
@@ -28,23 +32,20 @@ function onClose(evt) {
 }
 // check for penalty or AVGtime
 function onMessage(evt) {
-    if (isJSON(evt.data))
-    {
+    if (isJSON(evt.data)) {
         var package = JSON.parse(evt.data);
         switch (package.gameCommand) {
-          case "penalty":
-          console.log("Update penalty: " + colorIndex[package.index]);
-          updatePenalty(colorIndex[package.index]);
-            break;
-          case "AVGtime":
-            console.log("Update AVGtime: "+ colorIndex[package.index]);
-            updateAvgTime(colorIndex[package.index]);
-            break;
-          default:
+            case "penalty":
+                console.log("Update penalty: " + colorIndex[package.index]);
+                updatePenalty(colorIndex[package.index]);
+                break;
+            case "AVGtime":
+                console.log("Update AVGtime: " + colorIndex[package.index]);
+                updateAvgTime(colorIndex[package.index]);
+                break;
+            default:
         }
-    }
-    else
-    {
+    } else {
         writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
     }
 }
@@ -69,41 +70,46 @@ function writeToScreen(message) {
 
 window.addEventListener("load", init, false);
 
-function clicker() {
-    counter = counter + 1;
-    doSend("Hello with count: " + counter);
-}
-
-function playerObj(input, color, index) {
-    this.index = index; // integer to compare with UART input
-    this.name = input; // Name from Start Web Page
-    this.color = color; // Color
-    this.penalty = 0; // Penalty Variable
-    this.avgTime = 0; // AVG time Variable
-}
-
-function createPlayers() {
-
-    var input = document.getElementById("names").elements;
-    var players = [];
-    for (i = 0; i < input.length; i++) {
-        if (input[i].type === "text") {
-            players[players.length] = new playerObj(input[i].value, input[i].id, i);
-        }
+function isJSON(data) {
+    if ((data[0] == '{' && data[data.length - 1] == '}') ||
+        (data[0] == '[' && data[data.length - 1] == ']')) {
+        return true
+    } else {
+        return false
     }
-    localStorage.setItem('players', JSON.stringify(players));
+}
 
-    var penalty = document.getElementById("maxPenalty");
-    localStorage.setItem('penalty', penalty.value);
 
-    startGame();
+/*******************************************************************
+ *
+ *                       GAME STATES
+ *
+ ********************************************************************/
+function newGame() {
+    // Hide section gameOn og endGame ************************/
+    deleteStorage();
+    document.getElementById("gameOn").style.display = "none";
+    document.getElementById("endGame").style.display = "none";
+    /*********************************************************/
+    // Show section PlayerNames ******************************/
+    document.getElementById("PlayerNames").style.display = "block";
+    /*********************************************************/
 }
 
 function startGame() {
+    createPlayers();
+    // Hide section PlayerNames og endGame *******************/
+    document.getElementById("PlayerNames").style.display = "none";
+    document.getElementById("endGame").style.display = "none";
+    /*********************************************************/
+    // Show section gameOn ***********************************/
+    document.getElementById("gameOn").style.display = "block";
+    Cards();
+    /*********************************************************/
 
     var JSON_start = {
-        gameRunning : true,
-        penalty : localStorage.getItem('penalty')
+        gameRunning: true,
+        penalty: localStorage.getItem('penalty')
     }
     console.log(JSON.stringify(JSON_start));
 
@@ -111,29 +117,89 @@ function startGame() {
 }
 
 function stopGame() {
+    // Delete cards *****************************************/
+    deletePenaltyList();
+    deleteavgTimeList();
+    // Hide section PlayerNames og gameOn *******************/
+    document.getElementById("PlayerNames").style.display = "none";
+    document.getElementById("gameOn").style.display = "none";
+    /********************************************************/
+    // Show section endGame *********************************/
+    document.getElementById("endGame").style.display = "block";
+    /********************************************************/
 
     var JSON_stop = {
-        gameRunning : false
+        gameRunning: false
     }
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
 }
 
+/*******************************************************************
+ *
+ *                       PLAYER SETTINGS
+ *
+ ********************************************************************/
 
-// Create cards from input
+// Color index array, to compare PSoC Input
+var colorIndex = ["blue", "brown", "black", "orange", "purple", "red", "green", "yellow"];
+
+// Player Object Class
+class playerObj {
+    constructor(input, color, index) {
+        this.index = index; // integer to compare with UART input
+        this.name = input; // Name from Start Web Page
+        this.color = color; // Color
+        this.penalty = 0; // Penalty Variable
+        this.avgTime = 0; // AVG time Variable
+        this.meassuredTime = [];
+        this.avgTime = 0;
+    }
+}
+
+// Create localStorage with "playerInput" and maxPenalty
+function createPlayers() {
+    var input = document.getElementById("playerInput").elements;
+    var players = [];
+    for (i = 0; i < input.length; i++) {
+        if (input[i].type === "text") {
+            players[players.length] = new playerObj(input[i].value, input[i].id, players.length);
+        }
+    }
+    localStorage.setItem('players', JSON.stringify(players));
+
+    var penalty = document.getElementById("maxPenalty").value;
+    localStorage.setItem('penalty', penalty);
+}
+
+// Delete localStorage
+function deleteStorage() {
+    localStorage.clear();
+}
+
+/*******************************************************************
+ *
+ *                       PAGE LAYOUT
+ *
+ ********************************************************************/
+
+// Create cards from "input"
 function Cards() {
     var players = JSON.parse(localStorage.getItem('players'));
     console.log(players);
     createCards(players, "Penalty"); // Create card for column Penalty
     createCards(players, "avgTime"); // Create card for column AVG time
 
-    var penaltyHeader = document.getElementById("penaltyTitle");
+    var item = document.getElementById("PenaltyHeader");
+    item.parentNode.removeChild(item);
+
+    var penaltyHeader = document.createElement('h3');
     penaltyHeader.innerHTML = "Max straf point: " + localStorage.getItem('penalty');
+    penaltyHeader.setAttribute("id", "PenaltyHeader");
     document.getElementById("penaltyTitle").appendChild(penaltyHeader);
 }
 
-// Create cards input/sort with column
-// location penalty column or AVGtime column
+// Create cards "input"/"sort" with column. From a given player to a page location(AVGtime or penalty)
 function createCards(players, location) {
 
     for (i = 0; i < players.length; i++) {
@@ -204,16 +270,21 @@ function CardElement(player, index) {
     return newCard;
 }
 
+/*******************************************************************
+ *
+ *            UPDATE PENALTY AND AVG TIME
+ *
+ ********************************************************************/
+
 // increment penalty
-// Sort cards - title, røvhul, vise røvhul, president, vise president, tilfældig type
 function updatePenalty(me) {
     // Search array index
     var index;
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        // if (players[i].color === me.parentElement.parentElement.parentElement.className) {
-        if (players[i].color === me) {
+        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+            // if (players[i].color === me) {
             index = i;
         }
     }
@@ -236,24 +307,52 @@ function updateAvgTime(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        //if (players[i].color === me.parentElement.parentElement.parentElement.className) {
-        if (players[i].color === me) {
+        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+            // if (players[i].color === me) {
             index = i;
         }
     }
-    // Increment Average time
-    players[index].avgTime++;
+    // calc Average time
+    let numElements = players[index].meassuredTime.push(2);
+    let sum = players[index].meassuredTime.reduce(add = (a, b) => a + b);
+    players[index].avgTime = sum / numElements;
+
     localStorage.setItem('players', JSON.stringify(players));
     me.innerHTML = 'Gennemsnits tid: ' + players[index].avgTime;
     sortAVGtime();
 }
-// Sort penalty
-function sortPenalty() {
-    // Delete cards
+
+/*******************************************************************
+ *
+ *         DELETE PENALTY AND AVG TIME LISTS
+ *
+ ********************************************************************/
+
+// Delete Penalty List
+function deletePenaltyList() {
     var check = document.getElementById('Penalty');
     while (check.firstChild) {
         check.removeChild(check.firstChild);
     }
+}
+
+// Delete avgTime List
+function deleteavgTimeList() {
+    var check = document.getElementById('avgTime');
+    while (check.firstChild) {
+        check.removeChild(check.firstChild);
+    }
+}
+
+/*******************************************************************
+ *
+ *         SORT PENALTY AND AVG TIME LISTS
+ *
+ ********************************************************************/
+
+// Sort penalty
+function sortPenalty() {
+    deletePenaltyList();
     // sort cards
     var players = JSON.parse(localStorage.getItem('players'));
     var penalty = players.slice(0);
@@ -264,13 +363,10 @@ function sortPenalty() {
     createCards(penalty, 'Penalty');
 }
 
+
 // Sort AVGtime
 function sortAVGtime() {
-    // Delete cards
-    var check = document.getElementById('avgTime');
-    while (check.firstChild) {
-        check.removeChild(check.firstChild);
-    }
+    deleteavgTimeList();
     // sort cards
     var players = JSON.parse(localStorage.getItem('players'));
     var avgTime = players.slice(0);
@@ -279,17 +375,4 @@ function sortAVGtime() {
     });
     // Create cards
     createCards(avgTime, 'avgTime');
-}
-
-function deleteStorage() {
-    localStorage.clear();
-}
-
-function isJSON(data) {
-    if ((data[0] == '{' && data[data.length-1] == '}') ||
-        (data[0] == '[' && data[data.length-1] == ']')) {
-        return true
-    } else {
-        return false
-    }
 }
