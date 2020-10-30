@@ -1,6 +1,6 @@
 // ======================================================================
 // Armstrying.v generated from TopDesign.cysch
-// 10/28/2020 at 09:42
+// 10/30/2020 at 12:52
 // This file is auto generated. ANY EDITS YOU MAKE MAY BE LOST WHEN THIS FILE IS REGENERATED!!!
 // ======================================================================
 
@@ -552,21 +552,21 @@ module top ;
           wire  Net_7;
           wire  Net_861;
           wire  Net_860;
-          wire  Net_6;
-          wire  Net_5;
-          wire  Net_4;
-          wire  Net_3;
-          wire  Net_1;
+          wire  Net_623;
+          wire  Net_631;
+          wire  Net_614;
+          wire  Net_612;
+          wire  Net_611;
           wire  Net_2;
           wire  Net_14;
 
     Fullstep Fullstep_1 (
-        .clock(Net_1),
+        .clock(Net_611),
         .dir(Net_2),
-        .mos1(Net_3),
-        .mos2(Net_4),
-        .mos3(Net_5),
-        .mos4(Net_6));
+        .mos1(Net_612),
+        .mos2(Net_631),
+        .mos3(Net_614),
+        .mos4(Net_623));
 
 	wire [0:0] tmpOE__Rx_1_net;
 	wire [0:0] tmpIO_0__Rx_1_net;
@@ -787,7 +787,7 @@ module top ;
         .enable(1'b1),
         .trigger(1'b0),
         .cmp_sel(1'b0),
-        .pwm(Net_1),
+        .pwm(Net_611),
         .ph1(Net_548),
         .ph2(Net_549));
     defparam PWM_1.Resolution = 8;
@@ -872,7 +872,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		Pin_1
 		 (.oe(tmpOE__Pin_1_net),
-		  .y({Net_3}),
+		  .y({Net_612}),
 		  .fb({tmpFB_0__Pin_1_net[0:0]}),
 		  .io({tmpIO_0__Pin_1_net[0:0]}),
 		  .siovref(tmpSIOVREF__Pin_1_net),
@@ -947,7 +947,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		Pin_2
 		 (.oe(tmpOE__Pin_2_net),
-		  .y({Net_4}),
+		  .y({Net_631}),
 		  .fb({tmpFB_0__Pin_2_net[0:0]}),
 		  .io({tmpIO_0__Pin_2_net[0:0]}),
 		  .siovref(tmpSIOVREF__Pin_2_net),
@@ -1022,7 +1022,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		Pin_3
 		 (.oe(tmpOE__Pin_3_net),
-		  .y({Net_5}),
+		  .y({Net_614}),
 		  .fb({tmpFB_0__Pin_3_net[0:0]}),
 		  .io({tmpIO_0__Pin_3_net[0:0]}),
 		  .siovref(tmpSIOVREF__Pin_3_net),
@@ -1097,7 +1097,7 @@ module top ;
 		  .input_buffer_sel(2'b00))
 		Pin_4
 		 (.oe(tmpOE__Pin_4_net),
-		  .y({Net_6}),
+		  .y({Net_623}),
 		  .fb({tmpFB_0__Pin_4_net[0:0]}),
 		  .io({tmpIO_0__Pin_4_net[0:0]}),
 		  .siovref(tmpSIOVREF__Pin_4_net),

@@ -1,7 +1,7 @@
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\blinkingled\Design01.cydsn\LEDblinking\Chase\Armstrying.cydsn\TopDesign\TopDesign.cysch
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\blinkingled\Design01.cydsn\LEDblinking\Chase\Armstrying.cydsn\TopDesign\TopDesign.cyudb
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\blinkingled\Design01.cydsn\LEDblinking\Chase\Armstrying.cydsn\Fullstep\Fullstep.cyudb
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\blinkingled\Design01.cydsn\LEDblinking\Chase\Armstrying.cydsn\Fullstep\Fullstep.cysym
+C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\TopDesign\TopDesign.cysch
+C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\TopDesign\TopDesign.cyudb
+C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep\Fullstep.cyudb
+C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep\Fullstep.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.cysym
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_pins_v2_20\cy_pins_v2_20.cystate
@@ -135,7 +135,7 @@ C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrim
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\version.cypatch
-C:\Users\Jonathan Nyborg\Documents\PSoC Creator\blinkingled\Design01.cydsn\LEDblinking\Chase\Armstrying.cydsn\Armstrying.cydwr
+C:\Users\Jonathan Nyborg\Documents\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Armstrying.cydwr
 C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cm3gcc.ld
 C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3RealView.scat
 C:\Users\Jonathan Nyborg\Documents\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3Start.c

@@ -1,5 +1,5 @@
 -- Project:   Armstrying
--- Generated: 10/28/2020 09:42:13
+-- Generated: 10/30/2020 12:52:33
 -- PSoC Creator  4.3
 
 ENTITY Armstrying IS
@@ -33,18 +33,18 @@ ARCHITECTURE __DEFAULT__ OF Armstrying IS
     SIGNAL ClockBlock_PLL_OUT : bit;
     SIGNAL ClockBlock_XTAL : bit;
     SIGNAL ClockBlock_XTAL_32KHZ : bit;
-    SIGNAL Net_1 : bit;
     SIGNAL Net_14 : bit;
     SIGNAL Net_2 : bit;
-    SIGNAL Net_3 : bit;
     SIGNAL Net_32 : bit;
-    SIGNAL Net_4 : bit;
     SIGNAL Net_42 : bit;
     ATTRIBUTE udbclken_assigned OF Net_42 : SIGNAL IS "True";
     ATTRIBUTE global_signal OF Net_42 : SIGNAL IS true;
     SIGNAL Net_42_local : bit;
-    SIGNAL Net_5 : bit;
-    SIGNAL Net_6 : bit;
+    SIGNAL Net_611 : bit;
+    SIGNAL Net_612 : bit;
+    SIGNAL Net_614 : bit;
+    SIGNAL Net_623 : bit;
+    SIGNAL Net_631 : bit;
     SIGNAL Net_860 : bit;
     SIGNAL Net_861 : bit;
     SIGNAL Pin_1(0)__PA : bit;
@@ -157,10 +157,10 @@ ARCHITECTURE __DEFAULT__ OF Armstrying IS
     ATTRIBUTE lib_model OF \PWM_1:PWMUDB:genblk1:ctrlreg\ : LABEL IS "controlcell2";
     ATTRIBUTE lib_model OF \PWM_1:PWMUDB:genblk8:stsreg\ : LABEL IS "statusicell3";
     ATTRIBUTE lib_model OF \PWM_1:PWMUDB:sP8:pwmdp:u0\ : LABEL IS "datapathcell4";
-    ATTRIBUTE lib_model OF Net_3 : LABEL IS "macrocell10";
-    ATTRIBUTE lib_model OF Net_4 : LABEL IS "macrocell11";
-    ATTRIBUTE lib_model OF Net_5 : LABEL IS "macrocell12";
-    ATTRIBUTE lib_model OF Net_6 : LABEL IS "macrocell13";
+    ATTRIBUTE lib_model OF Net_612 : LABEL IS "macrocell10";
+    ATTRIBUTE lib_model OF Net_631 : LABEL IS "macrocell11";
+    ATTRIBUTE lib_model OF Net_614 : LABEL IS "macrocell12";
+    ATTRIBUTE lib_model OF Net_623 : LABEL IS "macrocell13";
     ATTRIBUTE lib_model OF \Fullstep_1:StateMachine_1_1\ : LABEL IS "macrocell14";
     ATTRIBUTE lib_model OF \Fullstep_1:StateMachine_1_0\ : LABEL IS "macrocell15";
     ATTRIBUTE lib_model OF \UART_1:BUART:txn\ : LABEL IS "macrocell16";
@@ -182,7 +182,7 @@ ARCHITECTURE __DEFAULT__ OF Armstrying IS
     ATTRIBUTE lib_model OF \PWM_1:PWMUDB:runmode_enable\ : LABEL IS "macrocell32";
     ATTRIBUTE lib_model OF \PWM_1:PWMUDB:prevCompare1\ : LABEL IS "macrocell33";
     ATTRIBUTE lib_model OF \PWM_1:PWMUDB:status_0\ : LABEL IS "macrocell34";
-    ATTRIBUTE lib_model OF Net_1 : LABEL IS "macrocell35";
+    ATTRIBUTE lib_model OF Net_611 : LABEL IS "macrocell35";
     COMPONENT clockblockcell
         PORT (
             dclk_0 : OUT std_ulogic;
@@ -795,7 +795,7 @@ BEGIN
         PORT MAP(
             pa_out => Pin_1(0)__PA,
             oe => open,
-            pin_input => Net_3,
+            pin_input => Net_612,
             pad_out => Pin_1(0)_PAD,
             pad_in => Pin_1(0)_PAD,
             in_clock => open,
@@ -887,7 +887,7 @@ BEGIN
         PORT MAP(
             pa_out => Pin_2(0)__PA,
             oe => open,
-            pin_input => Net_4,
+            pin_input => Net_631,
             pad_out => Pin_2(0)_PAD,
             pad_in => Pin_2(0)_PAD,
             in_clock => open,
@@ -979,7 +979,7 @@ BEGIN
         PORT MAP(
             pa_out => Pin_3(0)__PA,
             oe => open,
-            pin_input => Net_5,
+            pin_input => Net_614,
             pad_out => Pin_3(0)_PAD,
             pad_in => Pin_3(0)_PAD,
             in_clock => open,
@@ -1071,7 +1071,7 @@ BEGIN
         PORT MAP(
             pa_out => Pin_4(0)__PA,
             oe => open,
-            pin_input => Net_6,
+            pin_input => Net_623,
             pad_out => Pin_4(0)_PAD,
             pad_in => Pin_4(0)_PAD,
             in_clock => open,
@@ -1459,7 +1459,7 @@ BEGIN
             interrupt => Net_32,
             clock => ClockBlock_BUS_CLK);
 
-    Net_3:macrocell
+    Net_612:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * !main_1)",
             regmode => 1,
@@ -1467,13 +1467,13 @@ BEGIN
             clken_inv => '0',
             clken_mode => 2)
         PORT MAP(
-            q => Net_3,
-            clk_en => Net_1,
+            q => Net_612,
+            clk_en => Net_611,
             clock_0 => Net_42,
             main_0 => \Fullstep_1:StateMachine_1_1\,
             main_1 => \Fullstep_1:StateMachine_1_0\);
 
-    Net_4:macrocell
+    Net_631:macrocell
         GENERIC MAP(
             eqn_main => "(!main_0 * main_1)",
             regmode => 1,
@@ -1481,13 +1481,13 @@ BEGIN
             clken_inv => '0',
             clken_mode => 2)
         PORT MAP(
-            q => Net_4,
-            clk_en => Net_1,
+            q => Net_631,
+            clk_en => Net_611,
             clock_0 => Net_42,
             main_0 => \Fullstep_1:StateMachine_1_1\,
             main_1 => \Fullstep_1:StateMachine_1_0\);
 
-    Net_5:macrocell
+    Net_614:macrocell
         GENERIC MAP(
             eqn_main => "(main_0 * main_1)",
             regmode => 1,
@@ -1495,13 +1495,13 @@ BEGIN
             clken_inv => '0',
             clken_mode => 2)
         PORT MAP(
-            q => Net_5,
-            clk_en => Net_1,
+            q => Net_614,
+            clk_en => Net_611,
             clock_0 => Net_42,
             main_0 => \Fullstep_1:StateMachine_1_1\,
             main_1 => \Fullstep_1:StateMachine_1_0\);
 
-    Net_6:macrocell
+    Net_623:macrocell
         GENERIC MAP(
             eqn_main => "(main_0 * !main_1)",
             regmode => 1,
@@ -1509,8 +1509,8 @@ BEGIN
             clken_inv => '0',
             clken_mode => 2)
         PORT MAP(
-            q => Net_6,
-            clk_en => Net_1,
+            q => Net_623,
+            clk_en => Net_611,
             clock_0 => Net_42,
             main_0 => \Fullstep_1:StateMachine_1_1\,
             main_1 => \Fullstep_1:StateMachine_1_0\);
@@ -1524,9 +1524,9 @@ BEGIN
             clken_mode => 2)
         PORT MAP(
             q => \Fullstep_1:StateMachine_1_1\,
-            clk_en => Net_1,
+            clk_en => Net_611,
             clock_0 => Net_42,
-            main_0 => Net_1,
+            main_0 => Net_611,
             main_1 => \Fullstep_1:StateMachine_1_1\,
             main_2 => \Fullstep_1:StateMachine_1_0\,
             main_3 => Net_2);
@@ -1540,9 +1540,9 @@ BEGIN
             clken_mode => 2)
         PORT MAP(
             q => \Fullstep_1:StateMachine_1_0\,
-            clk_en => Net_1,
+            clk_en => Net_611,
             clock_0 => Net_42,
-            main_0 => Net_1,
+            main_0 => Net_611,
             main_1 => \Fullstep_1:StateMachine_1_1\,
             main_2 => \Fullstep_1:StateMachine_1_0\,
             main_3 => Net_2);
@@ -1832,14 +1832,14 @@ BEGIN
             main_0 => \PWM_1:PWMUDB:prevCompare1\,
             main_1 => \PWM_1:PWMUDB:cmp1_eq\);
 
-    Net_1:macrocell
+    Net_611:macrocell
         GENERIC MAP(
             eqn_main => "(main_0 * main_1)",
             regmode => 1,
             clk_inv => '0',
             clken_mode => 1)
         PORT MAP(
-            q => Net_1,
+            q => Net_611,
             clock_0 => Net_42,
             main_0 => \PWM_1:PWMUDB:runmode_enable\,
             main_1 => \PWM_1:PWMUDB:cmp1_eq\);

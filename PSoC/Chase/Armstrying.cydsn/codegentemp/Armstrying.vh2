@@ -2,7 +2,7 @@
 --	Conversion of Armstrying.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Wed Oct 28 09:42:12 2020
+--	Fri Oct 30 12:52:33 2020
 --
 
 USE cypress.cypress.all;
@@ -12,15 +12,15 @@ ATTRIBUTE part_name of top_RTL:TYPE IS "cpsoc3";
 END top_RTL;
 --------------------------------------------------------
 ARCHITECTURE R_T_L OF top_RTL IS
-SIGNAL Net_3 : bit;
+SIGNAL Net_612 : bit;
 SIGNAL \Fullstep_1:a\ : bit;
-SIGNAL Net_4 : bit;
+SIGNAL Net_631 : bit;
 SIGNAL \Fullstep_1:b\ : bit;
-SIGNAL Net_5 : bit;
+SIGNAL Net_614 : bit;
 SIGNAL \Fullstep_1:am\ : bit;
-SIGNAL Net_6 : bit;
+SIGNAL Net_623 : bit;
 SIGNAL \Fullstep_1:bm\ : bit;
-SIGNAL Net_1 : bit;
+SIGNAL Net_611 : bit;
 SIGNAL \Fullstep_1:StateMachine_1_1\ : bit;
 SIGNAL \Fullstep_1:StateMachine_1_0\ : bit;
 SIGNAL Net_2 : bit;
@@ -830,13 +830,13 @@ BEGIN
 
 \Fullstep_1:bm\\D\ <= ((not \Fullstep_1:StateMachine_1_0\ and \Fullstep_1:StateMachine_1_1\));
 
-\Fullstep_1:StateMachine_1_1\\D\ <= ((not \Fullstep_1:StateMachine_1_0\ and not Net_2 and Net_1)
-	OR (Net_1 and \Fullstep_1:StateMachine_1_0\ and Net_2)
-	OR (not Net_1 and \Fullstep_1:StateMachine_1_1\));
+\Fullstep_1:StateMachine_1_1\\D\ <= ((not \Fullstep_1:StateMachine_1_0\ and not Net_2 and Net_611)
+	OR (Net_611 and \Fullstep_1:StateMachine_1_0\ and Net_2)
+	OR (not Net_611 and \Fullstep_1:StateMachine_1_1\));
 
-\Fullstep_1:StateMachine_1_0\\D\ <= ((not Net_2 and Net_1 and \Fullstep_1:StateMachine_1_1\)
-	OR (not \Fullstep_1:StateMachine_1_1\ and Net_1 and Net_2)
-	OR (not Net_1 and \Fullstep_1:StateMachine_1_0\));
+\Fullstep_1:StateMachine_1_0\\D\ <= ((not Net_2 and Net_611 and \Fullstep_1:StateMachine_1_1\)
+	OR (not \Fullstep_1:StateMachine_1_1\ and Net_611 and Net_2)
+	OR (not Net_611 and \Fullstep_1:StateMachine_1_0\));
 
 zero <=  ('0') ;
 
@@ -1614,7 +1614,7 @@ Pin_1:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__Rx_1_net_0),
-		y=>Net_3,
+		y=>Net_612,
 		fb=>(tmpFB_0__Pin_1_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__Pin_1_net_0),
@@ -1684,7 +1684,7 @@ Pin_2:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__Rx_1_net_0),
-		y=>Net_4,
+		y=>Net_631,
 		fb=>(tmpFB_0__Pin_2_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__Pin_2_net_0),
@@ -1754,7 +1754,7 @@ Pin_3:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__Rx_1_net_0),
-		y=>Net_5,
+		y=>Net_614,
 		fb=>(tmpFB_0__Pin_3_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__Pin_3_net_0),
@@ -1824,7 +1824,7 @@ Pin_4:cy_psoc3_pins_v1_10
 		ovt_hyst_trim=>"0",
 		input_buffer_sel=>"00")
 	PORT MAP(oe=>(tmpOE__Rx_1_net_0),
-		y=>Net_6,
+		y=>Net_623,
 		fb=>(tmpFB_0__Pin_4_net_0),
 		analog=>(open),
 		io=>(tmpIO_0__Pin_4_net_0),
@@ -1839,27 +1839,27 @@ Pin_4:cy_psoc3_pins_v1_10
 		interrupt=>tmpINTERRUPT_0__Pin_4_net_0);
 \Fullstep_1:a\:cy_dff
 	PORT MAP(d=>\Fullstep_1:a\\D\,
-		clk=>Net_1,
-		q=>Net_3);
+		clk=>Net_611,
+		q=>Net_612);
 \Fullstep_1:b\:cy_dff
 	PORT MAP(d=>\Fullstep_1:b\\D\,
-		clk=>Net_1,
-		q=>Net_4);
+		clk=>Net_611,
+		q=>Net_631);
 \Fullstep_1:am\:cy_dff
 	PORT MAP(d=>\Fullstep_1:am\\D\,
-		clk=>Net_1,
-		q=>Net_5);
+		clk=>Net_611,
+		q=>Net_614);
 \Fullstep_1:bm\:cy_dff
 	PORT MAP(d=>\Fullstep_1:bm\\D\,
-		clk=>Net_1,
-		q=>Net_6);
+		clk=>Net_611,
+		q=>Net_623);
 \Fullstep_1:StateMachine_1_1\:cy_dff
 	PORT MAP(d=>\Fullstep_1:StateMachine_1_1\\D\,
-		clk=>Net_1,
+		clk=>Net_611,
 		q=>\Fullstep_1:StateMachine_1_1\);
 \Fullstep_1:StateMachine_1_0\:cy_dff
 	PORT MAP(d=>\Fullstep_1:StateMachine_1_0\\D\,
-		clk=>Net_1,
+		clk=>Net_611,
 		q=>\Fullstep_1:StateMachine_1_0\);
 \UART_1:BUART:reset_reg\:cy_dff
 	PORT MAP(d=>zero,
@@ -2044,7 +2044,7 @@ Net_9:cy_dff
 \PWM_1:PWMUDB:pwm_i_reg\:cy_dff
 	PORT MAP(d=>\PWM_1:PWMUDB:pwm_i\,
 		clk=>\PWM_1:PWMUDB:ClockOutFromEnBlock\,
-		q=>Net_1);
+		q=>Net_611);
 \PWM_1:PWMUDB:pwm1_i_reg\:cy_dff
 	PORT MAP(d=>zero,
 		clk=>\PWM_1:PWMUDB:ClockOutFromEnBlock\,

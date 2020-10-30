@@ -24,10 +24,10 @@ void decrease (void)
      }
 }
 
-   void direction(void)
+   void direction(uint8 dir)
 {
     UART_1_PutString("Direction changed\r\n");
-   Control_Reg_1_Write(~Control_Reg_1_Read());
+   Control_Reg_1_Write(dir);
 }
 
    void off(void)
@@ -46,11 +46,6 @@ void handleByteReceived(uint8_t byteReceived)
 {
     switch(byteReceived)
     {
-        case 's' :
-         {
-            direction();
-         }
-        break;
         case 'q' :
          {
             increase();  
@@ -70,6 +65,47 @@ void handleByteReceived(uint8_t byteReceived)
          {
             move();
          }
+        break;
+        case '1' :
+         {
+            flyttil = 1;
+         }
+        break;
+        case '2' :
+         {
+            flyttil = 2;
+         }
+        break;
+        case '3' :
+         {
+            flyttil = 3;
+         }
+        break;
+        case '4' :
+         {
+            flyttil = 4;
+         }
+        break;
+        case '5' :
+         {
+            flyttil = 5;
+         }
+        break;
+        case '6' :
+         {
+            flyttil = 6;
+         }
+        break;
+        case '7' :
+         {
+            flyttil = 7;
+         }
+        break;
+          case '8' :
+         {
+            flyttil = 8;
+         }
+        
     }
  }
 
