@@ -110,21 +110,25 @@ void handleByteReceived(uint8_t byteReceived)
         {
             flyttil = 8;
         }
-        
+        break;
+        case 'p' :
+         {
+            printstrafpoint();
+         }        
     }
  }
 
-int checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil)
+int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil)
 {
 	
-	if (Arm2 == FlytTil && Arm2 == (Arm1 + 1))
+	if (Arm2 == FlytTil && (Arm2 == (Arm1 +1) || (Arm1 == 8 && Arm2 == 1)))
 	{
-		Arm1 = 1;
+        Arm1 = 1;
 	}
-	else if (Arm2 == FlytTil && Arm2 != (Arm1 + 1))
+	else if (Arm2 == FlytTil)
 	{
 		Arm1 = 10;
-	}
+  	}
 	else
 	{
 		if (Arm1 > Arm2 && Arm2 > FlytTil)
@@ -149,8 +153,59 @@ int checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil)
 
 bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2)
 {
-	if (numberOfSteps == 1 && Arm2 == (Arm1+1))
-		return true;
-	else
-	return false;
+	if (numberOfSteps == 1)
+    {
+		if(Arm2 == (Arm1+1))
+            return true;
+        
+        else if(Arm1 == 8 && Arm2 == 1)
+        return true;
+        
+    }       
+
+    	return false;
+}
+
+
+void printstrafpoint(void)
+{
+    sprintf(arrr1,"Daniel Craig har %d strafpoints\r\nArne ildsted har %d strafpoints\r\nLunar aka misterlight har %d strafpoints\r\nArthurPistol har %d strafpoints\r\nAllan'balalan har %d strafpoints\r\nHansi har %d strafpoints\r\nMagnum har %d strafpoints\r\nBananatan har %d strafpoints\r\n", strafpoint1, strafpoint2, strafpoint3, strafpoint4, strafpoint5, strafpoint6, strafpoint7, strafpoint8);
+    UART_1_PutString(arrr1);
+   
+}
+
+void addstrafpoint(uint8 plads)
+{
+    if (plads == 1)
+    {
+        strafpoint1++;
+    }
+    else if (plads == 2)
+    {
+        strafpoint2++;
+    }
+    else if (plads == 3)
+    {
+        strafpoint3++;
+    }
+    else if (plads == 4)
+    {
+        strafpoint4++;
+    }
+    else if (plads == 5)
+    {
+        strafpoint5++;
+    }
+    else if (plads == 6)
+    {
+        strafpoint6++;
+    }
+    else if (plads == 7)
+    {
+        strafpoint7++;
+    }
+    else if (plads == 8)
+    {
+        strafpoint8++;
+    }
 }
