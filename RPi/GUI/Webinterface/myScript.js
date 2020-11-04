@@ -35,11 +35,11 @@ function onMessage(evt) {
         switch (package.gameCommand) {
             case "penalty":
                 console.log("Update penalty: " + colorIndex[package.index]);
-                updatePenalty(colorIndex[package.index]);
+                updatePenalty(package);
                 break;
             case "AVGtime":
                 console.log("Update AVGtime: " + colorIndex[package.index]);
-                updateAvgTime(colorIndex[package.index]);
+                updateAvgTime(package);
                 break;
             default:
         }
@@ -351,8 +351,8 @@ function updatePenalty(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
-            // if (players[i].color === me) {
+        // if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        if (players[i].color === colorIndex[me.index]) {
             index = i;
         }
     }
@@ -375,13 +375,13 @@ function updateAvgTime(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
-            // if (players[i].color === me) {
+        // if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        if (players[i].color === colorIndex[me.index]) {
             index = i;
         }
     }
     // calc Average time
-    let numElements = players[index].meassuredTime.push(2);
+    let numElements = players[index].meassuredTime.push(me.time / 10); // Push time measssurement from PSoC -> teenth of secounds
     let sum = players[index].meassuredTime.reduce(add = (a, b) => a + b);
     players[index].avgTime = sum / numElements;
 
