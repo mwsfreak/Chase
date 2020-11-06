@@ -30,6 +30,7 @@ function onClose(evt) {
 }
 // check for penalty or AVGtime
 function onMessage(evt) {
+  writeToScreen('<span style="color: blue;">RAW: ' + evt.data + '</span>');
     if (isJSON(evt.data)) {
         var package = JSON.parse(evt.data);
         switch (package.gameCommand) {
@@ -84,7 +85,7 @@ function isJSON(data) {
  *
  *              Write debug(true/fasle) in console
  *              activate/deactivate output logging
- * 
+ *
  ********************************************************************/
 
 function stateShift(newState) {
