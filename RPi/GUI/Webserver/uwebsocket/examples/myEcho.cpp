@@ -3,9 +3,14 @@
 #include <sstream>
 #include <fcntl.h>
 #include <unistd.h>
+
+#include <errno.h>
+#include <termios.h>
+
 #include <uWS/uWS.h>
 #include <thread>
 #include "../src/json.hpp"
+using namespace std;
 using json = nlohmann::json;
 
 // 8 bit UART beskeder: bit 0 - 2 -> spiller strafpoint, bit 3 - 5 -> spiller AVGT, bit 6 - 7  -> time
@@ -18,27 +23,28 @@ bool gameRunning = false;
 int uartInit();
 int uartClose(int fd);
 int uartSend(char command);
+int uartReceive(char *buffer);
 
 struct Data
 {
   uWS::Hub &h;
   void operator()(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
-    std::string messageString(message, length);
+    string messageString(message, length);
     
     if ((messageString.front() == '{' && messageString.back() == '}') || //JSON Package
       (messageString.front() == '[' && messageString.back() == ']')) 
     {
       json receivedJson = json::parse(messageString);
-      std::cout << "JSON: " << receivedJson << std::endl;
+      cout << "JSON: " << receivedJson << endl;
 
       if (receivedJson["gameRunning"].is_boolean()) {
         gameRunning = receivedJson["gameRunning"];
 
         if (gameRunning) {
-          std::cout << "Game started" << std::endl;
+          cout << "Game started" << endl;
           uartSend(START_COMMAND);
         } else {
-          std::cout << "Game stopped" << std::endl;
+          cout << "Game stopped" << endl;
           uartSend(STOP_COMMAND);
         }
 
@@ -46,7 +52,7 @@ struct Data
     } 
     else  // Simple text 
     {
-      std::cout << "TEXT: " << messageString << std::endl;     
+      cout << "TEXT: " << messageString << endl;
     }
 
       ws->send(message, length, opCode); //DEBUG: Echo message
@@ -57,33 +63,64 @@ void async(uWS::Hub* h)
 {
   int counter = 0;
   
-  std::ostringstream ss1;
-  std::ostringstream ss2;
+  ostringstream ss1;
+//ostringstream ss2;
 
-  json penJson= {
-    {"gameCommand" , "penalty"},
-    {"index", 1}
+  json package = {
+    {"playerPenaltyIndex" , 0},
+    {"playerAvgIndex", 0},
+    {"playerTime", 0}
   };
-
-  json avgJson = {
-    {"gameCommand" , "AVGtime"},
-    {"index", 1}
-  };
-
-  ss1 << penJson;
-  ss2 << avgJson;
 
   for(;;)
   {
-    sleep(2);
+    sleep(1);
 
-    std::ostringstream ss;
+    char buffer[4] = {0};
+
+    if (uartReceive(buffer) >= 0) {
+      
+      //input validation
+      cout << "Buffer[0] = " << buffer[0] + 0;
+      if (buffer[0] >= 1 && buffer[0] <= 8) {
+        package["playerPenaltyIndex"] = buffer[0];
+        cout << ", playerPenaltyIndex = " << package["playerPenaltyIndex"];
+      }
+      cout << endl;
+
+
+      cout << "Buffer[1] = " << buffer[1] + 0;
+      if (buffer[1] >= 1 && buffer[1] <= 8) {
+        package["playerAvgIndex"] = buffer[1];
+        cout << ", playerAvgIndex = " << package["playerAvgIndex"];
+      }
+      cout << endl;
+
+
+      uint16_t playerTime = (buffer[2] << 8) | buffer[3];
+      cout << "Buffer[2] = " << buffer[2] + 0; 
+      cout << ", Buffer[3] = " << buffer[3] + 0 << endl;
+      package["playerTime"] = playerTime;
+
+      cout << "playerTime = " << playerTime + 0;
+      cout << ", package[\"playerTime\"] = " << package["playerTime"] << endl;
+      
+    } else {
+      cout << "UART receive failed with errno: " << errno << endl;
+      cout << strerror(errno);
+    }
+
+    cout << "Printing package in JSON format" << endl << package.dump(4) << endl;
+
+    ss1 << package;
+
+    ostringstream ss;
     ss << "Number of broadcasts #" << counter++;
     
     if (gameRunning) {
       h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
       h->broadcast(ss1.str().c_str(),ss1.str().length(), uWS::OpCode::TEXT);
-      h->broadcast(ss2.str().c_str(),ss2.str().length(), uWS::OpCode::TEXT);
+//    h->broadcast(ss2.str().c_str(),ss2.str().length(), uWS::OpCode::TEXT);
     }
   }
 }
@@ -92,11 +129,21 @@ int uartInit() {
   int fd;
   int status = 0;
 
-  fd = open("/dev/ttyAMA0", O_RDWR);
+  fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY);
   
   if (fd == -1) {
     printf("Failed to open, with error: %s\n\n", strerror(errno));
+  } else {
+    fcntl(fd, F_SETFL, 0);
   }
+
+  struct termios options;
+  tcgetattr(fd, &options);  //Get the current options for the port
+  cfsetispeed(&options, B19200);  //Set the baud rates to 19200
+  cfsetospeed(&options, B19200);
+  options.c_cflag |= (CLOCAL | CREAD);  // Enable the receiver and set local mode
+  options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); //Set raw input
+  tcsetattr(fd, TCSANOW, &options); //Set the new options for the port
 
   return fd;
 }
@@ -118,7 +165,15 @@ int uartSend(char command) {
   return 0;
 }
 
+int uartReceive(char *buffer) {
+  int fd = uartInit();
+  cout << "Reading file ... " << endl;
+  int status = read(fd, buffer, 4);
 
+  cout << "Read " << status << " bytes" << endl;
+  uartClose(fd);
+  return status;
+}
 
 int main()
 {
@@ -127,7 +182,7 @@ int main()
   Data d { hub };
   hub.onMessage(d);
   if (hub.listen(3000)) {
-    std::thread th(async, &hub);
+    thread th(async, &hub);
 
     hub.run();
   }
@@ -137,7 +192,7 @@ int main()
   // Som lambda - optional!
   /*
     hub.onMessage([](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
-    std::cout << "Data: " << std::string_view(message, length) << std::endl;
+    cout << "Data: " << string_view(message, length) << endl;
     ws->send(message, length, opCode);
     });
   */
