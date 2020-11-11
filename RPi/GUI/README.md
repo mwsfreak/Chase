@@ -55,49 +55,122 @@ Log på WiFi Hotspot "Chase" med Password "12345678".
 
 
 
-# Protokol (Pseudo) - HUSK OPDATERING AF DOKUMENTATION/ARKITEKTUR
-## Psoc --> RPi.Webserver
-    GPIO styrer start/stop (Høj = spillet kører)
-    I2c sender data fra Psoc til RPi
-        spillerindeks + tid
-        spillerindeks + strafpoint
+# JSON protokol
 
-## RPI.Webserver --> RPI.Webinterface
-```JSON: 
-    JSON:
-    { 
-        "playerPenaltyIndex" : number,
-        "playerAvgIndex" : number,
-        "playerTime" : number
-    }
-```
-
-## RPI.Webserver <-- RPI.Webinterface
 ```JSON:
-    JSON:
+//SERVER --> INTEFACE
+// Hvis gameStatus == 0 og bruger forbinder:
+{
+  "gameStatus" : 0
+}
+
+// Hvis gameStatus == (1 || 2):
+{
+  "gameStatus" : 0,
+  "maxPenalty" : 10,
+  "players" : [
     {
-        "gameRunning" : bool
-    }
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    },
+    {
+      "name" : "JohnDoe",
+      "avgTime" : 0,
+      "penalty" : 0
+    }    
+  ]
+}
+
+
+//INTERFACE --> SERVER
+// Hvis der trykkes 'start spil':
+{
+  "gameStatus" : 1,     //0 = indtast navne, 1 = start spil, 2 = afbryd spil
+  "maxPenalty" : 10,
+  "gameMode" : 1,       //1 = spiller til maxPenaltu, 2 = bedst af maxPenalty
+
+  //hvis gameStatus == 1:
+  "players" : [
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    },
+    {
+      "name" : "JohnDoe"
+    }    
+  ]
+}
 ```
+
 
 # Byggeplads: 
+
+JSON kommunikation mellem c-program og javascript
+C-program (Game + player klasse)
+Javascript opdateres efter ny JSON protokol
+
+# Gravplads:
 ## RPi.Webserver
 
 I2C.slave
-
-Websocket / JSON
-
 GPIO.write
 
 ## RPi.Webinterface
 
 Websocket
-
 Spilfunktioner
-
 GUI
 
 # Diverse TODO:
+
 RPi.Webserver
 
     STATE laves om til bool
