@@ -1,30 +1,34 @@
 #include "Player.h"
 
-Player::Player(string setName): penalty{0}, avgTime{0}, name{setName}{}
-
-Player::setNewTime(int newTime)
+void Player::newTime(int time)
 {
-    list<int>::iterator i;
-    int sum;
-    meassuredTime.push_back(newTime);
-    for (i=meassuredTime.begin() ; i != meassuredTime.end() ; i++)
-    {	
-        sum += i; 		
+    if (time > 0) {
+        sum_ += time;
+        timecounter_++;
+        avgTime_ = (sum_/timeCounter_)/100.0;     //Calculate avgTime in seconds
     }
-    this->avgTime = sum/ meassuredTime.size();
 }
 
-Player::setPenalty(void)
+int Player::addPenalty(void)
 {
-    this->penalty++;
+    penalty_++;
+    return penalty_;
 }    
 
-Player::getPenalty(void)
+int Player::getPenalty(void)
 {
-    return penalty;
+    return penalty_;
 }
 
-Player::getAVGtime(void)
+float Player::getAvgTime(void)
 {
-    return avgTime;
+    return avgTime_;
+}
+
+void Player::setName(string name) {
+    name_ = name;
+}
+
+string Player::getName() {
+    return name_;
 }

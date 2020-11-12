@@ -1,20 +1,25 @@
+#pragma once
+
 #include <string>
-# include <list>
-#include <iterator>
+#include <stdint.h>
+using namespace std;
 
 class Player
 {
 public:
-    Player(string name);     // rettes
-    void setPenalty(void);
-    void setNewTime(int);
-    int getPenalty(void);
-    float getAVGtime(void);
-    ~Player();
+    //Player() = default;                 //Make compiler generate default constructor
+    //Player(string name) : name_{name};  //Initialise name_ attribute
+    void newTime(int time);
+    int addPenalty();
+    int getPenalty();
+    float getAvgTime();
+    void setName(string name);
+    string getName();
+
 private:
-    int index;
-    string name;             // rettes
-    int penalty;
-    float avgTime;
-    list<int> meassuredTime[];
+    string name_{"Unknown"};
+    int penalty_{0};
+    float avgTime_{0};
+    uint32_t sum_{0};               //Big to avoid overflow
+    int timeCounter_{0};
 };
