@@ -53,6 +53,7 @@ function onError(evt) {
     writeToScreen('<span style="color: red;">Bad day for a Game:</span> ' + evt.data);
 }
 
+// Send to websocket
 function doSend(message) {
     writeToScreen("SENT: " + message);
     websocket.send(message);
@@ -69,6 +70,7 @@ function writeToScreen(message) {
 
 window.addEventListener("load", init, false);
 
+// Check recived me
 function isJSON(data) {
     if ((data[0] == '{' && data[data.length - 1] == '}') ||
         (data[0] == '[' && data[data.length - 1] == ']')) {
@@ -171,13 +173,28 @@ function newGame() {
 function startGame() {
     stateShift("gameOn");
     createPlayers();
+    // Read Set Penalty
+    var getPenalty = document.getElementById("maxPenalty").value;
+    // Get PlayerNames
+    var input = document.getElementById("playerInput").elements;
+    var getPlayers = [];
+    for (i = 0; i < input.length; i++) {
+        if (input[i].type === "text") {
+            getPlayers[getPlayers.length] = new playerObj(input[i].value, input[i].id, getPlayers.length);
+        };
+    };
+    // Generator start message
     var JSON_start = {
-        gameRunning: true,
-        penalty: localStorage.getItem('penalty')
-    }
+        gameStatus: 1,
+        maxPenalty: getPenalty,
+        gameMode: 1,
+        players: getPlayers
+    };
+
     console.log(JSON.stringify(JSON_start));
 
     doSend(JSON.stringify(JSON_start));
+
 }
 
 function stopGame() {
@@ -430,7 +447,6 @@ function sortPenalty() {
     // Create cards
     createCards(penalty, 'Penalty');
 }
-
 
 // Sort AVGtime
 function sortAVGtime() {

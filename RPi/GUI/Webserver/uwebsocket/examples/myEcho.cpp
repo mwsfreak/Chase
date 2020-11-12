@@ -8,6 +8,9 @@
 #include <uWS/uWS.h>
 #include <thread>
 #include "../src/json.hpp"
+#include "../src/Game.h"
+#include "../src/Player.h"
+
 using namespace std;
 using json = nlohmann::json;
 
