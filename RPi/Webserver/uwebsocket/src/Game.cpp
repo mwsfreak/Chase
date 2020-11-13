@@ -57,14 +57,25 @@ void Game::to_json(json& j, const Game& g) {
         j["maxPenalty"] = maxPenalty_;
         j["players"] = json::array();
 
+<<<<<<< HEAD
         json::array() playerArray;
         for (size_t int = 0; i < 8; i++) {
+=======
+       json playerArray = json::array();
+        for (size_t i = 0; i < 8; i++) {
+>>>>>>> 983af4cdbb7f732ae60eedcbd6c6ee0fd0572f08
             playerArray += { 
                 {"name", players_[i].getName()},
                 {"avgTime", players_[i].getAvgTime()},
                 {"penalty", players_[i].getPenalty()}
+<<<<<<< HEAD
             }
         );
+=======
+            };
+        }
+
+>>>>>>> 983af4cdbb7f732ae60eedcbd6c6ee0fd0572f08
         j += playerArray;
 
     }
@@ -73,15 +84,28 @@ void Game::to_json(json& j, const Game& g) {
 void Game::from_json(const json& j, Game& g) {
     
     if (j.at("gameStatus") == 1) {
+<<<<<<< HEAD
         startGame()
+=======
+        startGame();
+>>>>>>> 983af4cdbb7f732ae60eedcbd6c6ee0fd0572f08
     }
     
     j.at("maxPenalty").get_to(g.maxPenalty_);
     j.at("gameMode").get_to(g.gameMode_);
     
+<<<<<<< HEAD
     for (size_t int = 0; i < 8; i++) {
         j.at("players").at(i).at("name").get_to(g.players_[i]);
     }
+=======
+    /*
+    for (size_t i = 0; i < 8; i++) {
+        j.at("players").at(i).at("name").get_to(players_[i]);
+    }
+    */
+
+>>>>>>> 983af4cdbb7f732ae60eedcbd6c6ee0fd0572f08
 
     //Missing input validation
 }
