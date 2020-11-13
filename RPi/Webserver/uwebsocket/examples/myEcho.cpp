@@ -21,39 +21,40 @@ const char STOP_COMMAND = 0x02;
 struct Data
 {
   uWS::Hub &h;
+  Game &Chase;
   void operator()(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
     string messageString(message, length);
     // Check for JSON Package or message New login
-    if ((messageString.front() == '{' && messageString.back() == '}') ||  (messageString.front() == '[' && messageString.back() == ']')) 
+    if ((messageString.front() == '{' && messageString.back() == '}') ||  (messageString.front() == '[' && messageString.back() == ']'))
     {
       json receivedJson = json::parse(messageString);
       cout << "JSON: " << receivedJson << endl;
 
-      switch (receivedJson["gameStatus"])
-      {
+      switch (receivedJson.at("gameStatus")){
       case 0:
         cout << "Waiting for new players" << endl;
         break;
       case 1:   //  start Spil
         cout << "Game started" << endl;
         uartSend(START_COMMAND);
-        from_json(receivedJson, Chase);
+        Chase.from_json(receivedJson, Chase);
         break;
       case 2:   //  afbryd spil
           cout << "Game stopped" << endl;
-          uartSend(STOP_COMMAND);      
+          uartSend(STOP_COMMAND);
         break;
-  
+
       default:
         break;
       }
-    } 
-    else  // New Player opened the browser 
+    }
+    else  // New Player opened the browser
     {
       cout << "TEXT: " << messageString << endl;
       json startPackage;
-      to_json(startPackage, Chase);   
-      ostringstream ss << startPackage;    
+      Chase.to_json(startPackage, Chase);
+      ostringstream ss;
+      ss << startPackage;
       h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
     }
       ws->send(message, length, opCode); //DEBUG: Echo message
@@ -63,7 +64,7 @@ struct Data
 
 /**************************************************************************************************************
 *
-*     Update Interface when recieving UART message                    - full packages 
+*     Update Interface when recieving UART message                    - full packages
 *
 *     Send game settings to Interface when new user connect           - full packages
 *
@@ -71,9 +72,8 @@ struct Data
 *
 ***************************************************************************************************************/
 
-void async(uWS::Hub* h)
+void async(uWS::Hub* h, Game &Chase)
 {
-  int counter = 0;
   json package;
 
   for(;;)
@@ -81,16 +81,16 @@ void async(uWS::Hub* h)
     char buffer[4] = {0};
 
     if (uartReceive(buffer) >= 0) {
-      
+
       //input validation
       /***************************************************************
       *
       *   Byte[0]: first 4 bit Penalty Player, last 4 bit Time Player
-      * 
+      *
       *   Byte[1]: Time, high
-      * 
-      *   Byte[2]: Time, low 
-      * 
+      *
+      *   Byte[2]: Time, low
+      *
       ***************************************************************/
       uint8_t penaltyPlayer = buffer[0] >> 4;
       uint8_t timePlayer = buffer[0] & 0b00001111;
@@ -98,13 +98,15 @@ void async(uWS::Hub* h)
       time100 += buffer[2];
 
       Chase.updateGame(penaltyPlayer, timePlayer, time100);
-      to_json(package, Chase);
+      Chase.to_json(package, Chase);
 
       cout << "Printing package in JSON format" << endl << package.dump(4) << endl;
-    
-      ostringstream ss << package;    
+
+      ostringstream ss;
+      ss << package;
       h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);  // Send Package update
   }
+}
 }
 
 
@@ -112,10 +114,11 @@ int main()
 {
   uWS::Hub hub;
   Game Chase();
-  Data d { hub };
+
+  Data d { hub, Chase};
   hub.onMessage(d);
   if (hub.listen(3000)) {
-    thread th(async, &hub);
+    thread th(async, &hub, &Chase);
 
     hub.run();
   }
