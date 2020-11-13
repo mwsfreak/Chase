@@ -2,13 +2,8 @@
 
 #include "Player.h"
 #include "../src/json.hpp"
-<<<<<<< HEAD
-#include string
-using json = nlohmann::json
-=======
 #include <string>
 using json = nlohmann::json;
->>>>>>> 983af4cdbb7f732ae60eedcbd6c6ee0fd0572f08
 
 class Game {
 public:

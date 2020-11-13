@@ -13,7 +13,7 @@ public:
     int addPenalty();
     int getPenalty();
     float getAvgTime();
-    void setName(string name);
+    void newGame(string name);      // Changed to newGame, and reset private data, when new name is set
     string getName();
 
 private:

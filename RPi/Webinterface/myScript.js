@@ -8,12 +8,12 @@ var wsUri = "ws://192.168.0.1:3000/";
 // Game variables
 var gamePlayers;
 var gamePenalty;
+var state;
 
 function init() {
     output = document.getElementById("output");
     testWebSocket();
 }
-
 // Declare Websockets funktions
 function testWebSocket() {
     websocket = new WebSocket(wsUri);
@@ -33,6 +33,7 @@ function onClose(evt) {
 }
 // check for penalty or AVGtime
 function onMessage(evt) {
+    writeToScreen('<span style="color: blue;">RAW: ' + evt.data + '</span>');
     if (isJSON(evt.data)) {
         var package = JSON.parse(evt.data);
         switch (package.gameStatus) {
@@ -54,18 +55,15 @@ function onMessage(evt) {
         writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
     }
 }
-
 // Error Message to screen
 function onError(evt) {
     writeToScreen('<span style="color: red;">Bad day for a Game:</span> ' + evt.data);
 }
-
 // Send to websocket
 function doSend(message) {
     writeToScreen("SENT: " + message);
     websocket.send(message);
 }
-
 // Write to screen function
 function writeToScreen(message) {
     var pre = document.createElement("h1"); // Create element
@@ -94,7 +92,7 @@ function isJSON(data) {
  *
  *              Write debug(true/fasle) in console
  *              activate/deactivate output logging
- * 
+ *
  ********************************************************************/
 /*
 function stateShift(newState) {
@@ -116,58 +114,55 @@ function stateShift(newState) {
             break;
     }
 
-}
+}*/
 
 function checkState() {
-    var state = localStorage.getItem("state");
     switch (state) {
         case "PlayerNames":
-            // Hide section gameOn og endGame ************************
+            // Hide section gameOn og endGame ************************/
             deleteStorage();
             document.getElementById("gameOn").style.display = "none";
             document.getElementById("endGame").style.display = "none";
-            /*********************************************************
-            // Show section PlayerNames ******************************
+            /*********************************************************/
+            // Show section PlayerNames ******************************/
             document.getElementById("PlayerNames").style.display = "block";
-            /*********************************************************
+            /*********************************************************/
             break;
         case "gameOn":
-            // Hide section PlayerNames og endGame *******************
+            // Hide section PlayerNames og endGame *******************/
             document.getElementById("PlayerNames").style.display = "none";
             document.getElementById("endGame").style.display = "none";
-            /*********************************************************
-            // Show section gameOn ***********************************
+            /*********************************************************/
+            // Show section gameOn ***********************************/
             document.getElementById("gameOn").style.display = "block";
             Cards();
-            /*********************************************************
+            /*********************************************************/
             break;
         case "endGame":
-            // Delete cards *****************************************
+            // Delete cards *****************************************/
             deletePenaltyList();
             deleteavgTimeList();
-            // Hide section PlayerNames og gameOn *******************
+            // Hide section PlayerNames og gameOn *******************/
             document.getElementById("PlayerNames").style.display = "none";
             document.getElementById("gameOn").style.display = "none";
-            /********************************************************
-            // Show section endGame *********************************
+            /********************************************************/
+            // Show section endGame *********************************/
             document.getElementById("endGame").style.display = "block";
-            /********************************************************
+            /********************************************************/
             break;
         default:
-            // Hide section gameOn og endGame ************************
+            // Hide section gameOn og endGame ************************/
             deleteStorage();
             document.getElementById("gameOn").style.display = "none";
             document.getElementById("endGame").style.display = "none";
-            /*********************************************************
-            // Show section PlayerNames ******************************
+            /*********************************************************/
+            // Show section PlayerNames ******************************/
             document.getElementById("PlayerNames").style.display = "block";
-            /*********************************************************
+            /*********************************************************/
             localStorage.setItem("debug", true);
             break;
     }
-
 }
-*/
 
 /*******************************************************************
  *
@@ -175,11 +170,25 @@ function checkState() {
  *
  ********************************************************************/
 function newGame() {
-    stateShift("PlayerNames");
+    // Set Page State
+    state = "PlayerNames";
+    checkState();
+    // Generator newGame message
+    var JSON_newGame = {
+        gameStatus: 0,
+        maxPenalty: gamePenalty,
+        gameMode: 1,
+        players: gamePlayers
+    };
+    console.log(JSON.stringify(JSON_newGame));
+    doSend(JSON.stringify(JSON_newGame));
 }
 
 function startGame() {
-    stateShift("gameOn");
+    // Set Page State
+    staet = "gameOn";
+    checkState();
+
     createPlayers();
     // Read Set Penalty
     gamePenalty = document.getElementById("maxPenalty").value;
@@ -198,18 +207,21 @@ function startGame() {
         gameMode: 1,
         players: gamePlayers
     };
-
     console.log(JSON.stringify(JSON_start));
-
     doSend(JSON.stringify(JSON_start));
-
 }
 
 function stopGame() {
-    stateShift("endGame");
+    // Set Page State
+    state = "endGame";
+    checkState();
+    // Generator stop message
     var JSON_stop = {
-        gameRunning: false
-    }
+        gameStatus: 2,
+        maxPenalty: gamePenalty,
+        gameMode: 1,
+        players: gamePlayers
+    };
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
 }
@@ -226,7 +238,8 @@ function debug(me) {
             localStorage.setItem("debug", false);
             break;
     }
-}*/
+}
+*/
 
 /*******************************************************************
  *
@@ -377,8 +390,8 @@ function updatePenalty(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
-            // if (players[i].color === me) {
+        // if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        if (players[i].color === colorIndex[me.index]) {
             index = i;
         }
     }
@@ -401,13 +414,13 @@ function updateAvgTime(me) {
     var players = JSON.parse(localStorage.getItem('players'));
 
     for (i = 0; i < players.length; i++) {
-        if (players[i].color === me.parentElement.parentElement.parentElement.className) {
-            // if (players[i].color === me) {
+        // if (players[i].color === me.parentElement.parentElement.parentElement.className) {
+        if (players[i].color === colorIndex[me.index]) {
             index = i;
         }
     }
     // calc Average time
-    let numElements = players[index].meassuredTime.push(2);
+    let numElements = players[index].meassuredTime.push(me.time / 10); // Push time measssurement from PSoC -> teenth of secounds
     let sum = players[index].meassuredTime.reduce(add = (a, b) => a + b);
     players[index].avgTime = sum / numElements;
 
