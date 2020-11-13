@@ -57,14 +57,15 @@ void Game::to_json(json& j, const Game& g) {
         j["maxPenalty"] = maxPenalty_;
         j["players"] = json::array();
 
-        json::array() playerArray;
-        for (size_t int = 0; i < 8; i++) {
+       json playerArray = json::array();
+        for (size_t i = 0; i < 8; i++) {
             playerArray += { 
                 {"name", players_[i].getName()},
                 {"avgTime", players_[i].getAvgTime()},
                 {"penalty", players_[i].getPenalty()}
-            }
-        );
+            };
+        }
+
         j += playerArray;
 
     }
@@ -73,15 +74,18 @@ void Game::to_json(json& j, const Game& g) {
 void Game::from_json(const json& j, Game& g) {
     
     if (j.at("gameStatus") == 1) {
-        startGame()
+        startGame();
     }
     
     j.at("maxPenalty").get_to(g.maxPenalty_);
     j.at("gameMode").get_to(g.gameMode_);
     
-    for (size_t int = 0; i < 8; i++) {
-        j.at("players").at(i).at("name").get_to(g.players_[i]);
+    /*
+    for (size_t i = 0; i < 8; i++) {
+        j.at("players").at(i).at("name").get_to(players_[i]);
     }
+    */
+
 
     //Missing input validation
 }

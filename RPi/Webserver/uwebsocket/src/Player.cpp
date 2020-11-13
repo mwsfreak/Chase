@@ -4,7 +4,7 @@ void Player::newTime(int time)
 {
     if (time > 0) {
         sum_ += time;
-        timecounter_++;
+        timeCounter_++;
         avgTime_ = (sum_/timeCounter_)/100.0;     //Calculate avgTime in seconds
     }
 }
