@@ -5,6 +5,9 @@
  ********************************************************************/
 
 var wsUri = "ws://192.168.0.1:3000/";
+// Game variables
+var gamePlayers;
+var gamePenalty;
 
 function init() {
     output = document.getElementById("output");
@@ -32,14 +35,18 @@ function onClose(evt) {
 function onMessage(evt) {
     if (isJSON(evt.data)) {
         var package = JSON.parse(evt.data);
-        switch (package.gameCommand) {
-            case "penalty":
-                console.log("Update penalty: " + colorIndex[package.index]);
-                updatePenalty(colorIndex[package.index]);
+        switch (package.gameStatus) {
+            case 0: // Game Over - MaxPenalty Reached
+                stopGame();
                 break;
-            case "AVGtime":
-                console.log("Update AVGtime: " + colorIndex[package.index]);
-                updateAvgTime(colorIndex[package.index]);
+            case 1: // On going game - create cards and sort
+                gamePlayers = []; // Clear Array
+                for (var i = 0; i < package.players.length; i++) {
+                    gamePlayers[i] = playerObj(package.players.name, colorIndex[i], i, package.players.penalty, package.players.AVGtime);
+                }
+                gamePenalty = package.maxPenalty;
+                break;
+            case 2: // End Game - show the winner
                 break;
             default:
         }
@@ -53,6 +60,7 @@ function onError(evt) {
     writeToScreen('<span style="color: red;">Bad day for a Game:</span> ' + evt.data);
 }
 
+// Send to websocket
 function doSend(message) {
     writeToScreen("SENT: " + message);
     websocket.send(message);
@@ -69,6 +77,7 @@ function writeToScreen(message) {
 
 window.addEventListener("load", init, false);
 
+// Check recived me
 function isJSON(data) {
     if ((data[0] == '{' && data[data.length - 1] == '}') ||
         (data[0] == '[' && data[data.length - 1] == ']')) {
@@ -78,6 +87,7 @@ function isJSON(data) {
     }
 }
 
+
 /********************************************************************
  *
  *                       GAME STATES
@@ -86,7 +96,7 @@ function isJSON(data) {
  *              activate/deactivate output logging
  * 
  ********************************************************************/
-
+/*
 function stateShift(newState) {
     console.log(newState);
     switch (newState) {
@@ -112,52 +122,52 @@ function checkState() {
     var state = localStorage.getItem("state");
     switch (state) {
         case "PlayerNames":
-            // Hide section gameOn og endGame ************************/
+            // Hide section gameOn og endGame ************************
             deleteStorage();
             document.getElementById("gameOn").style.display = "none";
             document.getElementById("endGame").style.display = "none";
-            /*********************************************************/
-            // Show section PlayerNames ******************************/
+            /*********************************************************
+            // Show section PlayerNames ******************************
             document.getElementById("PlayerNames").style.display = "block";
-            /*********************************************************/
+            /*********************************************************
             break;
         case "gameOn":
-            // Hide section PlayerNames og endGame *******************/
+            // Hide section PlayerNames og endGame *******************
             document.getElementById("PlayerNames").style.display = "none";
             document.getElementById("endGame").style.display = "none";
-            /*********************************************************/
-            // Show section gameOn ***********************************/
+            /*********************************************************
+            // Show section gameOn ***********************************
             document.getElementById("gameOn").style.display = "block";
             Cards();
-            /*********************************************************/
+            /*********************************************************
             break;
         case "endGame":
-            // Delete cards *****************************************/
+            // Delete cards *****************************************
             deletePenaltyList();
             deleteavgTimeList();
-            // Hide section PlayerNames og gameOn *******************/
+            // Hide section PlayerNames og gameOn *******************
             document.getElementById("PlayerNames").style.display = "none";
             document.getElementById("gameOn").style.display = "none";
-            /********************************************************/
-            // Show section endGame *********************************/
+            /********************************************************
+            // Show section endGame *********************************
             document.getElementById("endGame").style.display = "block";
-            /********************************************************/
+            /********************************************************
             break;
         default:
-            // Hide section gameOn og endGame ************************/
+            // Hide section gameOn og endGame ************************
             deleteStorage();
             document.getElementById("gameOn").style.display = "none";
             document.getElementById("endGame").style.display = "none";
-            /*********************************************************/
-            // Show section PlayerNames ******************************/
+            /*********************************************************
+            // Show section PlayerNames ******************************
             document.getElementById("PlayerNames").style.display = "block";
-            /*********************************************************/
+            /*********************************************************
             localStorage.setItem("debug", true);
             break;
     }
 
 }
-
+*/
 
 /*******************************************************************
  *
@@ -171,13 +181,28 @@ function newGame() {
 function startGame() {
     stateShift("gameOn");
     createPlayers();
+    // Read Set Penalty
+    gamePenalty = document.getElementById("maxPenalty").value;
+    // Get PlayerNames
+    var input = document.getElementById("playerInput").elements;
+    gamePlayers = [];
+    for (i = 0; i < input.length; i++) {
+        if (input[i].type === "text") {
+            gamePlayers[gamePlayers.length] = { name: input[i].value };
+        };
+    };
+    // Generator start message
     var JSON_start = {
-        gameRunning: true,
-        penalty: localStorage.getItem('penalty')
-    }
+        gameStatus: 1,
+        maxPenalty: gamePenalty,
+        gameMode: 1,
+        players: gamePlayers
+    };
+
     console.log(JSON.stringify(JSON_start));
 
     doSend(JSON.stringify(JSON_start));
+
 }
 
 function stopGame() {
@@ -189,6 +214,7 @@ function stopGame() {
     doSend(JSON.stringify(JSON_stop));
 }
 
+/*
 function debug(me) {
     switch (me) {
         case true:
@@ -200,7 +226,7 @@ function debug(me) {
             localStorage.setItem("debug", false);
             break;
     }
-}
+}*/
 
 /*******************************************************************
  *
@@ -213,14 +239,12 @@ var colorIndex = ["blue", "brown", "black", "orange", "purple", "red", "green", 
 
 // Player Object Class
 class playerObj {
-    constructor(input, color, index) {
-        this.index = index; // integer to compare with UART input
-        this.name = input; // Name from Start Web Page
+    constructor(setName, color, penalty = 0, setAvgTime = 0) {
+        this.name = setName; // Name from Start Web Page
         this.color = color; // Color
-        this.penalty = 0; // Penalty Variable
-        this.avgTime = 0; // AVG time Variable
+        this.penalty = penalty; // Penalty Variable
+        this.avgTime = setAvgTime; // AVG time Variable
         this.meassuredTime = [];
-        this.avgTime = 0;
     }
 }
 
@@ -230,20 +254,22 @@ function createPlayers() {
     var players = [];
     for (i = 0; i < input.length; i++) {
         if (input[i].type === "text") {
-            players[players.length] = new playerObj(input[i].value, input[i].id, players.length);
+            players[players.length] = new playerObj(input[i].value, colorIndex[players.length]);
         }
     }
+    /*
     localStorage.setItem('players', JSON.stringify(players));
 
     var penalty = document.getElementById("maxPenalty").value;
-    localStorage.setItem('penalty', penalty);
+    localStorage.setItem('penalty', penalty);*/
 }
 
-// Delete localStorage
+// Delete localStorage 
+/*
 function deleteStorage() {
     localStorage.removeItem(playerInput);
     localStorage.removeItem(maxPenalty);
-}
+}*/
 
 /*******************************************************************
  *
@@ -253,16 +279,16 @@ function deleteStorage() {
 
 // Create cards from "input"
 function Cards() {
-    var players = JSON.parse(localStorage.getItem('players'));
-    console.log(players);
-    createCards(players, "Penalty"); // Create card for column Penalty
-    createCards(players, "avgTime"); // Create card for column AVG time
+    //    var players = JSON.parse(localStorage.getItem('players'));
+    //    console.log(gamePlayers);
+    createCards(gamePlayers, "Penalty"); // Create card for column Penalty
+    createCards(gamePlayers, "avgTime"); // Create card for column AVG time
 
     var item = document.getElementById("PenaltyHeader");
     item.parentNode.removeChild(item);
 
     var penaltyHeader = document.createElement('h3');
-    penaltyHeader.innerHTML = "Max straf point: " + localStorage.getItem('penalty');
+    penaltyHeader.innerHTML = "Max straf point: " + gamePenalty;
     penaltyHeader.setAttribute("id", "PenaltyHeader");
     document.getElementById("penaltyTitle").appendChild(penaltyHeader);
 }
@@ -343,7 +369,7 @@ function CardElement(player, index) {
  *            UPDATE PENALTY AND AVG TIME
  *
  ********************************************************************/
-
+/*
 // increment penalty
 function updatePenalty(me) {
     // Search array index
@@ -388,7 +414,7 @@ function updateAvgTime(me) {
     localStorage.setItem('players', JSON.stringify(players));
     me.innerHTML = 'Gennemsnits tid: ' + players[index].avgTime;
     sortAVGtime();
-}
+}*/
 
 /*******************************************************************
  *
@@ -422,8 +448,8 @@ function deleteavgTimeList() {
 function sortPenalty() {
     deletePenaltyList();
     // sort cards
-    var players = JSON.parse(localStorage.getItem('players'));
-    var penalty = players.slice(0);
+    // var players = JSON.parse(localStorage.getItem('players'));
+    var penalty = gamePlayers.slice(0);
     penalty.sort(function(a, b) {
         return b.penalty - a.penalty;
     });
@@ -431,13 +457,12 @@ function sortPenalty() {
     createCards(penalty, 'Penalty');
 }
 
-
 // Sort AVGtime
 function sortAVGtime() {
     deleteavgTimeList();
     // sort cards
-    var players = JSON.parse(localStorage.getItem('players'));
-    var avgTime = players.slice(0);
+    // var players = JSON.parse(localStorage.getItem('players'));
+    var avgTime = gamePlayers.slice(0);
     avgTime.sort(function(a, b) {
         return a.avgTime - b.avgTime;
     });
