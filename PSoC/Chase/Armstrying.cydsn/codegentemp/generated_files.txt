@@ -48,21 +48,24 @@
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_4_aliases.h" value="HEADER;;;;;Pin_4" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_4.c" value="SOURCE_C;CortexM3;;;;Pin_4" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_4.h" value="HEADER;;;;;Pin_4" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Control_Reg_2.h" value="HEADER;;;;;Control_Reg_2" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Control_Reg_2.c" value="SOURCE_C;CortexM3;;;;Control_Reg_2" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Control_Reg_2_PM.c" value="SOURCE_C;CortexM3;;;;Control_Reg_2" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Fullstep_2_defs.h" value="HEADER;;;;;Fullstep_2" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_5_aliases.h" value="HEADER;;;;;Pin_5" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_5.c" value="SOURCE_C;CortexM3;;;;Pin_5" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_5.h" value="HEADER;;;;;Pin_5" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_6_aliases.h" value="HEADER;;;;;Pin_6" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_6.c" value="SOURCE_C;CortexM3;;;;Pin_6" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_6.h" value="HEADER;;;;;Pin_6" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_7_aliases.h" value="HEADER;;;;;Pin_7" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_7.c" value="SOURCE_C;CortexM3;;;;Pin_7" />
-  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_7.h" value="HEADER;;;;;Pin_7" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\isr_2.c" value="SOURCE_C;CortexM3;;;;isr_2" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\isr_2.h" value="HEADER;;;;;isr_2" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\PWM_2.c" value="SOURCE_C;CortexM3;;;;PWM_2" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\PWM_2.h" value="HEADER;;;;;PWM_2" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\PWM_2_PM.c" value="SOURCE_C;CortexM3;;;;PWM_2" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_8_aliases.h" value="HEADER;;;;;Pin_8" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_8.c" value="SOURCE_C;CortexM3;;;;Pin_8" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_8.h" value="HEADER;;;;;Pin_8" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_7_aliases.h" value="HEADER;;;;;Pin_7" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_7.c" value="SOURCE_C;CortexM3;;;;Pin_7" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_7.h" value="HEADER;;;;;Pin_7" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_6_aliases.h" value="HEADER;;;;;Pin_6" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_6.c" value="SOURCE_C;CortexM3;;;;Pin_6" />
+  <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\Pin_6.h" value="HEADER;;;;;Pin_6" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\UART_1_IntClock.c" value="SOURCE_C;CortexM3;;;;UART_1_IntClock" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\UART_1_IntClock.h" value="HEADER;;;;;UART_1_IntClock" />
   <file name="C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\codegentemp\cm3gcc.ld" value="LINKER_SCRIPT;;;b98f980c-3bd1-4fc7-a887-c56a20a46fdd;;cy_boot" />

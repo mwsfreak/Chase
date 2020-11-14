@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: Control_Reg_2.c  
+* File Name: Control_Reg_3.c  
 * Version 1.80
 *
 * Description:
@@ -14,14 +14,14 @@
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#include "Control_Reg_2.h"
+#include "Control_Reg_3.h"
 
 /* Check for removal by optimization */
-#if !defined(Control_Reg_2_Sync_ctrl_reg__REMOVED)
+#if !defined(Control_Reg_3_Sync_ctrl_reg__REMOVED)
 
     
 /*******************************************************************************
-* Function Name: Control_Reg_2_Write
+* Function Name: Control_Reg_3_Write
 ********************************************************************************
 *
 * Summary:
@@ -34,14 +34,14 @@
 *  None.
 *
 *******************************************************************************/
-void Control_Reg_2_Write(uint8 control) 
+void Control_Reg_3_Write(uint8 control) 
 {
-    Control_Reg_2_Control = control;
+    Control_Reg_3_Control = control;
 }
 
 
 /*******************************************************************************
-* Function Name: Control_Reg_2_Read
+* Function Name: Control_Reg_3_Read
 ********************************************************************************
 *
 * Summary:
@@ -54,9 +54,9 @@ void Control_Reg_2_Write(uint8 control)
 *  Returns the current value in the Control Register.
 *
 *******************************************************************************/
-uint8 Control_Reg_2_Read(void) 
+uint8 Control_Reg_3_Read(void) 
 {
-    return Control_Reg_2_Control;
+    return Control_Reg_3_Control;
 }
 
 #endif /* End check for removal by optimization */

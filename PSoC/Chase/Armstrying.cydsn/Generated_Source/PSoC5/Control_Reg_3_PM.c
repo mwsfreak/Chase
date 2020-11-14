@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: Control_Reg_2_PM.c
+* File Name: Control_Reg_3_PM.c
 * Version 1.80
 *
 * Description:
@@ -15,16 +15,16 @@
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#include "Control_Reg_2.h"
+#include "Control_Reg_3.h"
 
 /* Check for removal by optimization */
-#if !defined(Control_Reg_2_Sync_ctrl_reg__REMOVED)
+#if !defined(Control_Reg_3_Sync_ctrl_reg__REMOVED)
 
-static Control_Reg_2_BACKUP_STRUCT  Control_Reg_2_backup = {0u};
+static Control_Reg_3_BACKUP_STRUCT  Control_Reg_3_backup = {0u};
 
     
 /*******************************************************************************
-* Function Name: Control_Reg_2_SaveConfig
+* Function Name: Control_Reg_3_SaveConfig
 ********************************************************************************
 *
 * Summary:
@@ -37,14 +37,14 @@ static Control_Reg_2_BACKUP_STRUCT  Control_Reg_2_backup = {0u};
 *  None
 *
 *******************************************************************************/
-void Control_Reg_2_SaveConfig(void) 
+void Control_Reg_3_SaveConfig(void) 
 {
-    Control_Reg_2_backup.controlState = Control_Reg_2_Control;
+    Control_Reg_3_backup.controlState = Control_Reg_3_Control;
 }
 
 
 /*******************************************************************************
-* Function Name: Control_Reg_2_RestoreConfig
+* Function Name: Control_Reg_3_RestoreConfig
 ********************************************************************************
 *
 * Summary:
@@ -58,14 +58,14 @@ void Control_Reg_2_SaveConfig(void)
 *
 *
 *******************************************************************************/
-void Control_Reg_2_RestoreConfig(void) 
+void Control_Reg_3_RestoreConfig(void) 
 {
-     Control_Reg_2_Control = Control_Reg_2_backup.controlState;
+     Control_Reg_3_Control = Control_Reg_3_backup.controlState;
 }
 
 
 /*******************************************************************************
-* Function Name: Control_Reg_2_Sleep
+* Function Name: Control_Reg_3_Sleep
 ********************************************************************************
 *
 * Summary:
@@ -78,14 +78,14 @@ void Control_Reg_2_RestoreConfig(void)
 *  None
 *
 *******************************************************************************/
-void Control_Reg_2_Sleep(void) 
+void Control_Reg_3_Sleep(void) 
 {
-    Control_Reg_2_SaveConfig();
+    Control_Reg_3_SaveConfig();
 }
 
 
 /*******************************************************************************
-* Function Name: Control_Reg_2_Wakeup
+* Function Name: Control_Reg_3_Wakeup
 ********************************************************************************
 *
 * Summary:
@@ -98,9 +98,9 @@ void Control_Reg_2_Sleep(void)
 *  None
 *
 *******************************************************************************/
-void Control_Reg_2_Wakeup(void)  
+void Control_Reg_3_Wakeup(void)  
 {
-    Control_Reg_2_RestoreConfig();
+    Control_Reg_3_RestoreConfig();
 }
 
 #endif /* End check for removal by optimization */

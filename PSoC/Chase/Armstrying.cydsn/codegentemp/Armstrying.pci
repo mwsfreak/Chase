@@ -1,5 +1,5 @@
 # Armstrying
-# 2020-10-30 20:50:36Z
+# 2020-11-14 18:49:09Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -13,7 +13,3 @@ set_io "Pin_1(0)" iocell 2 0
 set_io "Pin_2(0)" iocell 2 1
 set_io "Pin_3(0)" iocell 2 2
 set_io "Pin_4(0)" iocell 2 3
-set_io "Pin_5(0)" iocell 0 0
-set_io "Pin_6(0)" iocell 0 1
-set_io "Pin_7(0)" iocell 0 2
-set_io "Pin_8(0)" iocell 0 3

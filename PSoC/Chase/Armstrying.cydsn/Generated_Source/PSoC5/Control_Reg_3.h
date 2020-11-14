@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File Name: Control_Reg_2.h  
+* File Name: Control_Reg_3.h  
 * Version 1.80
 *
 * Description:
@@ -14,8 +14,8 @@
 * the software package with which this file was provided.
 *******************************************************************************/
 
-#if !defined(CY_CONTROL_REG_Control_Reg_2_H) /* CY_CONTROL_REG_Control_Reg_2_H */
-#define CY_CONTROL_REG_Control_Reg_2_H
+#if !defined(CY_CONTROL_REG_Control_Reg_3_H) /* CY_CONTROL_REG_Control_Reg_3_H */
+#define CY_CONTROL_REG_Control_Reg_3_H
 
 #include "cyfitter.h"
 
@@ -37,20 +37,20 @@ typedef struct
 {
     uint8 controlState;
 
-} Control_Reg_2_BACKUP_STRUCT;
+} Control_Reg_3_BACKUP_STRUCT;
 
 
 /***************************************
 *         Function Prototypes 
 ***************************************/
 
-void    Control_Reg_2_Write(uint8 control) ;
-uint8   Control_Reg_2_Read(void) ;
+void    Control_Reg_3_Write(uint8 control) ;
+uint8   Control_Reg_3_Read(void) ;
 
-void Control_Reg_2_SaveConfig(void) ;
-void Control_Reg_2_RestoreConfig(void) ;
-void Control_Reg_2_Sleep(void) ; 
-void Control_Reg_2_Wakeup(void) ;
+void Control_Reg_3_SaveConfig(void) ;
+void Control_Reg_3_RestoreConfig(void) ;
+void Control_Reg_3_Sleep(void) ; 
+void Control_Reg_3_Wakeup(void) ;
 
 
 /***************************************
@@ -58,10 +58,10 @@ void Control_Reg_2_Wakeup(void) ;
 ***************************************/
 
 /* Control Register */
-#define Control_Reg_2_Control        (* (reg8 *) Control_Reg_2_Sync_ctrl_reg__CONTROL_REG )
-#define Control_Reg_2_Control_PTR    (  (reg8 *) Control_Reg_2_Sync_ctrl_reg__CONTROL_REG )
+#define Control_Reg_3_Control        (* (reg8 *) Control_Reg_3_Sync_ctrl_reg__CONTROL_REG )
+#define Control_Reg_3_Control_PTR    (  (reg8 *) Control_Reg_3_Sync_ctrl_reg__CONTROL_REG )
 
-#endif /* End CY_CONTROL_REG_Control_Reg_2_H */
+#endif /* End CY_CONTROL_REG_Control_Reg_3_H */
 
 
 /* [] END OF FILE */
