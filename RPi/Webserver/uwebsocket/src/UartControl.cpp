@@ -39,10 +39,10 @@ int uartSend(char command) {
   return 0;
 }
 
-int uartReceive(char *buffer) {
+int uartReceive(char *buffer, int numBytes) {
   int fd = uartInit();
   cout << "Reading file ... " << endl;
-  int status = read(fd, buffer, 4);
+  int status = read(fd, buffer, numBytes);
 
   cout << "Read " << status << " bytes" << endl;
   uartClose(fd);

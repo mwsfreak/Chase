@@ -19,51 +19,6 @@ using json = nlohmann::json;
 
 const char START_COMMAND = 0x01;
 const char STOP_COMMAND = 0x02;
-/*
-struct Data
-{
-  uWS::Hub &h;
-  void operator()(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
-    string messageString(message, length);
-    // Check for JSON Package or message New login
-    if ((messageString.front() == '{' && messageString.back() == '}') ||  (messageString.front() == '[' && messageString.back() == ']'))
-    {
-      json receivedJson = json::parse(messageString);
-      cout << "JSON: " << receivedJson << endl;
-
-      int status = receivedJson.at("gameStatus"); 
-
-      switch (status){
-      case 0:
-        cout << "Waiting for new players" << endl;
-        break;
-      case 1:   //  start Spil
-        cout << "Game started" << endl;
-        uartSend(START_COMMAND);
-        //Chase.from_json(receivedJson, Chase);
-        break;
-      case 2:   //  afbryd spil
-          cout << "Game stopped" << endl;
-          uartSend(STOP_COMMAND);
-        break;
-
-      default:
-        break;
-      }
-    }
-    else  // New Player opened the browser
-    {
-      cout << "TEXT: " << messageString << endl;
-      json statusPackage;
-      //Chase.to_json(statusPackage, Chase);
-      ostringstream ss;
-      ss << statusPackage;
-      h.broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
-    }
-      ws->send(message, length, opCode); //DEBUG: Echo message
-    }
-};
-*/
 
 /**************************************************************************************************************
 *
@@ -75,15 +30,15 @@ struct Data
 *
 ***************************************************************************************************************/
 
-void async(uWS::Hub* h)
+void async(uWS::Hub* h, Game* Chase)
 {
   json package;
 
   for(;;)
   {
-    char buffer[4] = {0};
+    char buffer[3] = {0};
 
-    if (uartReceive(buffer) >= 0) {
+    if (uartReceive(buffer, sizeof(buffer)) >= 0) {
 
       //input validation
       /***************************************************************
@@ -100,8 +55,8 @@ void async(uWS::Hub* h)
       uint16_t time100 = buffer[1] << 8;
       time100 += buffer[2];
 
-      //Chase.updateGame(penaltyPlayer, timePlayer, time100);
-      //Chase.to_json(package, Chase);
+      Chase->updateGame(penaltyPlayer, timePlayer, time100);
+      Chase->to_json(package, *Chase);
 
       cout << "Printing package in JSON format" << endl << package.dump(4) << endl;
 
@@ -140,11 +95,11 @@ int main()
 
       case 1:   //  start Spil
         uartSend(START_COMMAND);
-        cout << "Game started. Chase.gameState = " << Chase.gameState_ << endl;
+        cout << "Game started." << endl;
         break;
 
       case 2:   //  afbryd spil
-        cout << "Game stopped. Chase.gameState = " << Chase.gameState_ << endl;
+        cout << "Game stopped." << endl;
         uartSend(STOP_COMMAND);
         break;
 
@@ -169,7 +124,7 @@ int main()
   });
 
   if (hub.listen(3000)) {
-    thread th(async, &hub);
+    thread th(async, &hub, &Chase);
     hub.run();
   }
 }

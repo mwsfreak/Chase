@@ -10,4 +10,4 @@ using namespace std;
 int uartInit();
 int uartClose(int fd);
 int uartSend(char command);
-int uartReceive(char *buffer);
+int uartReceive(char *buffer, int numBytes);
