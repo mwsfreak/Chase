@@ -37,19 +37,28 @@ function onMessage(evt) {
     if (isJSON(evt.data)) {
         var package = JSON.parse(evt.data);
         switch (package.gameStatus) {
-            case 0: // Game Over - MaxPenalty Reached
-                stopGame();
+            case 0: // Ready for new game
+                // Set Page State
+                state = "PlayerNames";
+                checkState();
                 break;
             case 1: // On going game - create cards and sort
                 gamePlayers = []; // Clear Array
                 for (var i = 0; i < package.players.length; i++) {
-                    gamePlayers[i] = playerObj(package.players.name, colorIndex[i], i, package.players.penalty, package.players.AVGtime);
+                    gamePlayers[i] = new playerObj(package.players.name, colorIndex[i], i, package.players.penalty, package.players.AVGtime);
                 }
                 gamePenalty = package.maxPenalty;
+                // Set Page State
+                state = "gameOn";
+                checkState();
                 break;
             case 2: // End Game - show the winner
+                // Set Page State
+                state = "endGame";
+                checkState();
                 break;
             default:
+                break;
         }
     } else {
         writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
@@ -95,7 +104,7 @@ function isJSON(data) {
  *
  ********************************************************************/
 /*
-function stateShift(newState) {
+function stateShift(newState {
     console.log(newState);
     switch (newState) {
         case "PlayerNames":
@@ -170,28 +179,18 @@ function checkState() {
  *
  ********************************************************************/
 function newGame() {
-    // Set Page State
-    state = "PlayerNames";
-    checkState();
     // Generator newGame message
     var JSON_newGame = {
-        gameStatus: 0,
-        maxPenalty: gamePenalty,
-        gameMode: 1,
-        players: gamePlayers
+        gameStatus: 0
     };
     console.log(JSON.stringify(JSON_newGame));
     doSend(JSON.stringify(JSON_newGame));
 }
 
 function startGame() {
-    // Set Page State
-    staet = "gameOn";
-    checkState();
-
     createPlayers();
     // Read Set Penalty
-    gamePenalty = document.getElementById("maxPenalty").value;
+    gamePenalty = Number(document.getElementById("maxPenalty").value);
     // Get PlayerNames
     var input = document.getElementById("playerInput").elements;
     gamePlayers = [];
@@ -212,15 +211,9 @@ function startGame() {
 }
 
 function stopGame() {
-    // Set Page State
-    state = "endGame";
-    checkState();
     // Generator stop message
     var JSON_stop = {
         gameStatus: 2,
-        maxPenalty: gamePenalty,
-        gameMode: 1,
-        players: gamePlayers
     };
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
@@ -257,7 +250,6 @@ class playerObj {
         this.color = color; // Color
         this.penalty = penalty; // Penalty Variable
         this.avgTime = setAvgTime; // AVG time Variable
-        this.meassuredTime = [];
     }
 }
 
@@ -270,19 +262,18 @@ function createPlayers() {
             players[players.length] = new playerObj(input[i].value, colorIndex[players.length]);
         }
     }
-    /*
+    
     localStorage.setItem('players', JSON.stringify(players));
 
     var penalty = document.getElementById("maxPenalty").value;
-    localStorage.setItem('penalty', penalty);*/
+    localStorage.setItem('penalty', penalty);
 }
 
 // Delete localStorage 
-/*
 function deleteStorage() {
     localStorage.removeItem(playerInput);
     localStorage.removeItem(maxPenalty);
-}*/
+}
 
 /*******************************************************************
  *

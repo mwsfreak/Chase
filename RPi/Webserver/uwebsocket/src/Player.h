@@ -11,10 +11,10 @@ public:
     //Player(string name) : name_{name};  //Initialise name_ attribute
     void newTime(int time);
     int addPenalty();
-    int getPenalty();
-    float getAvgTime();
-    void newGame(string name);      // Changed to newGame, and reset private data, when new name is set
-    string getName();
+    int getPenalty() const;
+    float getAvgTime() const;
+    void resetPlayer(string name);      // Changed to resetPlayer, and reset private data, when new name is set
+    string getName() const;
 
 private:
     string name_{"Unknown"};

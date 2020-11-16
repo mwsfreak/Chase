@@ -1,7 +1,6 @@
 #include "Player.h"
 
-void Player::newTime(int time)
-{
+void Player::newTime(int time) {
     if (time > 0) {
         sum_ += time;
         timeCounter_++;
@@ -9,23 +8,20 @@ void Player::newTime(int time)
     }
 }
 
-int Player::addPenalty(void)
-{
+int Player::addPenalty(void) {
     penalty_++;
     return penalty_;
 }    
 
-int Player::getPenalty(void)
-{
+int Player::getPenalty(void) const {
     return penalty_;
 }
 
-float Player::getAvgTime(void)
-{
+float Player::getAvgTime(void) const {
     return avgTime_;
 }
 
-void Player::newGame(string name) {
+void Player::resetPlayer(string name) {
     name_ = name;
     penalty_ = 0;   // Reset values when new name is applied
     avgTime_ = 0;   //
@@ -33,6 +29,6 @@ void Player::newGame(string name) {
     
 }
 
-string Player::getName() {
+string Player::getName() const {
     return name_;
 }

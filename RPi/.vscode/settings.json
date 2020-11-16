@@ -3,6 +3,7 @@
         "string": "cpp",
         "*.ipp": "cpp",
         "*.tcc": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "thread": "cpp"
     }
 }
