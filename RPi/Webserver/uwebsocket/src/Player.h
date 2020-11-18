@@ -7,8 +7,6 @@ using namespace std;
 class Player
 {
 public:
-    //Player() = default;                 //Make compiler generate default constructor
-    //Player(string name) : name_{name};  //Initialise name_ attribute
     void newTime(int time);
     int addPenalty();
     int getPenalty() const;

@@ -50,13 +50,19 @@ void async(uWS::Hub* h, Game* Chase)
       *   Byte[2]: Time, low
       *
       ***************************************************************/
-      uint8_t penaltyPlayer = buffer[0] >> 4;
-      uint8_t timePlayer = buffer[0] & 0b00001111;
-      uint16_t time100 = buffer[1] << 8;
-      time100 += buffer[2];
+      int8_t penaltyPlayer = (buffer[0] >> 4) - 1; //Convert from 1-8 to 0-7
+      int8_t timePlayer = (buffer[0] & 0b00001111) - 1;//Convert from 1-8 to 0-7
+      uint16_t time100 = (buffer[1] << 8) + buffer[2];
 
-      Chase->updateGame(penaltyPlayer, timePlayer, time100);
-      Chase->to_json(package, *Chase);
+      int newState = Chase->updateGame(penaltyPlayer, timePlayer, time100);
+      
+      if (newState == 2) {
+        cout << "MaxPenalty reached, Game ending." << endl;
+        uartSend(STOP_COMMAND);
+      } 
+
+      //Chase->to_json(package, *Chase);
+      package = *Chase;
 
       cout << "Printing package in JSON format" << endl << package.dump(4) << endl;
 
@@ -86,9 +92,11 @@ int main()
       json receivedJson = json::parse(messageString);
       cout << "JSON: " << receivedJson.dump(2) << endl;
 
-      Chase.from_json(receivedJson, Chase);
+      //Chase.from_json(receivedJson, Chase);
+      Chase = receivedJson;
+
       int status = receivedJson.at("gameStatus"); 
-      switch (status){
+      switch (status) {
       case 0:
         cout << "Waiting for new players" << endl;
         break;
@@ -99,8 +107,8 @@ int main()
         break;
 
       case 2:   //  afbryd spil
-        cout << "Game stopped." << endl;
         uartSend(STOP_COMMAND);
+        cout << "Game stopped." << endl;
         break;
 
       default:
@@ -114,7 +122,8 @@ int main()
     
     //Broadcast new status
     json statusPackage;
-    Chase.to_json(statusPackage, Chase);
+    //Chase.to_json(statusPackage, Chase);
+    statusPackage = Chase;
     cout << "Broadcasting statusPackage: " << statusPackage.dump(2) << endl;
     ostringstream ss;
     ss << statusPackage;
