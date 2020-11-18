@@ -32,7 +32,7 @@ include compiler_setup.rpi
 endif
 
 # Setting compiler flags
-CXXFLAGS+= -Wall -Iinc  
+CXXFLAGS+= -Wall -Iinc
 VPATH=src
 
 all: info ${DEST_DIR}/${LIB_NAME}
@@ -44,7 +44,7 @@ ${OBJ_DEST_DIR}/%.o: %.cpp
 	@echo "Compiling "$<
 	@${CXX} -c $< -o $@ ${CXXFLAGS}
 
-${OBJ_DEST_DIR}/%.d: %.cpp 
+${OBJ_DEST_DIR}/%.d: %.cpp
 	@echo "Generating dependency for $<"
 	@mkdir -p ${OBJ_DEST_DIR}
 	@$(CXX) -MT${OBJ_DEST_DIR}/$(@:.d=.o) -MM $(CXXFLAGS) $^ > $@
@@ -55,7 +55,7 @@ ${DEST_DIR}:
 ${OBJ_DEST_DIR}:
 	@mkdir -p ${OBJ_DEST_DIR}
 
-${DEST_DIR}/${LIB_NAME}: ${OBJ_DEST_DIR} ${DEST_DIR} $(DEPS) ${OBJS} 
+${DEST_DIR}/${LIB_NAME}: ${OBJ_DEST_DIR} ${DEST_DIR} $(DEPS) ${OBJS}
 	@echo "Linking "$@
 	@${AR} cr $@ ${OBJS}
 
@@ -67,4 +67,3 @@ clean:
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
 endif
-

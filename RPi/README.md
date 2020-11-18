@@ -24,12 +24,20 @@ git clone https://github.com/mwsfreak/Chase.git
 ```
 Kopier GUI til RPI:
 ```bash
+<<<<<<< HEAD
 rsync -azPv --delete Chase/RPi/Webinterface/ root@10.9.8.2:/www/pages/
+=======
+scp -r Chase/RPi/Webinterface/* root@10.9.8.2:/www/pages/
+>>>>>>> c5dd8a320d83175801b4feb18dbf574bfe3973cc
 ```
 Byg Websocket:
 ```bash
 cd Chase/RPi/Webserver/uwebsocket
+<<<<<<< HEAD
 make
+=======
+make TARGET=rpi MODE=release
+>>>>>>> c5dd8a320d83175801b4feb18dbf574bfe3973cc
 cd examples
 make
 ```

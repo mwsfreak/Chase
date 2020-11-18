@@ -135,12 +135,8 @@ C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrim
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.pdf
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v
 C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\version.cypatch
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.cysym
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.v
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.cystate
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\mux_v1_10.pdf
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\version.cypatch
-C:\Program Files (x86)\Cypress\PSoC Creator\4.3\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\mux_v1_10\Custom\custom.cs
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep_v1_1\Fullstep_v1_1.cyudb
+C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Fullstep_v1_1\Fullstep_v1_1.cysym
 C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\GitHub\Chase\PSoC\Chase\Armstrying.cydsn\Armstrying.cydwr
 C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\cm3gcc.ld
 C:\Users\Jonathan Nyborg\OneDrive\Dokumenter\PSoC Creator\4.3\Downloads ( 4.3).cylib\cy_boot_v6_0\PSoC5\API\Cm3RealView.scat

@@ -39,7 +39,6 @@ void async(uWS::Hub* h, Game* Chase)
     char buffer[3] = {0};
 
     if (uartReceive(buffer, sizeof(buffer)) >= 0) {
-
       //input validation
       /***************************************************************
       *
@@ -58,7 +57,7 @@ void async(uWS::Hub* h, Game* Chase)
       Chase->updateGame(penaltyPlayer, timePlayer, time100);
       Chase->to_json(package, *Chase);
 
-      cout << "Printing package in JSON format" << endl << package.dump(4) << endl;
+      cout << "WEBSERVER SENDING: " << endl << package.dump(4) << endl;
 
       ostringstream ss;
       ss << package;
@@ -79,15 +78,15 @@ int main()
   // Som lambda - optional!
   hub.onMessage([&Chase, &hub](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
     string messageString(message, length);
-    
+
     // Check for JSON Package or message New login
     if ((messageString.front() == '{' && messageString.back() == '}') ||  (messageString.front() == '[' && messageString.back() == ']'))
     {
       json receivedJson = json::parse(messageString);
-      cout << "JSON: " << receivedJson.dump(2) << endl;
+      cout << "WEBSERVER RECIEVE JSON: " << receivedJson.dump(2) << endl;
 
       Chase.from_json(receivedJson, Chase);
-      int status = receivedJson.at("gameStatus"); 
+      int status = receivedJson.at("gameStatus");
       switch (status){
       case 0:
         cout << "Waiting for new players" << endl;
@@ -95,11 +94,11 @@ int main()
 
       case 1:   //  start Spil
         uartSend(START_COMMAND);
-        cout << "Game started." << endl;
+        //cout << "UART SEND: Game started." << endl;
         break;
 
       case 2:   //  afbryd spil
-        cout << "Game stopped." << endl;
+        //cout << "UART SEND: Game stopped." << endl;
         uartSend(STOP_COMMAND);
         break;
 
@@ -109,18 +108,19 @@ int main()
     }
     else  // New Player opened the browser
     {
-      cout << "TEXT: " << messageString << endl;
+      cout << "WEBSERVER RECIEVE: " << messageString << endl;
     }
-    
+
     //Broadcast new status
-    json statusPackage;
+/*    json statusPackage;
     Chase.to_json(statusPackage, Chase);
     cout << "Broadcasting statusPackage: " << statusPackage.dump(2) << endl;
     ostringstream ss;
     ss << statusPackage;
     hub.broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
-    
+
     ws->send(message, length, opCode); //DEBUG: Echo message
+    */
   });
 
   if (hub.listen(3000)) {

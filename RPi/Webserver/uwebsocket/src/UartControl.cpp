@@ -4,9 +4,9 @@ int uartInit() {
   int fd;
 
   fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY);
-  
+
   if (fd == -1) {
-    printf("Failed to open.\n\n");
+    printf("UART STATUS: Failed to open.\n\n");
   } else {
     fcntl(fd, F_SETFL, 0);
   }
@@ -26,7 +26,7 @@ int uartClose(int fd) {
   int status = close(fd);
 
   if (status == -1) {
-    printf("Failed to close\n\n");   
+    printf("UART STATUS: Failed to close\n\n");
   }
 
   return status;
@@ -35,16 +35,22 @@ int uartClose(int fd) {
 int uartSend(char command) {
   int fd = uartInit();
   write(fd, &command, 1);
+  cout << "UART SENDING: " << command << endl;
   uartClose(fd);
   return 0;
 }
 
 int uartReceive(char *buffer, int numBytes) {
   int fd = uartInit();
-  cout << "Reading file ... " << endl;
+  cout << "UART RECIEVING: ";
   int status = read(fd, buffer, numBytes);
 
-  cout << "Read " << status << " bytes" << endl;
+  cout  << status << " bytes: ";
+  for (int i = 0 ; i < numBytes ; i++)
+  {
+    cout <<(int)buffer[i] << " - ";
+  }
+  cout << endl;
   uartClose(fd);
   return status;
 }
