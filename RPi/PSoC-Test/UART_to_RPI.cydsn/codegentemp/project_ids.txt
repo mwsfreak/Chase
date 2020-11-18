@@ -1,0 +1,6 @@
+C:\Users\allan\OneDrive\Skrivebord\UART_to_RPI.cydsn\UART_to_RPI.cyprj|0d1f26e4-4d6d-4017-8b69-99c080d6e72e
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|02de7c0a-7d2d-4e5f-9320-74bd93892446
+C:\Users\allan\OneDrive\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|b6c67e55-3833-465e-9ed8-c0e27a54e600
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|65e10c3e-ea3d-4b3d-8cb0-a9c4ec7a0c75
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|9e8878e0-a1f0-464e-bc0d-4dad2934e453
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|7a72243c-ceec-4a7a-a222-ff13ca3748c6
