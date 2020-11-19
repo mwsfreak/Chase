@@ -1,24 +1,33 @@
 #include "Game.h"
 
 uint8_t Game::updateGame(int8_t penaltyPlayer, int8_t timePlayer, uint16_t time) {
-    uint8_t newPenalty = 0;
+    if (gameState_ == 1) {
 
-    if ((penaltyPlayer >= 0) && (penaltyPlayer <= 7)) {
-        newPenalty = players_[penaltyPlayer].addPenalty();
-        penaltyCount_++;
-    }
+        uint8_t newPenalty = 0;
 
-    if ((timePlayer >= 0) && (timePlayer <= 7)) {
-        players_[timePlayer].newTime(time);
-    }
+        if ((penaltyPlayer >= 0) && (penaltyPlayer <= 7)) {
+            newPenalty = players_[penaltyPlayer].addPenalty();
+            penaltyCount_++;
+        }
 
-    if ( ((gameMode_ == 1) && (newPenalty >= maxPenalty_)) ||
-         ((gameMode_ == 2) && (penaltyCount_ >= maxPenalty_)) ) {
-        gameState_ = 2;     //End game
+        if ((timePlayer >= 0) && (timePlayer <= 7)) {
+            players_[timePlayer].newTime(time);
+        }
+
+        if ( ((gameMode_ == 1) && (newPenalty >= maxPenalty_)) ||
+                ((gameMode_ == 2) && (penaltyCount_ >= maxPenalty_)) ) {
+            gameState_ = 2;     //End game  
+        }
+    
     }
 
     return gameState_;
 }
+
+uint8_t Game::getGameState() const {
+    return gameState_;
+}
+
 
 /* Methods to convert Game to and from JSON using nlohmann/json library
    These enable using the overloaded assignment operator for the JSON library 

@@ -39,7 +39,7 @@ void async(uWS::Hub* h, Game* Chase)
     char buffer[3] = {0};
 
     if (uartReceive(buffer, sizeof(buffer)) >= 0) {
-
+      if (Chase->getGameState() == 1) {
       //input validation
       /***************************************************************
       *
@@ -69,6 +69,7 @@ void async(uWS::Hub* h, Game* Chase)
       ostringstream ss;
       ss << package;
       h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);  // Send Package update
+      }
     }
   }
 }
@@ -78,9 +79,6 @@ int main()
 {
   uWS::Hub hub;
   Game Chase;
-
-  //Data d { hub};
-  //hub.onMessage(d);
 
   // Som lambda - optional!
   hub.onMessage([&Chase, &hub](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
