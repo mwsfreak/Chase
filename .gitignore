@@ -45,8 +45,8 @@
 Debug/
 Release/
 Export/
-*/codegentemp
-*/Generated_Source
+codegentemp/
+Generated_Source
 *_datasheet.pdf
 *_timing.html
 *.cycdx
@@ -417,3 +417,4 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,psoccreator,visualstudio
+
