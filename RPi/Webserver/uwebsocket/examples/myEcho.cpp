@@ -5,11 +5,14 @@
 #include <unistd.h>
 #include <errno.h>
 #include <termios.h>
-#include <uWS/uWS.h>
+#include "../src/uWS.h"
 #include <thread>
 #include "../src/json.hpp"
 #include "../src/Game.h"
 #include "../src/Player.h"
+#include "../src/UartControl.h"
+#include <string_view>
+
 
 using namespace std;
 using json = nlohmann::json;
@@ -17,180 +20,116 @@ using json = nlohmann::json;
 const char START_COMMAND = 0x01;
 const char STOP_COMMAND = 0x02;
 
-bool gameRunning = false; 
+/**************************************************************************************************************
+*
+*     Update Interface when recieving UART message                    - full packages
+*
+*     Send game settings to Interface when new user connect           - full packages
+*
+*     Send start and Stop command to PSoC when Interface start/stop   - START_COMMAND & STOP_COMMAND
+*
+***************************************************************************************************************/
 
-int uartInit();
-int uartClose(int fd);
-int uartSend(char command);
-int uartReceive(char *buffer);
-
-struct Data
+void async(uWS::Hub* h, Game* Chase)
 {
-  uWS::Hub &h;
-  void operator()(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
-    string messageString(message, length);
-    
-    if ((messageString.front() == '{' && messageString.back() == '}') || //JSON Package
-      (messageString.front() == '[' && messageString.back() == ']')) 
-    {
-      json receivedJson = json::parse(messageString);
-      cout << "JSON: " << receivedJson << endl;
-
-      if (receivedJson["gameRunning"].is_boolean()) {
-        gameRunning = receivedJson["gameRunning"];
-
-        if (gameRunning) {
-          cout << "Game started" << endl;
-          uartSend(START_COMMAND);
-        } else {
-          cout << "Game stopped" << endl;
-          uartSend(STOP_COMMAND);
-        }
-
-      }
-    } 
-    else  // Simple text 
-    {
-      cout << "TEXT: " << messageString << endl;
-    }
-
-      ws->send(message, length, opCode); //DEBUG: Echo message
-    }
-};
-
-void async(uWS::Hub* h)
-{
-  int counter = 0;
-  
-  json package = {
-    {"playerPenaltyIndex" , 0},
-    {"playerAvgIndex", 0},
-    {"playerTime", 0}
-  };
+  json package;
 
   for(;;)
   {
-    char buffer[4] = {0};
+    char buffer[3] = {0};
 
-    if (uartReceive(buffer) >= 0) {
-      
+    if (uartReceive(buffer, sizeof(buffer)) >= 0) {
+      if (Chase->getGameState() == 1) {
       //input validation
-      cout << "Buffer[0] = " << buffer[0] + 0;
-      if (buffer[0] >= 0 && buffer[0] <= 7) {
-        package["playerPenaltyIndex"] = buffer[0];
-      } else {
-        package["playerPenaltyIndex"] = -1;
-      }
-      cout << ", playerPenaltyIndex = " << package["playerPenaltyIndex"] << endl;
+      /***************************************************************
+      *
+      *   Byte[0]: first 4 bit Penalty Player, last 4 bit Time Player
+      *
+      *   Byte[1]: Time, high
+      *
+      *   Byte[2]: Time, low
+      *
+      ***************************************************************/
+      int8_t penaltyPlayer = (buffer[0] >> 4) - 1; //Convert from 1-8 to 0-7
+      int8_t timePlayer = (buffer[0] & 0b00001111) - 1;//Convert from 1-8 to 0-7
+      uint16_t time100 = (buffer[1] << 8) + buffer[2];
 
-
-      cout << "Buffer[1] = " << buffer[1] + 0;
-      if (buffer[1] >= 0 && buffer[1] <= 7) {
-        package["playerAvgIndex"] = buffer[1];
-      } else {
-        package["playerAvgIndex"] = -1;
-      }
-      cout << ", playerAvgIndex = " << package["playerAvgIndex"] << endl;
-
-
-      uint16_t playerTime = (buffer[2] << 8) | buffer[3];
-      cout << "Buffer[2] = " << buffer[2] + 0; 
-      cout << ", Buffer[3] = " << buffer[3] + 0 << endl;
-      package["playerTime"] = playerTime;
-
-      cout << "playerTime = " << playerTime + 0;
-      cout << ", package[\"playerTime\"] = " << package["playerTime"] << endl;
+      int newState = Chase->updateGame(penaltyPlayer, timePlayer, time100);
       
-    } else {
-      cout << "UART receive failed with errno: " << errno << endl;
-      cout << strerror(errno);
-    }
+      if (newState == 2) {
+        cout << "MaxPenalty reached, Game ending." << endl;
+        uartSend(STOP_COMMAND);
+      } 
 
-    cout << "Printing package in JSON format" << endl << package.dump(4) << endl;
-    
-    ostringstream ss1;
-    ss1 << package;    
-    
-    ostringstream ss;
-    ss << "Number of broadcasts #" << counter++;
-    
-    if (gameRunning) {
-      h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
-      h->broadcast(ss1.str().c_str(),ss1.str().length(), uWS::OpCode::TEXT);
+      //Chase->to_json(package, *Chase);
+      package = *Chase;
+
+      cout << "WEBSERVER SENDING: " << endl << package.dump(4) << endl;
+
+      ostringstream ss;
+      ss << package;
+      h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);  // Send Package update
+      }
     }
   }
 }
 
-int uartInit() {
-  int fd;
-  int status = 0;
-
-  fd = open("/dev/ttyAMA0", O_RDWR | O_NOCTTY | O_NDELAY);
-  
-  if (fd == -1) {
-    printf("Failed to open, with error: %s\n\n", strerror(errno));
-  } else {
-    fcntl(fd, F_SETFL, 0);
-  }
-
-  struct termios options;
-  tcgetattr(fd, &options);  //Get the current options for the port
-  cfsetispeed(&options, B19200);  //Set the baud rates to 19200
-  cfsetospeed(&options, B19200);
-  options.c_cflag |= (CLOCAL | CREAD);  // Enable the receiver and set local mode
-  options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); //Set raw input
-  tcsetattr(fd, TCSANOW, &options); //Set the new options for the port
-
-  return fd;
-}
-
-int uartClose(int fd) {
-  int status = close(fd);
-
-  if (status == -1) {
-    printf("Failed to close, with error: %s \n\n",strerror(errno));   
-  }
-
-  return status;
-}
-
-int uartSend(char command) {
-  int fd = uartInit();
-  write(fd, &command, 1);
-  uartClose(fd);
-  return 0;
-}
-
-int uartReceive(char *buffer) {
-  int fd = uartInit();
-  cout << "Reading file ... " << endl;
-  int status = read(fd, buffer, 4);
-
-  cout << "Read " << status << " bytes" << endl;
-  uartClose(fd);
-  return status;
-}
 
 int main()
 {
   uWS::Hub hub;
+  Game Chase;
 
-  Data d { hub };
-  hub.onMessage(d);
+  // Som lambda - optional!
+  hub.onMessage([&Chase, &hub](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
+    string messageString(message, length);
+
+    // Check for JSON Package or message New login
+    if ((messageString.front() == '{' && messageString.back() == '}') ||  (messageString.front() == '[' && messageString.back() == ']'))
+    {
+      json receivedJson = json::parse(messageString);
+      cout << "WEBSERVER RECIEVE JSON: " << receivedJson.dump(2) << endl;
+
+      Chase = receivedJson;
+
+      int status = receivedJson.at("gameStatus"); 
+      switch (status) {
+      case 0:
+        cout << "Waiting for new players" << endl;
+        break;
+
+      case 1:   //  start Spil
+        uartSend(START_COMMAND);
+        //cout << "UART SEND: Game started." << endl;
+        break;
+
+      case 2:   //  afbryd spil
+        uartSend(STOP_COMMAND);
+        //cout << "UART SEND: Game stopped." << endl;
+        break;
+
+      default:
+        break;
+      }
+    }
+    else  // New Player opened the browser
+    {
+      cout << "WEBSERVER RECIEVE: " << messageString << endl;
+    }
+
+    //Broadcast new status
+    json statusPackage;
+    statusPackage = Chase;
+    cout << "Broadcasting statusPackage: " << statusPackage.dump(2) << endl;
+    ostringstream ss;
+    ss << statusPackage;
+    hub.broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
+
+    ws->send(message, length, opCode); //DEBUG: Echo message
+  });
+
   if (hub.listen(3000)) {
-    thread th(async, &hub);
-
+    thread th(async, &hub, &Chase);
     hub.run();
   }
 }
-
-
-  // Som lambda - optional!
-  /*
-    hub.onMessage([](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
-    cout << "Data: " << string_view(message, length) << endl;
-    ws->send(message, length, opCode);
-    });
-  */
-
-

@@ -1,14 +1,24 @@
-#include "Player.h"
+#pragma once
 
-class Game
-{
+#include "Player.h"
+#include "../src/json.hpp"
+#include <string>
+
+using namespace std;
+using json = nlohmann::json;
+
+class Game {
 public:
-    Game(int Penalty, string Pl1, string Pl2, string Pl3, string Pl4 = "unknown", string Pl5 = "unknown", string Pl6 = "unknown", string Pl7 = "unknown", string Pl8 = "unknown");
-    void updateGame(int penltyPlayer, int timePlayer, int time);
-    ~Game();
+    uint8_t updateGame(int8_t penaltyPlayer, int8_t timePlayer, uint16_t time);
+    uint8_t getGameState() const;
+    
+    friend void to_json(json& j, const Game& g);
+    friend void from_json(const json& j, Game& g);
+
 private:
-    static int gameState;
-    static int totalPenalty;
-    int maxPenalty;
-    Player players[8];
+    uint8_t gameState_;
+    uint8_t maxPenalty_;
+    uint8_t penaltyCount_;
+    uint8_t gameMode_;
+    Player players_[8];
 };

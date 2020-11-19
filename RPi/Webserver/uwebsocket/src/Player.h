@@ -1,20 +1,23 @@
+#pragma once
+
 #include <string>
-# include <list>
-#include <iterator>
+#include <stdint.h>
+using namespace std;
 
 class Player
 {
 public:
-    Player(string name);     // rettes
-    void setPenalty(void);
-    void setNewTime(int);
-    int getPenalty(void);
-    float getAVGtime(void);
-    ~Player();
+    void newTime(int time);
+    int addPenalty();
+    int getPenalty() const;
+    float getAvgTime() const;
+    void resetPlayer(string name);      // Changed to resetPlayer, and reset private data, when new name is set
+    string getName() const;
+
 private:
-    int index;
-    string name;             // rettes
-    int penalty;
-    float avgTime;
-    list<int> meassuredTime[];
+    string name_{"Unknown"};
+    int penalty_{0};
+    float avgTime_{0};
+    uint32_t sum_{0};               //Big to avoid overflow
+    int timeCounter_{0};
 };

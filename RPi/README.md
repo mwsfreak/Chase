@@ -9,7 +9,7 @@ nano /etc/connman-hotspot.conf
 Indsæt følgende
 ```
 SSID=Chase
-PASSWORD=12345678
+PASSWORD=playChase
 ```
 Start RPI Hotspot
 ```bash
@@ -24,14 +24,14 @@ git clone https://github.com/mwsfreak/Chase.git
 ```
 Kopier GUI til RPI:
 ```bash
-scp -r Chase/RPi/Webinterface/* root@10.9.8.2:/www/pages/
+rsync -azPv --delete Chase/RPi/Webinterface/ root@10.9.8.2:/www/pages/
 ```
 Byg Websocket:
 ```bash
 cd Chase/RPi/Webserver/uwebsocket
-make TARGET=rpi MODE=release
+make
 cd examples
-make TARGET=rpi MODE=release
+make
 ```
 Kopier Websocket main-fil:
 ```bash
@@ -49,11 +49,11 @@ ssh root@10.9.8.2
 ./main
 ```
 
-Log på WiFi Hotspot "Chase" med Password "12345678".
+## Start Spil
+
+Log på WiFi Hotspot "Chase" med Password "playChase".
 
 Åben en browser og skriv adressen "192.168.0.1".
-
-
 
 # JSON protokol
 

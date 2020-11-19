@@ -1,24 +1,79 @@
 #include "Game.h"
 
-Game::Game(int Penalty, string Pl1, string Pl2, string Pl3, string Pl4 = "unknown", string Pl5 = "unknown", string Pl6 = "unknown", string Pl7 = "unknown", string Pl8 = "unknown") 
-: maxPenalty{Penalty}, players[0]{Pl1}, Player[1]{Pl2},  Player[2]{Pl3},  Player[3]{Pl4},  Player[4]{Pl5},  Player[5]{Pl6},  Player[6]{Pl7},  Player[7]{Pl8}
-{
-    for(size_t i=0 ; i < 8 ; i++)
-    {
-        players[i].index = i;
+uint8_t Game::updateGame(int8_t penaltyPlayer, int8_t timePlayer, uint16_t time) {
+    if (gameState_ == 1) {
+
+        uint8_t newPenalty = 0;
+
+        if ((penaltyPlayer >= 0) && (penaltyPlayer <= 7)) {
+            newPenalty = players_[penaltyPlayer].addPenalty();
+            penaltyCount_++;
+        }
+
+        if ((timePlayer >= 0) && (timePlayer <= 7)) {
+            players_[timePlayer].newTime(time);
+        }
+
+        if ( ((gameMode_ == 1) && (newPenalty >= maxPenalty_)) ||
+                ((gameMode_ == 2) && (penaltyCount_ >= maxPenalty_)) ) {
+            gameState_ = 2;     //End game  
+        }
+    
     }
+
+    return gameState_;
 }
 
-Game::updateGame(int penltyPlayer, int timePlayer, int time)
-{
-    players[penltyPlayer].setPenalty();
-    players[timePlayer].setNewTime(time);
-
-    totalPenalty++;
-
-    gameState = totalPenalty < maxPenalty ? 1 : 2;
+uint8_t Game::getGameState() const {
+    return gameState_;
 }
 
-Game::~Game(),
-{
+
+/* Methods to convert Game to and from JSON using nlohmann/json library
+   These enable using the overloaded assignment operator for the JSON library 
+   Source: https://github.com/nlohmann/json/#arbitrary-types-conversions */
+void to_json(json& j, const Game& g) {
+    json temp;
+
+    temp["gameStatus"] = g.gameState_;
+
+    if (g.gameState_ != 0) {
+        temp["maxPenalty"] = g.maxPenalty_;
+
+        json playerArray = json::array();
+        for (size_t i = 0; i < 8; i++) {
+            playerArray.push_back( 
+                { 
+                    {"name", g.players_[i].getName()},
+                    {"avgTime", g.players_[i].getAvgTime()},
+                    {"penalty", g.players_[i].getPenalty()}
+                } 
+            );
+        }
+        temp["players"] = playerArray;
+    }
+
+    j = temp;
+}
+
+void from_json(const json& j, Game& g) {
+    if (j.contains("gameStatus")) {
+        j.at("gameStatus").get_to(g.gameState_);
+    }
+
+    if (j.contains("maxPenalty")) {
+        j.at("maxPenalty").get_to(g.maxPenalty_);
+    }
+
+    if (j.contains("gameMode")) {
+        j.at("gameMode").get_to(g.gameMode_);
+    }
+
+    if (j.contains("players")) {
+        for (size_t i = 0; i < 8; i++) {
+            g.players_[i].resetPlayer(j.at("players").at(i).at("name"));
+        }
+    }
+
+    //Missing input validation
 }

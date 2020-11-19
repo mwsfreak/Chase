@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "string": "cpp",
+        "*.ipp": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp",
+        "thread": "cpp"
+    }
+}
