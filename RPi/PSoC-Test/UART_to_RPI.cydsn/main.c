@@ -13,7 +13,9 @@
 #include "stdbool.h"
 #include "stdint.h"
 #include "stdio.h"
+#include "chaseUART.h"
 
+//uint8_t gameRunning = 0;
 
 int main(void)
 {
@@ -21,21 +23,16 @@ int main(void)
     CyGlobalIntEnable;                          //Enable global interrupts
     
     /* Prepare components */
-    UART_Start();
-    uint8_t myArray[] = {35,1,44};  // 35 = 0b0010 0011 = penalty -> player 2, avgTime -> player 3 
-    UART_PutString("We are ready...\nStart RPI..!\n");
-    
+    chaseUARTinit();
+        
     for(;;)
     {
         if (switch_pin_Read() == 0) 
         {
-            led_pin_Write(~led_pin_Read());
-            UART_PutChar(myArray[0]);
-            UART_PutChar(myArray[1]);
-            UART_PutChar(myArray[2]);
-            CyDelay(1000);
-            UART_ClearRxBuffer();
-            UART_ClearTxBuffer();
+            sendData(2, 3, 300); // Penalty --> Player 2, time --> player 3, time = 300 seconds/100
+            CyDelay(50);
+            //UART_1_ClearRxBuffer();
+            //UART_1_ClearTxBuffer();
         }
     }
 }
