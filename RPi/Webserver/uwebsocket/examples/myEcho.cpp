@@ -39,6 +39,7 @@ void async(uWS::Hub* h, Game* Chase)
     char buffer[3] = {0};
 
     if (uartReceive(buffer, sizeof(buffer)) >= 0) {
+      if (Chase->getGameState() == 1) {
       //input validation
       /***************************************************************
       *
@@ -49,19 +50,26 @@ void async(uWS::Hub* h, Game* Chase)
       *   Byte[2]: Time, low
       *
       ***************************************************************/
-      uint8_t penaltyPlayer = buffer[0] >> 4;
-      uint8_t timePlayer = buffer[0] & 0b00001111;
-      uint16_t time100 = buffer[1] << 8;
-      time100 += buffer[2];
+      int8_t penaltyPlayer = (buffer[0] >> 4) - 1; //Convert from 1-8 to 0-7
+      int8_t timePlayer = (buffer[0] & 0b00001111) - 1;//Convert from 1-8 to 0-7
+      uint16_t time100 = (buffer[1] << 8) + buffer[2];
 
-      Chase->updateGame(penaltyPlayer, timePlayer, time100);
-      Chase->to_json(package, *Chase);
+      int newState = Chase->updateGame(penaltyPlayer, timePlayer, time100);
+      
+      if (newState == 2) {
+        cout << "MaxPenalty reached, Game ending." << endl;
+        uartSend(STOP_COMMAND);
+      } 
+
+      //Chase->to_json(package, *Chase);
+      package = *Chase;
 
       cout << "WEBSERVER SENDING: " << endl << package.dump(4) << endl;
 
       ostringstream ss;
       ss << package;
       h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);  // Send Package update
+      }
     }
   }
 }
@@ -71,9 +79,6 @@ int main()
 {
   uWS::Hub hub;
   Game Chase;
-
-  //Data d { hub};
-  //hub.onMessage(d);
 
   // Som lambda - optional!
   hub.onMessage([&Chase, &hub](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
@@ -85,9 +90,10 @@ int main()
       json receivedJson = json::parse(messageString);
       cout << "WEBSERVER RECIEVE JSON: " << receivedJson.dump(2) << endl;
 
-      Chase.from_json(receivedJson, Chase);
-      int status = receivedJson.at("gameStatus");
-      switch (status){
+      Chase = receivedJson;
+
+      int status = receivedJson.at("gameStatus"); 
+      switch (status) {
       case 0:
         cout << "Waiting for new players" << endl;
         break;
@@ -98,8 +104,8 @@ int main()
         break;
 
       case 2:   //  afbryd spil
-        //cout << "UART SEND: Game stopped." << endl;
         uartSend(STOP_COMMAND);
+        //cout << "UART SEND: Game stopped." << endl;
         break;
 
       default:
@@ -112,15 +118,14 @@ int main()
     }
 
     //Broadcast new status
-/*    json statusPackage;
-    Chase.to_json(statusPackage, Chase);
+    json statusPackage;
+    statusPackage = Chase;
     cout << "Broadcasting statusPackage: " << statusPackage.dump(2) << endl;
     ostringstream ss;
     ss << statusPackage;
     hub.broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);
 
     ws->send(message, length, opCode); //DEBUG: Echo message
-    */
   });
 
   if (hub.listen(3000)) {

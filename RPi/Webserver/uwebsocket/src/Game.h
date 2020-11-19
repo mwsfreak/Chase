@@ -9,14 +9,16 @@ using json = nlohmann::json;
 
 class Game {
 public:
-    void updateGame(int penaltyPlayer, int timePlayer, int time);
-    void to_json(json& j, const Game& g);
-    void from_json(const json& j, Game& g);
+    uint8_t updateGame(int8_t penaltyPlayer, int8_t timePlayer, uint16_t time);
+    uint8_t getGameState() const;
+    
+    friend void to_json(json& j, const Game& g);
+    friend void from_json(const json& j, Game& g);
 
 private:
-    int gameState_;
-    int maxPenalty_;
-    int penaltyCount_;
-    int gameMode_;
+    uint8_t gameState_;
+    uint8_t maxPenalty_;
+    uint8_t penaltyCount_;
+    uint8_t gameMode_;
     Player players_[8];
 };

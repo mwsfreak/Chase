@@ -1,21 +1,38 @@
 #include "Game.h"
 
-void Game::updateGame(int penaltyPlayer, int timePlayer, int time) {
-    int returned = players_[penaltyPlayer].addPenalty();
-    players_[timePlayer].newTime(time);
+uint8_t Game::updateGame(int8_t penaltyPlayer, int8_t timePlayer, uint16_t time) {
+    if (gameState_ == 1) {
 
-    penaltyCount_++;
+        uint8_t newPenalty = 0;
 
-    if ( ((gameMode_ == 1) && (returned > maxPenalty_)) ||
-         ((gameMode_ == 2) && (penaltyCount_ > maxPenalty_)) ) {
-        gameState_ = 2;     //End game
+        if ((penaltyPlayer >= 0) && (penaltyPlayer <= 7)) {
+            newPenalty = players_[penaltyPlayer].addPenalty();
+            penaltyCount_++;
+        }
+
+        if ((timePlayer >= 0) && (timePlayer <= 7)) {
+            players_[timePlayer].newTime(time);
+        }
+
+        if ( ((gameMode_ == 1) && (newPenalty >= maxPenalty_)) ||
+                ((gameMode_ == 2) && (penaltyCount_ >= maxPenalty_)) ) {
+            gameState_ = 2;     //End game  
+        }
+    
     }
+
+    return gameState_;
 }
+
+uint8_t Game::getGameState() const {
+    return gameState_;
+}
+
 
 /* Methods to convert Game to and from JSON using nlohmann/json library
    These enable using the overloaded assignment operator for the JSON library 
    Source: https://github.com/nlohmann/json/#arbitrary-types-conversions */
-void Game::to_json(json& j, const Game& g) {
+void to_json(json& j, const Game& g) {
     json temp;
 
     temp["gameStatus"] = g.gameState_;
@@ -39,7 +56,7 @@ void Game::to_json(json& j, const Game& g) {
     j = temp;
 }
 
-void Game::from_json(const json& j, Game& g) {
+void from_json(const json& j, Game& g) {
     if (j.contains("gameStatus")) {
         j.at("gameStatus").get_to(g.gameState_);
     }
