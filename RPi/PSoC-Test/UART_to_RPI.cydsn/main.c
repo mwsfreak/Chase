@@ -30,7 +30,7 @@ int main(void)
         if (switch_pin_Read() == 0) 
         {
             sendData(2, 3, 300); // Penalty --> Player 2, time --> player 3, time = 300 seconds/100
-            CyDelay(50);
+            CyDelay(200);
             //UART_1_ClearRxBuffer();
             //UART_1_ClearTxBuffer();
         }
