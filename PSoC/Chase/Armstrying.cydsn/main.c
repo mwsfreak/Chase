@@ -1,4 +1,5 @@
 #include "Armstyring.h"
+#include "Plads.h"
 
 CY_ISR_PROTO(ISR_UART_rx_handler);
 CY_ISR_PROTO(Count_Handler);
@@ -19,18 +20,75 @@ int main(void)
     flyttil = 0;
     move = 10;
     stack = 0;
+        //Initialize I2C
+    initPlads();
+    
+    //Create variables to receive
+    float timerVal1 = 0;
+    uint8_t timerValMSB1;
+    uint8_t timerValLSB1;
+    uint8_t sendToPlayer1 = 0;
+    bool playerDone1 = false;
+    
+    float timerVal2 = 0;
+    uint8_t timerValMSB2;
+    uint8_t timerValLSB2;
+    uint8_t sendToPlayer2 = 0;
+    bool playerDone2 = false;
+    
     strafpoint1, strafpoint2, strafpoint3, strafpoint4, strafpoint5, strafpoint6, strafpoint7, strafpoint8 = 0;
     UART_1_PutString("Stepper motor application started\r\n");
-    UART_1_PutString("w: Decrease speed\r\n");
-    UART_1_PutString("q: Increase speed\r\n");
     UART_1_PutString("e: Choose arm 1 \r\n");
     UART_1_PutString("r: Choose arm 2\r\n");
     UART_1_PutString("1-8: vaelg plads\r\n");
     UART_1_PutString("p: Print strafpoints\r\n");
     
+    startPlads(arm1);
+    startPlads(arm2);
+    CyDelay(2100);
    for(;;)
     {
-       rykArm(choose);
+        
+//        getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
+//   
+//        if (playerDone1 == true)
+//        {
+//            
+//            choose = 0;
+//            // overføre tid til RPI 
+//            flyttil = sendToPlayer1;
+//            
+//            move = checkNumbersofSteps(arm1, arm2, flyttil);
+//            if (move != 10 && move != 0)
+//            {
+//                stopPlads(arm1);
+//                rykArm(choose);
+//                startPlads(arm1);
+//            }
+//            
+//        }
+       
+        getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
+           if (playerDone2 == true)
+        {
+            playerDone2 = false;
+            UART_1_PutString("Kommer ind i if");
+            choose = 1;
+            // overføre tid til RPI 
+            flyttil = sendToPlayer2;
+            
+            move = checkNumbersofSteps(arm2, arm1, flyttil);
+            if (move != 10 && move != 0)
+            {
+                UART_1_PutString("stopper plads");
+                stopPlads(arm2);
+                rykArm(choose);
+                startPlads(arm2);
+                CyDelay(2100);
+            }
+            
+        }
+         
     }
 }
 

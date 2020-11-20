@@ -1,4 +1,5 @@
 #include "Armstyring.h"
+#include "Plads.h"
 
 void direction(uint8 dir)
 {
@@ -41,42 +42,50 @@ void handleByteReceived(uint8_t byteReceived)
         break;
         case '1' :
          {
-            flyttil = 1;
+            startPlads(1);
+            arm2 = 1;
          }
         break;
         case '2' :
          {
-            flyttil = 2;
+            startPlads(2);
+            arm2 = 2;
          }
         break;
         case '3' :
          {
-            flyttil = 3;
+            startPlads(3);
+            arm2 = 3;
          }
         break;
         case '4' :
          {
-            flyttil = 4;
+            startPlads(4);
+            arm2 = 4;
          }
         break;
         case '5' :
          {
-            flyttil = 5;
+            startPlads(5);
+            arm2 = 5;
          }
         break;
         case '6' :
          {
-            flyttil = 6;
+            startPlads(6);
+            arm2 = 6;
          }
         break;
         case '7' :
          {
-            flyttil = 7;
+            startPlads(7);
+            arm2 = 7;
          }
         break;
         case '8' :
         {
-            flyttil = 8;
+            startPlads(8);
+            arm2 = 8;
         }
         break;
         case 'p' :
@@ -184,8 +193,9 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
         {
             if (flyttil != 0 && flyttil != arm1) //flyt til kan være over 8?
             {
-                move = checkNumbersofSteps(arm1, arm2, flyttil);
+                //move = checkNumbersofSteps(arm1, arm2, flyttil);
                 stack = checkStack(move,arm1,arm2);
+                
                 
                 if (move != 10 && move != 0 && stack == 0)
                 {
@@ -203,11 +213,11 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     
                     if (move > 0)
                     {
-                        direction(1);
+                        direction(0);
                     }
                     else if (move < 0) 
                     {
-                        direction(0);
+                        direction(1);
                         move = move*-1;
                     }
             
@@ -222,7 +232,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
              if (move != 10 && move != 0 && stack == 1)
                 {
                     addstrafpoint(arm2);
-                    direction(1);
+                    direction(0);
                     
                     Control_Reg_2_Write(1); //nødt til at have 2 seperate PWM signaler?
                     
@@ -270,9 +280,9 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
         {
             if(flyttil != 0 && flyttil != arm2)
             {       
-                move = checkNumbersofSteps(arm2, arm1, flyttil);
+                //move = checkNumbersofSteps(arm2, arm1, flyttil);
                 stack = checkStack(move,arm2,arm1);
-                
+
                 if (move != 10 && move != 0 && stack == 0)
                 {
                     arm2 = arm2+move;
@@ -289,11 +299,11 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     
                     if (move > 0)
                     {
-                        direction(1);
+                        direction(0);
                     }
                     else if (move < 0) 
                     {
-                        direction(0);
+                        direction(1);
                         move = move*-1;
                     }
             
@@ -307,7 +317,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                if (move != 10 && move != 0 && stack == 1)
                 {
                    addstrafpoint(arm1);
-                   direction(1);
+                   direction(0);
                     
                    Control_Reg_2_Write(0);
                     
@@ -352,5 +362,6 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                
             }
         }
+        
 }
         
