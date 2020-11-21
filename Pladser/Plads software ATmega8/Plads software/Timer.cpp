@@ -31,9 +31,3 @@ void Timer::stop()
 	TCNT2 = 0; // Reset timer value
 }
 
-void Timer::convertDoubleToUint8_t(volatile double& timerValRef, uint8_t& timerValMSBRef, uint8_t& timerValLSBRef)
-{
-	timerValMSBRef = (uint8_t)(((uint16_t)round(timerValRef)) >> 8);
-	timerValLSBRef = (uint8_t)((uint16_t)round(timerValRef));
-}
-

@@ -18,7 +18,6 @@ public:
 	void init();
 	void start();
 	void stop();
-	void convertDoubleToUint8_t(volatile double& timerVal, uint8_t& timerValMSB, uint8_t& timerValLSB);
 }; //Timer
 
 #endif //__TIMER_H__

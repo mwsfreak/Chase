@@ -9,6 +9,14 @@
 #define BONUS_TIME 500 //In 1/100 seconds
 #define BLINK_TOGGLE_OVERFLOWS 10
 
+//I2C constants
+#define OWN_SLA_AND_R_RECEIVED 0xA8
+#define OWN_SLA_AND_W_RECEIVED 0x60
+#define TWDR_TRANSMITTED_ACK_RECEIVED 0xB8
+#define TWDR_TRANSMITTED_NACK_RECEIVED 0xC0
+#define TWDR_RECEIVED_NACK_RETURNED 0x88
+#define TWSR_MASK 0b11111000
+
 //Include libraries
 #include <avr/io.h>
 #include <stdint.h>
@@ -25,28 +33,26 @@ using namespace std;
 #include "Sensor.h"
 #include "interface.h"
 
-//Create global interrupt flag for I2C
-static bool TWIinterrupt = false;
-
 //Create global variable to hold the timer value
 static double timerValDouble = 0;
 
 //Create global value to hold the address of the game station. This variable is set when the PSoC object is initialized
 static int stationAddress = 0;
 
+//Create I2C variables
+static uint8_t sendToPlayer = 0; //Player to play next
+static uint8_t rxData = 0; //Received I2C data
+static uint8_t timerVal_LSB = 0; //Holds the LSB of the timer value to send to the main controller
+static uint8_t timerVal_MSB = 0; //Holds the MSB of the timer value to send to the main controller
+static bool playerDone = true; //Current player done
+
 //Create enum to hold the status of the program
-enum status{stopped, started, awaitingUserHit, userHitConfirmed};
+enum status{stopped, standby, started, awaitingUserHit, userHitConfirmed};
 static status gameStatus = stopped;
 
+
 int main(void)
-{
-	//Create I2C variables
-	uint8_t sendToPlayer = 0; //Player to play next
-	uint8_t rxData; //Received I2C data
-	uint8_t timerVal_LSB = 0; //Holds the LSB of the timer value to send to the main controller
-	uint8_t timerVal_MSB = 0; //Holds the MSB of the timer value to send to the main controller
-	bool playerDone = true; //Current player done
-	bool newDataReady = false; //New data has been received by I2C and needs to be evaluated
+{	
 	
 	//Create servo object
 	Servo ReleaseServo;
@@ -69,38 +75,15 @@ int main(void)
 	//Enable global interrupt
 	sei();
 	
+	
+	
 	//Main loop
     while (1) 
     {
-		//Check if new I2C data is ready to be evaluated
-		if(newDataReady == true)
-		{
-			if (rxData == 1)
-			{
-				gameStatus = started;
-			}
-			else if(rxData == 0)
-			{
-				gameStatus = stopped;
-			}
-			newDataReady = false;
-		}
-		
-		//Check if I2C HW needs to be handled
-		if (TWIinterrupt == true)
-		{		
-			//Convert double into two uint8_t variables
-			gameTimer.convertDoubleToUint8_t(timerValDouble, timerVal_MSB, timerVal_LSB);
-			
-			//Call handler function to control the I2C interface
-			mainController.PSoCHandler(timerVal_MSB, timerVal_LSB, playerDone, sendToPlayer, rxData, newDataReady);
-			TWIinterrupt = false;
-		}
-		
 		//Switch on gameStatus 
 		switch (gameStatus)
 		{
-			//The station is stopped
+			//The station is stopping. Clear variables, turn on red LED and stop timer.
 			case stopped:
 			{
 				//Clear variables
@@ -116,6 +99,16 @@ int main(void)
 				//Stop game timer
 				gameTimer.stop();		
 				
+				//Set game status to stopped, and wait for start command
+				gameStatus = standby;
+				
+				break;
+			}
+			
+			//The station is stopped and waiting for a startcommand
+			case standby:
+			{
+				//Do nothing and wait for start
 				break;
 			}
 			
@@ -205,16 +198,103 @@ int main(void)
 	
 }
 
+
+
+
 ISR(TWI_vect)
-{
-	TWIinterrupt = true;
+{	
+	// Create variable to keep track of the transmit sequence
+	static uint8_t txCount = 0;
+	
+	//Mask the TWI status from the TWI status register and switch-case on this
+	switch (TWSR & TWSR_MASK)
+	{
+		case OWN_SLA_AND_R_RECEIVED: //Transmit first byte of data
+		{
+			TWDR = (uint8_t)(((uint16_t)round(timerValDouble)) >> 8); //Transfer MSB of timervalue to data register
+			TWCR |= (1 << TWEA); //Enable acknowledge. Transmit first data byte
+			txCount++; // Increment number of bytes transmitted
+			break;
+		}
+		
+		case TWDR_TRANSMITTED_ACK_RECEIVED: //Transmit second byte of data
+		{
+			if(txCount == 1)
+			{
+				TWDR = (uint8_t)((uint16_t)round(timerValDouble)); //Transfer MSB of timervalue to data register
+				TWCR |= (1 << TWEA); //Enable acknowledge. Transmit second data byte
+				txCount++; // Increment number of bytes transmitted
+				break;
+			}
+			else if(txCount >= 2)
+			{
+				//Initialize third byte to transmit
+				if (playerDone == 1)
+				{ TWDR = (sendToPlayer | (0b10000000)); }
+				else
+				{ TWDR = sendToPlayer; }
+					
+				TWCR &= ~(1 << TWEA); //Disable acknowledge. Transmit last data byte
+				txCount = 0; //Reset TXcount after last byte has been sent
+				break;
+			}
+		}
+		
+		case TWDR_TRANSMITTED_NACK_RECEIVED: //Both bytes transmitted, enable acknowledge
+		{
+			TWCR |= (1 << TWEA); //Enable acknowledge. Go back to listening
+			break;
+		}
+		
+		case OWN_SLA_AND_W_RECEIVED: //Disable acknowledge to indicate that we only wish to receive 1 byte of data
+		{
+			TWCR &= ~(1 << TWEA); //Disable acknowledge. Receive last byte
+			break;
+		}
+		
+		case TWDR_RECEIVED_NACK_RETURNED: //1 byte received, enable acknowledge
+		{
+			//Get rxData from data register
+			rxData = TWDR;
+			
+			//Change game status according to rxData
+			if (rxData == 1)
+			{
+				gameStatus = started;
+			}
+			else if(rxData == 0)
+			{
+				gameStatus = stopped;
+			}
+			
+			TWCR |= (1 << TWEA); //Enable acknowledge. Go back to listening
+			break;
+		}
+		
+		default:
+		{
+			//If there is an error, this command returns the I2C hardware to a known state and releases the SDA and SCL lines
+			TWCR = (1 << TWEA | 1 << TWSTO | 1 << TWEN);
+			break;
+		}
+		
+	}
+	
+	//Reset interrupt flag
+	TWCR |= (1 << TWINT);
 }
+
+
+
 
 ISR(TIMER2_OVF_vect)
 {
 	//Increment timer value
 	timerValDouble += (TIME_RESOLUTION/OVERFLOW_FREQ);
 }
+
+
+
 
 ISR(TIMER0_OVF_vect)
 {

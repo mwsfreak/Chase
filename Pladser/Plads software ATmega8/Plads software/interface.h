@@ -20,9 +20,9 @@ public:
 	void RGBgreenBlink();
 	void RGBblue();
 	void RGBred();
-	void LEDsOff();
 private:
 	void init();
+	void LEDsOff();
 };
 
 
