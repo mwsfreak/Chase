@@ -93,8 +93,6 @@ int main(void)
 				timerValDouble = 0;
 				playerDone = false;
 				
-				//Turn on red RGB
-				userInterface.RGBred();
 				
 				//Stop game timer
 				gameTimer.stop();		
@@ -108,7 +106,8 @@ int main(void)
 			//The station is stopped and waiting for a startcommand
 			case standby:
 			{
-				//Do nothing and wait for start
+				//Turn on red RGB
+				userInterface.RGBred();
 				break;
 			}
 			
@@ -275,6 +274,9 @@ ISR(TWI_vect)
 		{
 			//If there is an error, this command returns the I2C hardware to a known state and releases the SDA and SCL lines
 			TWCR = (1 << TWEA | 1 << TWSTO | 1 << TWEN);
+			//Turn all LEDs off
+			PORTB &= ~(1 << PB2 | 1 << PB3 | 1 << PB4);
+			PORTB |= (1 << PB3);
 			break;
 		}
 		
