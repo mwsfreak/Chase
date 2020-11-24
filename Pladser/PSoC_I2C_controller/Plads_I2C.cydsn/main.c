@@ -7,7 +7,7 @@
 #define ADDRESS 5
 
 CY_ISR_PROTO(UART_RX_HANDLER);
-volatile char UART_rxByte;
+volatile char UART_rxByte = 0;
 
 int main(void)
 {
@@ -31,6 +31,7 @@ int main(void)
 
     uint16_t testcnt = 0;
     
+    
     startPlads(ADDRESS - 4);
     UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
     startPlads(ADDRESS - 3);
@@ -42,7 +43,7 @@ int main(void)
     startPlads(ADDRESS);
     UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
     
-    while(testcnt < 200)
+    while(testcnt < 80)
     {
 //        if(UART_rxByte != 0)
 //        {
