@@ -43,7 +43,7 @@ int main(void)
     startPlads(ADDRESS);
     UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
     
-    while(testcnt < 80)
+    while(testcnt < 500)
     {
 //        if(UART_rxByte != 0)
 //        {
@@ -82,19 +82,22 @@ int main(void)
 
                     getPladsData(ADDRESS, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
                     
-                    //Print result
+                    /*//Print result
                     snprintf(timerValBuffer, sizeof(timerValBuffer), "Timer value: %f sekunder\n\rTimer val MSB: %d\n\rTimer val LSB: %d\n\rSend to player: %d\n\r", timerVal, timerValMSB, timerValLSB, sendToPlayer);
                     UART_PutString(timerValBuffer); //Udskriver timer og sendToPlayer værdi
                     if(playerDone == true)
                         UART_PutString("playerDone: TRUE\n\r"); //Udskriver playerDone TRUE
                     else
-                        UART_PutString("playerDone: FALSE\n\r"); //Udskriver playerDone FALSE
+                        UART_PutString("playerDone: FALSE\n\r"); //Udskriver playerDone FALSE*/
                         
-                    getPladsData(ADDRESS + 2, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+                   /* getPladsData(ADDRESS + 2, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
                     getPladsData(ADDRESS + 3, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
                     getPladsData(ADDRESS + 2, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
-                    getPladsData(ADDRESS + 1, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+                    getPladsData(ADDRESS + 1, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);*/
                     
+                    snprintf(timerValBuffer, sizeof(timerValBuffer), "Send to player: %d\n\r",sendToPlayer);
+                    UART_PutString(timerValBuffer); //Udskriver timer og sendToPlayer værdi
+                        
                     testcnt++;
         
         //}

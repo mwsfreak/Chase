@@ -39,6 +39,9 @@ static double timerValDouble = 0;
 //Create global value to hold the address of the game station. This variable is set when the PSoC object is initialized
 static int stationAddress = 0;
 
+//Create temporary variable for interface status (button pressed)
+static int interfaceStatus = 0;
+
 //Create I2C variables
 static uint8_t sendToPlayer = 0; //Player to play next
 static uint8_t rxData = 0; //Received I2C data
@@ -153,13 +156,10 @@ int main(void)
 			
 			//The user has hit. The station determines if the user needs to choose a player to send to, og the next player will be choosen automaticly
 			case userHitConfirmed:
-			{				
+			{								
 				//Check if hit was before or after bonustime
 				if (timerValDouble < BONUS_TIME)
-				{
-					//Create temporary variable for interface status
-					static int interfaceStatus;
-					
+				{					
 					//Turn on blue RGB
 					userInterface.RGBblue();
 					
@@ -168,27 +168,27 @@ int main(void)
 					
 					if (interfaceStatus != 0)
 					{
-						sendToPlayer = interfaceStatus + stationAddress;
+						interfaceStatus += stationAddress;
 					}
 				} 
 				else
 				{
 					//Set send to player to the player next to you
-					sendToPlayer = stationAddress + 1;
+					interfaceStatus = stationAddress + 1;
 				}
 				
 				//If the choosen player results in a address > 8, sendToPlayer will have to be substracted with 8
-				if (sendToPlayer > 8)
+				if (interfaceStatus > 8)
 				{
-					sendToPlayer -= 8;
+					interfaceStatus -= 8;
 				}
 				
-				//Check if a valid player has been selected
-				if (sendToPlayer > 0)
+				//interfaceStatus has been processed, and will now be transfered to sendToPlayer
+				if (interfaceStatus > 0)
 				{
+					sendToPlayer = interfaceStatus;
 					playerDone = true;
-				}
-				
+				}				
 				break;
 			}
 		}
