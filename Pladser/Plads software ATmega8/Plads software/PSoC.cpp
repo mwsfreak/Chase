@@ -24,10 +24,16 @@ PSoC::PSoC()
 void PSoC::initPSoC()
 {
 	DDRC &= ~(1 << PC0 | 1 << PC1 | 1 << PC2); //Set address pins to input
-	TWCR |= (1 << TWEA | 1 << TWEN | 1 << TWIE); //Enable acknowledgement, enable Two wire interface and enable interrupt
+	
+	TWCR |= (1 << TWEA | 1 << TWEN | 1 << TWIE); //Enable acknowledgement, enable Two wire interface and enable interrupt. 
 }
 
 void PSoC::initiateAddress()
 {
-	TWAR = ((PINC & 0b00000111) << 1); //Initiate address register with values from PC0, 1 and 2. The address is in bit 7..1 therefore it needs to be bit-shifted 1 time
+	/*
+	The address from the pins is incremented by 1 to ensure that the address corresponds to the address in the PSoC.
+	PSoC addresses: 1 - 8
+	ATmega8 pins: 0 - 7
+	*/
+	TWAR = (((PINC & 0b00000111) + 1) << 1); //Initiate address register with values from PC0, 1 and 2. The address is in bit 7..1 therefore it needs to be bit-shifted 1 time
 }
