@@ -43,9 +43,10 @@ int main(void)
     UART_1_PutString("1-8: vaelg plads\r\n");
     UART_1_PutString("p: Print strafpoints\r\n");
     
+    CyDelay(1000);
     startPlads(arm1);
     startPlads(arm2);
-    CyDelay(2100);
+   
    for(;;)
     {
         
@@ -84,7 +85,12 @@ int main(void)
                 stopPlads(arm2);
                 rykArm(choose);
                 startPlads(arm2);
-                CyDelay(2100);
+            }
+            
+            if (arm2 != 5)
+            {
+                 startPlads(5);
+                 arm2 = 5;
             }
             
         }
@@ -97,12 +103,12 @@ CY_ISR(Count_Handler)
     
     if(steps >= 1) 
     {
-        if(steps == (75*move)+1) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
+        if(steps == (25*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
         {
-            off();
+           off();
             steps = 0;   
         }  
-        else
+        else 
         {
             steps=steps+1;
         }   
