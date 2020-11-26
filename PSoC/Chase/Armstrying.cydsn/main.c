@@ -1,5 +1,6 @@
 #include "Armstyring.h"
 #include "Plads.h"
+#include "chaseUART.h"
 
 CY_ISR_PROTO(ISR_UART_rx_handler);
 CY_ISR_PROTO(Count_Handler);
@@ -20,8 +21,12 @@ int main(void)
     flyttil = 0;
     move = 10;
     stack = 0;
-        //Initialize I2C
+        
+    //Initialize I2C
     initPlads();
+    
+    //Initialize UART to RPi
+    chaseUARTinit();
     
     //Create variables to receive
     float timerVal1 = 0;
@@ -63,19 +68,25 @@ int main(void)
 //            if (move != 10 && move != 0)
 //            {
 //                stopPlads(arm1);
+//                uint8_t arm1_temp = arm1;
 //                rykArm(choose);
+//                if (stack == 1) {
+//                    sendData(arm2-1, arm1_temp, timerValMSB1, timerValLSB1);
+//                    stack = 0;
+//                } else {
+//                    sendData(0, arm1_temp, timerValMSB1, timerValLSB1);
+//                }
 //                startPlads(arm1);
 //            }
 //            
 //        }
        
         getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
-           if (playerDone2 == true)
+        if (playerDone2 == true)
         {
             playerDone2 = false;
             UART_1_PutString("Kommer ind i if");
             choose = 1;
-            // overføre tid til RPI 
             flyttil = sendToPlayer2;
             
             move = checkNumbersofSteps(arm2, arm1, flyttil);
@@ -83,7 +94,16 @@ int main(void)
             {
                 UART_1_PutString("stopper plads");
                 stopPlads(arm2);
+                
+                uint8_t arm2_temp = arm2;
                 rykArm(choose);
+                if (stack == 1) {
+                    sendData(arm1-1, arm2_temp, timerValMSB2, timerValLSB2);
+                    stack = 0;
+                } else {
+                    sendData(0, arm2_temp, timerValMSB2, timerValLSB2);
+                }
+                
                 startPlads(arm2);
             }
             
@@ -103,9 +123,9 @@ CY_ISR(Count_Handler)
     
     if(steps >= 1) 
     {
-        if(steps == (25*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
+        if(steps == (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
         {
-           off();
+            off();
             steps = 0;   
         }  
         else 
