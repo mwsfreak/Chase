@@ -1,16 +1,16 @@
 #include "Armstyring.h"
 #include "Plads.h"
 
-void direction(uint8 dir)
+void direction(uint8 dir) //sætter direction af armene ved at ændre kontrolregister.
 {
    UART_1_PutString("Direction changed\r\n");
    Control_Reg_1_Write(dir);
 }
 
-void pickarm(uint8 choose)
+void pickarm(uint8 choose) //en test funktion hvor man vælger arm ved UART.
 {
-    Control_Reg_2_Write(choose);
-    armtomove = choose;
+    Control_Reg_2_Write(choose); //control register der styrer hvilken arm der er valgt
+    armtomove = choose; //har vi ikke slette den?
     char arr3[20];
     choose = choose+1;
     sprintf(arr3,"Arm %d er valgt\r\n", choose);
@@ -20,11 +20,11 @@ void pickarm(uint8 choose)
    void off(void)
 {
     UART_1_PutString("Sluk\r\n");
-    PWM_1_Stop();
+    PWM_1_Stop(); //slukker pwm der styrer motoren.
 }
 
 
-void handleByteReceived(uint8_t byteReceived)
+void handleByteReceived(uint8_t byteReceived) //Uart funktioner til test program
 {
     switch(byteReceived)
     {
@@ -95,16 +95,17 @@ void handleByteReceived(uint8_t byteReceived)
     }
  }
 
-int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil)
+int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil) //checker hvor mange steps der skal tages 
+//iforhold til de to arme og flyttil
 {
 	
-	if (Arm2 == FlytTil && (Arm2 == (Arm1 +1) || (Arm1 == 8 && Arm2 == 1)))
+	if (Arm2 == FlytTil && (Arm2 == (Arm1 +1) || (Arm1 == 8 && Arm2 == 1))) //checker om der er stack
 	{
-        Arm1 = 1;
+        Arm1 = 1; //hvis der er stack skal der kun flyttes en plads
 	}
-	else if (Arm2 == FlytTil)
+	else if (Arm2 == FlytTil) //hvis man vil sende til den anden arms plads, men ikke sikre der er stack
 	{
-		Arm1 = 10;
+		Arm1 = 10; //fejlkode
   	}
 	else
 	{
@@ -128,7 +129,7 @@ int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil)
 	return Arm1;
 }
 
-bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2)
+bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2) //checker om der er stack og retunerer en bool
 {
 	if (numberOfSteps == 1)
     {
@@ -144,14 +145,14 @@ bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2)
 }
 
 
-void printstrafpoint(void)
+void printstrafpoint(void) //test funktion
 {
     sprintf(arrr1,"Daniel Craig har %d strafpoints\r\nArne ildsted har %d strafpoints\r\nLunar aka misterlight har %d strafpoints\r\nArthurPistol har %d strafpoints\r\nAllan'balalan har %d strafpoints\r\nHansi har %d strafpoints\r\nMagnum har %d strafpoints\r\nBananatan har %d strafpoints\r\n", strafpoint1, strafpoint2, strafpoint3, strafpoint4, strafpoint5, strafpoint6, strafpoint7, strafpoint8);
     UART_1_PutString(arrr1);
    
 }
 
-void addstrafpoint(uint8 plads)
+void addstrafpoint(uint8 plads) //tilføjer stafpoint, skal ændres med RPI funktion.
 {
     if (plads == 1)
     {
