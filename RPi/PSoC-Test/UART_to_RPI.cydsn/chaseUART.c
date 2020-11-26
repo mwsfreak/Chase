@@ -17,14 +17,12 @@ void chaseUARTinit() {
     isr_uart_2_rx_StartEx(ISR_UART_2_rx_handler);
 }
 
-void sendData(uint8_t penaltyPlayer, uint8_t timePlayer, uint16_t time) {
+void sendData(uint8_t penaltyPlayer, uint8_t timePlayer, uint8_t timeMSB, uint8_t timeLSB) {
     uint8_t byteA = (penaltyPlayer << 4) + timePlayer; 
-    uint8_t byteB = (time >> 8);
-    uint8_t byteC = (time & 0x00FF);
     
     UART_2_PutChar(byteA);
-    UART_2_PutChar(byteB);
-    UART_2_PutChar(byteC);
+    UART_2_PutChar(timeMSB);
+    UART_2_PutChar(timeLSB);
 }
 
 void handleByteReceived2(uint8_t byteReceived) {

@@ -19,9 +19,9 @@ uint8_t gameRunning;
     
 void chaseUARTinit();
 
-void sendData(uint8_t penaltyPlayer, uint8_t timePlayer, uint16_t time);
+void sendData(uint8_t penaltyPlayer, uint8_t timePlayer, uint8_t timeMSB, uint8_t timeLSB);
 
-void handleByteReceived2(uint8_t byteReceived);
+void handleByteReceived2(uint8_t byteReceived1);
 
 CY_ISR_PROTO(ISR_UART_2_rx_handler);
 
