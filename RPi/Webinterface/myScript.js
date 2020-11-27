@@ -124,6 +124,7 @@ function checkState() {
             // Show section gameOn ***********************************/
             document.getElementById("gameOn").style.display = "block";
             /*********************************************************/
+            updatePenaltyHeader();
             var topbar = document.getElementById('TopBarText');
             topbar.innerHTML = 'Spillerne er:';
             sortAVGtime();
@@ -236,7 +237,7 @@ function debug() // Shift to endGame - show winner
 
 // Color index array, to compare PSoC Input
 var colorIndex = ["blue", "brown", "black", "orange", "white", "red", "green", "yellow"];
-var titles = ["Lead Engineer", ""];
+var titles = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
 
 // Player Object Class
 class playerObj {
@@ -261,13 +262,7 @@ function createPlayers() {
     // Create Cards
     createCards(gamePlayers, "Penalty"); // Create card for column Penalty
     createCards(gamePlayers, "avgTime"); // Create card for column AVG time
-    // Update Penalty header
-    var item = document.getElementById("PenaltyHeader");
-    item.parentNode.removeChild(item);
-    var penaltyHeader = document.createElement('h3');
-    penaltyHeader.innerHTML = "Max straf point: " + gamePenalty;
-    penaltyHeader.setAttribute("id", "PenaltyHeader");
-    document.getElementById("penaltyTitle").appendChild(penaltyHeader);
+    updatePenaltyHeader();
 }
 
 // Create cards "input"/"sort" with column. From a given player to a page location(AVGtime or penalty)
@@ -404,4 +399,14 @@ function sortAVGtime() {
         var looserName = document.getElementById('podium');
         looserName.innerHTML = avgTime[0].name;
     }
+}
+
+function updatePenaltyHeader() {
+    // Update Penalty header
+    var item = document.getElementById("PenaltyHeader");
+    item.parentNode.removeChild(item);
+    var penaltyHeader = document.createElement('h3');
+    penaltyHeader.innerHTML = `Max straf point: ${gamePenalty}`;
+    penaltyHeader.setAttribute("id", "PenaltyHeader");
+    document.getElementById("penaltyTitle").appendChild(penaltyHeader);
 }
