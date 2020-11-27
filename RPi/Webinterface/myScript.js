@@ -237,7 +237,7 @@ function debug() // Shift to endGame - show winner
 
 // Color index array, to compare PSoC Input
 var colorIndex = ["blue", "brown", "black", "orange", "white", "red", "green", "yellow"];
-var titles = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
+var rankings = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
 
 // Player Object Class
 class playerObj {
@@ -267,7 +267,6 @@ function createPlayers() {
 
 // Create cards "input"/"sort" with column. From a given player to a page location(AVGtime or penalty)
 function createCards(players, location) {
-
     for (i = 0; i < players.length; i++) {
         if ((i + 1) % 2 && i != 0) {
             var newline = document.createElement('div');
@@ -312,7 +311,7 @@ function CardElement(player, index) {
     body.className = 'card-body';
     var title = document.createElement('h3');
     title.className = 'card-title';
-    title.innerHTML = titles[player.index];
+    title.innerHTML += rankings[index];
     body.appendChild(title);
     var textField = document.createElement('p');
     textField.className = 'card-text';
