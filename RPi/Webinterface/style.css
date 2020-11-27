@@ -1,105 +1,145 @@
-.blue {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgba(0, 0, 255, 0.76);
-    color: white;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.brown {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgb(165, 97, 42);
-    color: white;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.black {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: black;
-    color: white;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.orange {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgba(255, 136, 0, 0.993);
-    color: white;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.white {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgba(255, 255, 255, 0.945);
-    color: rgb(0, 0, 0);
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.red {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgba(255, 0, 0, 0.918);
-    color: white;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.green {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgb(1, 138, 1);
-    color: white;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.yellow {
-    border-radius: 25px;
-    max-width: 18rem;
-    background-color: rgb(251, 255, 0);
-    color: black;
-    margin: 1%;
-    padding: 1%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.bootstrapOpacity {
-    opacity: 0.3;
-}
-
-.centered {
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.centeredTopBar {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+        .blue {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgba(0, 0, 255, 0.76);
+            color: white;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .brown {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgb(165, 97, 42);
+            color: white;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .black {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: black;
+            color: white;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .orange {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgba(255, 136, 0, 0.993);
+            color: white;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .white {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgba(255, 255, 255, 0.945);
+            color: rgb(0, 0, 0);
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .red {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgba(255, 0, 0, 0.918);
+            color: white;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .green {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgb(1, 138, 1);
+            color: white;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .yellow {
+            border-radius: 25px;
+            max-width: 18rem;
+            background-color: rgb(251, 255, 0);
+            color: black;
+            margin: 1%;
+            padding: 1%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .bootstrapOpacity {
+            opacity: 0.3;
+        }
+        
+        .centered {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .container .centeredTopBar {
+            position: absolute;
+            top: 9rem;
+            left: 50%;
+            width: 20%;
+            text-align: center;
+            transform: translate(-50%, -50%);
+        }
+        
+        .container .centeredTopBar .text {
+            font-size: 140%;
+            color: white;
+            font-family: 'Sansita Swashed', cursive;
+        }
+        
+        @media only screen and (max-width: 950px) {
+            .container .centeredTopBar .text {
+                font-size: 100%;
+                color: white;
+                font-family: 'Sansita Swashed', cursive;
+            }
+            .container .centeredTopBar {
+                position: absolute;
+                top: 7rem;
+                left: 50%;
+                width: 20%;
+                text-align: center;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        @media only screen and (max-width: 750px) {
+            .container .centeredTopBar .text {
+                font-size: 70%;
+                color: white;
+                font-family: 'Sansita Swashed', cursive;
+            }
+            .container .centeredTopBar {
+                position: absolute;
+                top: 5rem;
+                left: 50%;
+                width: 20%;
+                text-align: center;
+                transform: translate(-50%, -50%);
+            }
+        }
