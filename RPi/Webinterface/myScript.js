@@ -310,9 +310,9 @@ function CardElement(player, index) {
     // Body
     var body = document.createElement('small');
     body.className = 'card-body';
-    var title = document.createElement('h8');
+    var title = document.createElement('h3');
     title.className = 'card-title';
-    // title.innerHTML = 'Primary card title';
+    title.innerHTML = titles[player.index];
     body.appendChild(title);
     var textField = document.createElement('p');
     textField.className = 'card-text';
