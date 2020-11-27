@@ -102,11 +102,38 @@
 
     <div id="endGame" style="display: none;">
         <h2 style="text-align: center">Spillet er slut</h2>
-        <div container-fluid>
-            <div class="row justify-content-md-center">
-                <a class="btn-lg btn-success" role="button" onclick="newGame()">Start nyt Spil</a>
+
+
+        <div class="container">
+            <div container-fluid>
+                <div class="row justify-content-md-center">
+                    <a class="btn-lg btn-success" role="button" onclick="newGame()">Start nyt Spil</a>
+                </div>
+
+                <div class="row justify-content-md-center pt-5">
+                    <div class="col-6">
+                        <div class="container">
+                            <img src="/RPi/Webinterface/Gif/winner.gif" alt="Snow" style="width:100%;">
+                            <div class="centered">
+                                <h2 style="color: white;" id="podium"></h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="container">
+                            <img src="/RPi/Webinterface/Gif/Looser.gif" alt="Snow" style="width:85%;">
+                            <div class="centered">
+                                <h2 style="color: white;" id="looser"></h2>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+
     </div>
 
     <div id="output"></div>
