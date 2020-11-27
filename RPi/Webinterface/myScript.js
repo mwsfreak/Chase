@@ -270,7 +270,6 @@ function createPlayers() {
     document.getElementById("penaltyTitle").appendChild(penaltyHeader);
 }
 
-
 // Create cards "input"/"sort" with column. From a given player to a page location(AVGtime or penalty)
 function createCards(players, location) {
 
