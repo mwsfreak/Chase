@@ -187,7 +187,7 @@ function startGame() // Shift to gameOn - and Update
     gamePlayers = [];
     for (i = 0; i < input.length; i++) {
         if (input[i].type === "text") {
-            gamePlayers[gamePlayers.length] = { name: input[i].value };
+            gamePlayers[gamePlayers.length] = new playerObj(input[i].value, colorIndex[gamePlayers.length], 0, 0);
         };
     };
     // Generate start message
