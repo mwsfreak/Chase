@@ -5,12 +5,20 @@
 <head>
     <script src="myScript.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="SansitaSwashed-Medium.ttf">
     <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css">
 </head>
 
 <body onload="checkState()">
+
+    <div class="container p-3">
+        <img src="/RPi/Webinterface/TopBar.png" alt="Snow" style="width:100%;">
+        <div class="centeredTopBar">
+            <p style="font-size: 150%; color: white; font-family: 'Sansita Swashed', cursive;" id="TopBarText"></p>
+        </div>
+    </div>
+
     <div id="PlayerNames" style="display: none;">
-        <h2 style="text-align: center">Indtast spillernes navne:</h2>
         <div container-fluid>
             <form id="names">
                 <fieldset id="playerInput">
@@ -75,36 +83,33 @@
     </div>
 
     <div id="gameOn" style="display: none;">
-        <h2 style="text-align: center">Spillerne er:</h2>
 
-        <div class="container">
+        <div class="container p-3">
             <div container-fluid>
-                <div class="row justify-content-md-center">
+                <div class="row justify-content-center">
                     <a class="btn-lg btn-danger" role="button" onclick="stopGame()">Afslut Spillet</a>
                 </div>
-            </div>
-            <div class="row justify-content-around">
-                <div class="col-6">
-                    <div id="penaltyTitle">
-                        <h3 id="PenaltyHeader">test</h3>
+
+                <div class="row justify-content-center">
+                    <div class="col-6 p-3">
+                        <div id="penaltyTitle">
+                            <h2 id="PenaltyHeader">test</h2>
+                        </div>
+                        <div id="Penalty" class=></div>
                     </div>
-                    <div id="Penalty"></div>
-                </div>
 
-                <div class="col-6">
-                    <h3>Gennemsnits Tid</h3>
-                    <div id="avgTime"></div>
+                    <div class="col-6 p-3">
+                        <h2>Gennemsnits Tid</h2>
+                        <div id="avgTime"></div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div id="endGame" style="display: none;">
-        <h2 style="text-align: center">Spillet er slut</h2>
 
-
-        <div class="container">
+        <div class="container p-3">
             <div container-fluid>
                 <div class="row justify-content-md-center">
                     <a class="btn-lg btn-success" role="button" onclick="newGame()">Start nyt Spil</a>

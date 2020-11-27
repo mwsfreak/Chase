@@ -113,6 +113,8 @@ function checkState() {
             // Show section PlayerNames ******************************/
             document.getElementById("PlayerNames").style.display = "block";
             /*********************************************************/
+            var topbar = document.getElementById('TopBarText');
+            topbar.innerHTML = 'Indtast spillernes navne:';
             break;
         case "gameOn":
             // Hide section PlayerNames og endGame *******************/
@@ -122,6 +124,8 @@ function checkState() {
             // Show section gameOn ***********************************/
             document.getElementById("gameOn").style.display = "block";
             /*********************************************************/
+            var topbar = document.getElementById('TopBarText');
+            topbar.innerHTML = 'Spillerne er:';
             sortAVGtime();
             sortPenalty();
             break;
@@ -136,6 +140,8 @@ function checkState() {
             // Show section endGame *********************************/
             document.getElementById("endGame").style.display = "block";
             /********************************************************/
+            var topbar = document.getElementById('TopBarText');
+            topbar.innerHTML = 'Spillet er slut';
             break;
         default:
             // Hide section gameOn og endGame ************************/

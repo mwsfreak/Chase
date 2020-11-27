@@ -5,6 +5,8 @@
     color: white;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .brown {
@@ -14,6 +16,8 @@
     color: white;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .black {
@@ -23,6 +27,8 @@
     color: white;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .orange {
@@ -32,6 +38,8 @@
     color: black;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .purple {
@@ -41,6 +49,8 @@
     color: white;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .red {
@@ -50,6 +60,8 @@
     color: black;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .green {
@@ -59,6 +71,8 @@
     color: white;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .yellow {
@@ -68,6 +82,8 @@
     color: black;
     margin: 1%;
     padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .bootstrapOpacity {
@@ -77,6 +93,13 @@
 .centered {
     position: absolute;
     top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.centeredTopBar {
+    position: absolute;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
