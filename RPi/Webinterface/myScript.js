@@ -181,7 +181,7 @@ function startGame() // Shift to gameOn - and Update
     // Change page state
     state = "gameOn";
     checkState();
-    // Read Set Penalty
+    // Read Set Player inputs
     var input = document.getElementById("playerInput").elements;
     gamePlayers = [];
     for (i = 0; i < input.length; i++) {
@@ -198,8 +198,10 @@ function startGame() // Shift to gameOn - and Update
     };
     console.log(JSON.stringify(JSON_start));
     doSend(JSON.stringify(JSON_start));
-    sortAVGtime();
-    sortPenalty();
+    deletePenaltyList();
+    deleteavgTimeList();
+    createCards(gamePlayers, 'Penalty');
+    createCards(gamePlayers, 'avgTime');
 }
 
 function stopGame() // Shift to endGame - show winner
@@ -233,7 +235,8 @@ function debug() // Shift to endGame - show winner
  ********************************************************************/
 
 // Color index array, to compare PSoC Input
-var colorIndex = ["blue", "brown", "black", "orange", "purple", "red", "green", "yellow"];
+var colorIndex = ["blue", "brown", "black", "orange", "white", "red", "green", "yellow"];
+var titles = ["Lead Engineer", ""];
 
 // Player Object Class
 class playerObj {
@@ -296,8 +299,9 @@ function createCards(players, location) {
 function CardElement(player, index) {
     var newCard = document.createElement('div');
     // newCard.className = 'mb-3';
-    newCard.classList.add(player.color);
+    newCard.classList.add(colorIndex[index]);
     newCard.setAttribute("style", "width: 10rem");
+    newCard.setAttribute("style", "border: solid; border-color: black");
     // newCard.
     // Header text
     cardHeader = document.createElement('div');
@@ -305,7 +309,7 @@ function CardElement(player, index) {
     cardHeader.className = 'card-header';
     // cardHeader
     headertext = document.createElement('h5');
-    cardHeader.setAttribute("style", "color: white");
+    //cardHeader.setAttribute("style", "color: white");
     headertext.innerHTML = player.name;
     cardHeader.appendChild(headertext);
     newCard.appendChild(cardHeader);
@@ -314,7 +318,7 @@ function CardElement(player, index) {
     body.className = 'card-body';
     var title = document.createElement('h8');
     title.className = 'card-title';
-    title.innerHTML = 'Primary card title';
+    // title.innerHTML = 'Primary card title';
     body.appendChild(title);
     var textField = document.createElement('p');
     textField.className = 'card-text';
