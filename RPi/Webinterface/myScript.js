@@ -9,6 +9,7 @@ var wsUri = "ws://192.168.0.1:3000/";
 var gamePlayers;
 var gamePenalty;
 var state;
+var forcePage;
 
 function init() {
     output = document.getElementById("output");
@@ -172,16 +173,20 @@ function newGame() // Shift to Start screen
     };
     doSend(JSON.stringify(JSON_newGame));
     // Change page state
-    state = "PlayerNames";
-    checkState();
+    if (forcePage === true) {
+        state = "PlayerNames";
+        checkState();
+    }
 }
 
 function startGame() // Shift to gameOn - and Update
 {
     createPlayers(); // From index.html
     // Change page state
-    state = "gameOn";
-    checkState();
+    if (forcePage === true) {
+        state = "gameOn";
+        checkState();
+    }
     // Read Set Player inputs
     var input = document.getElementById("playerInput").elements;
     gamePlayers = [];
@@ -207,25 +212,29 @@ function startGame() // Shift to gameOn - and Update
 
 function stopGame() // Shift to endGame - show winner
 {
-    // Generator stop message
+    // Generate stop message
     var JSON_stop = {
         gameStatus: 2,
     };
     console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
     // Change page state
-    state = "endGame";
-    checkState();
+    if (forcePage === true) {
+        state = "endGame";
+        checkState();
+    }
     sortAVGtime();
     sortPenalty();
 }
 
-function debug() // Shift to endGame - show winner
+function debug() // Toggle debug functionality if called from console
 {
     if (document.getElementById("output").style.display == "none") {
         document.getElementById("output").style.display = "block";
+        forcePage = true;
     } else {
         document.getElementById("output").style.display = "none";
+        forcePage = false;
     }
 }
 
