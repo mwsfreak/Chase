@@ -7,7 +7,7 @@
 #define ADDRESS 5
 
 CY_ISR_PROTO(UART_RX_HANDLER);
-volatile char UART_rxByte;
+volatile char UART_rxByte = 0;
 
 int main(void)
 {
@@ -29,16 +29,92 @@ int main(void)
     //Create buffer to print rx values via UART
     char timerValBuffer[256];
 
-    while(1)
+    uint16_t testcnt = 0;
+    
+    
+    startPlads(ADDRESS - 4);
+    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
+    startPlads(ADDRESS - 3);
+    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
+    startPlads(ADDRESS - 2);
+    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
+    startPlads(ADDRESS - 1);
+    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
+    startPlads(ADDRESS);
+    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
+    
+    while(testcnt < 500)
     {
-        if(UART_rxByte != 0)
-        {
-            switch(UART_rxByte)
-            {
-                case 'r':
-                {
-                    //get data from ATmega8
+//        if(UART_rxByte != 0)
+//        {
+//            switch(UART_rxByte)
+//            {
+//                case 'r':
+//                {
+//                    //get data from ATmega8
+//                    getPladsData(ADDRESS, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+//                    
+//                    //Print result
+//                    snprintf(timerValBuffer, sizeof(timerValBuffer), "Timer value: %f sekunder\n\rTimer val MSB: %d\n\rTimer val LSB: %d\n\rSend to player: %d\n\r", timerVal, timerValMSB, timerValLSB, sendToPlayer);
+//                    UART_PutString(timerValBuffer); //Udskriver timer og sendToPlayer værdi
+//                    if(playerDone == true)
+//                        UART_PutString("playerDone: TRUE\n\r"); //Udskriver playerDone TRUE
+//                    else
+//                        UART_PutString("playerDone: FALSE\n\r"); //Udskriver playerDone FALSE
+//                   
+//                    break;
+//                }
+//                case '1':
+//                {
+//                    startPlads(ADDRESS);
+//                    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
+//                    break;
+//                }
+//                case '0':
+//                {
+//                    stopPlads(ADDRESS);
+//                    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
+//                    break;
+//                }
+//            }
+//            UART_rxByte = 0; //Reset UART_rxByte
+        
+
                     getPladsData(ADDRESS, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+                    
+                    /*//Print result
+                    snprintf(timerValBuffer, sizeof(timerValBuffer), "Timer value: %f sekunder\n\rTimer val MSB: %d\n\rTimer val LSB: %d\n\rSend to player: %d\n\r", timerVal, timerValMSB, timerValLSB, sendToPlayer);
+                    UART_PutString(timerValBuffer); //Udskriver timer og sendToPlayer værdi
+                    if(playerDone == true)
+                        UART_PutString("playerDone: TRUE\n\r"); //Udskriver playerDone TRUE
+                    else
+                        UART_PutString("playerDone: FALSE\n\r"); //Udskriver playerDone FALSE*/
+                        
+                   /* getPladsData(ADDRESS + 2, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+                    getPladsData(ADDRESS + 3, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+                    getPladsData(ADDRESS + 2, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
+                    getPladsData(ADDRESS + 1, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);*/
+                    
+                    snprintf(timerValBuffer, sizeof(timerValBuffer), "Send to player: %d\n\r",sendToPlayer);
+                    UART_PutString(timerValBuffer); //Udskriver timer og sendToPlayer værdi
+                        
+                    testcnt++;
+        
+        //}
+    }
+    
+    stopPlads(ADDRESS+1);
+    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
+    stopPlads(ADDRESS+2);
+    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
+    stopPlads(ADDRESS+3);
+    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
+    stopPlads(ADDRESS-1);
+    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
+    stopPlads(ADDRESS);
+    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
+    
+     getPladsData(ADDRESS, &timerValMSB, &timerValLSB, &timerVal, &playerDone, &sendToPlayer);
                     
                     //Print result
                     snprintf(timerValBuffer, sizeof(timerValBuffer), "Timer value: %f sekunder\n\rTimer val MSB: %d\n\rTimer val LSB: %d\n\rSend to player: %d\n\r", timerVal, timerValMSB, timerValLSB, sendToPlayer);
@@ -47,25 +123,9 @@ int main(void)
                         UART_PutString("playerDone: TRUE\n\r"); //Udskriver playerDone TRUE
                     else
                         UART_PutString("playerDone: FALSE\n\r"); //Udskriver playerDone FALSE
-                   
-                    break;
-                }
-                case '1':
-                {
-                    startPlads(ADDRESS);
-                    UART_PutString("Sendt byte: '1'\n\r"); //Udskriver byte
-                    break;
-                }
-                case '0':
-                {
-                    stopPlads(ADDRESS);
-                    UART_PutString("Sendt byte: '0'\n\r"); //Udskriver byte
-                    break;
-                }
-            }
-            UART_rxByte = 0; //Reset UART_rxByte
-        }
-    }
+    
+    while(1)
+    {}
 }
 
 CY_ISR(UART_RX_HANDLER)
