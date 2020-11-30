@@ -277,22 +277,22 @@ function createCards(players, location) {
         if (i <= 3) {
             var column = document.createElement('div');
             column.className = 'col';
-            column.appendChild(CardElement(players[i], i));
+            column.appendChild(CardElement(players[i], i, players[i].color));
             document.getElementById(location).appendChild(column);
         } else if (i > 3) {
             var column = document.createElement('div');
             column.className = 'col';
-            column.appendChild(CardElement(players[i], i));
+            column.appendChild(CardElement(players[i], i, players[i].color));
             document.getElementById(location).appendChild(column);
         }
     }
 }
 
 // Create card elements
-function CardElement(player, index) {
+function CardElement(player, index, color) {
     var newCard = document.createElement('div');
     // newCard.className = 'mb-3';
-    newCard.classList.add(colorIndex[index]);
+    newCard.classList.add(color);
     newCard.setAttribute("style", "width: 10rem");
     newCard.setAttribute("style", "border: solid; border-color: black");
     // newCard.
