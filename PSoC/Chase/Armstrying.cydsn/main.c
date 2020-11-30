@@ -16,11 +16,12 @@ int main(void)
     speed = 1;
     steps = 0;
     armtomove = 0;
-    arm1 = 1;
-    arm2 = 5;
     flyttil = 0;
     move = 10;
     stack = 0;
+    gameRunning = 0;
+    
+    uint8_t firstRun = 1;
         
     //Initialize I2C
     initPlads();
@@ -49,12 +50,19 @@ int main(void)
     UART_1_PutString("p: Print strafpoints\r\n");
     
     CyDelay(1000);
-    startPlads(arm1);
-    startPlads(arm2);
    
    for(;;)
     {
         if (gameRunning) {
+            
+            if (firstRun == 1) {
+                arm1 = 7;           //Should be 1
+                arm2 = 5;           //Should be 5
+                startPlads(arm1);
+                startPlads(arm2);
+                firstRun = 0;
+            }
+            
             led_pin_Write(1);   //Turn on status led
             
             getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
@@ -74,11 +82,13 @@ int main(void)
                     rykArm(choose);
                     if (stack == 1) {
                         sendData(arm2-1, arm1_temp, timerValMSB1, timerValLSB1);
+                        startPlads(arm2);
+                        UART_1_PutString("Arm 1: Ude af startplads. Saetter stack = 0");
                         stack = 0;
                     } else {
                         sendData(0, arm1_temp, timerValMSB1, timerValLSB1);
+                        startPlads(arm1);
                     }
-                    startPlads(arm1);
                 }
                 
             }
@@ -101,22 +111,24 @@ int main(void)
                     rykArm(choose);
                     if (stack == 1) {
                         sendData(arm1-1, arm2_temp, timerValMSB2, timerValLSB2);
+                        startPlads(arm1);
+                        UART_1_PutString("Arm 2: Ude af startplads. Saetter stack = 0");
                         stack = 0;
                     } else {
                         sendData(0, arm2_temp, timerValMSB2, timerValLSB2);
+                        startPlads(arm2);
                     }
-                    startPlads(arm2);
                 }
-                /*
-                if (arm2 != 5)
-                {
-                    startPlads(5);
-                    arm2 = 5;
-                }
-                */
             }
         } else {
-            led_pin_Write(0);   //Turn off status led
+            if (firstRun == 0) {
+                led_pin_Write(0);   //Turn off status 
+                stopPlads(arm1);
+                stopPlads(arm2);
+                off();
+                
+                firstRun = 1;
+            }
         }
     }
 }

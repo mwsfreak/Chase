@@ -21,7 +21,10 @@ void initPlads()
 
 uint8_t startPlads(uint8_t Address)
 {
-    UART_1_PutString("Plads xx startet\n");
+    
+    char buffer[100] = {0};
+    sprintf(buffer, "Plads %d startet\n", Address);
+    UART_1_PutString(buffer);
     uint8_t status = I2C_MasterSendStart(Address, 0); //Send start command with write
      if (status == I2C_MSTR_NO_ERROR) //No error
     {

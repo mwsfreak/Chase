@@ -200,6 +200,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                 
                 if (move != 10 && move != 0 && stack == 0)
                 {
+                    Control_Reg_2_Write(0);
                     arm1 = arm1+move;
                     PWM_1_Start(); 
                     
@@ -268,7 +269,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     flyttil = 0;
                     steps = 1;   
                     
-                    UART_1_PutString("Der er stack");
+                    UART_1_PutString("Der er stack\n");
                     sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
                     UART_1_PutString(arr1);
                     sprintf(arr2,"Arm2's nye plads: %d\r\n", arm2);
@@ -286,6 +287,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
 
                 if (move != 10 && move != 0 && stack == 0)
                 {
+                    Control_Reg_2_Write(1);
                     arm2 = arm2+move;
                     PWM_1_Start(); 
                     
@@ -354,7 +356,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     steps =1;
                     flyttil = 0;
                     
-                    UART_1_PutString("Der er stack");
+                    UART_1_PutString("Der er stack\n");
                     sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
                     UART_1_PutString(arr1);
                     sprintf(arr2,"Arm2's nye plads: %d\r\n", arm2);
