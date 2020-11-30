@@ -54,70 +54,67 @@ int main(void)
    
    for(;;)
     {
-        if (gameRunning) {
-            led_pin_Write(1);   //Turn on status led
+        
+//        getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
+//   
+//        if (playerDone1 == true)
+//        {
+//            
+//            choose = 0;
+//            // overføre tid til RPI 
+//            flyttil = sendToPlayer1;
+//            
+//            move = checkNumbersofSteps(arm1, arm2, flyttil);
+//            if (move != 10 && move != 0)
+//            {
+//                stopPlads(arm1);
+//                uint8_t arm1_temp = arm1;
+//                rykArm(choose);
+//                if (stack == 1) {
+//                    sendData(arm2-1, arm1_temp, timerValMSB1, timerValLSB1);
+//                    stack = 0;
+//                } else {
+//                    sendData(0, arm1_temp, timerValMSB1, timerValLSB1);
+//                }
+//                startPlads(arm1);
+//            }
+//            
+//        }
+       
+        getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
+        if (playerDone2 == true)
+        {
+            playerDone2 = false;
+            UART_1_PutString("Kommer ind i if");
+            choose = 1;
+            flyttil = sendToPlayer2;
             
-            getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
-            if (playerDone1 == true)
+            move = checkNumbersofSteps(arm2, arm1, flyttil);
+            if (move != 10 && move != 0)
             {
-                playerDone1 = false;  
-                UART_1_PutString("\nArm1: Kommer ind i if");
-                choose = 0;
-                flyttil = sendToPlayer1;
+                UART_1_PutString("stopper plads");
+                stopPlads(arm2);
                 
-                move = checkNumbersofSteps(arm1, arm2, flyttil);
-                if (move != 10 && move != 0)
-                {
-                    UART_1_PutString("\nArm1: stopper plads");
-                    stopPlads(arm1);
-                    uint8_t arm1_temp = arm1;
-                    rykArm(choose);
-                    if (stack == 1) {
-                        sendData(arm2-1, arm1_temp, timerValMSB1, timerValLSB1);
-                        stack = 0;
-                    } else {
-                        sendData(0, arm1_temp, timerValMSB1, timerValLSB1);
-                    }
-                    startPlads(arm1);
+                uint8_t arm2_temp = arm2;
+                rykArm(choose);
+                if (stack == 1) {
+                    sendData(arm1-1, arm2_temp, timerValMSB2, timerValLSB2);
+                    stack = 0;
+                } else {
+                    sendData(0, arm2_temp, timerValMSB2, timerValLSB2);
                 }
                 
+                startPlads(arm2);
             }
-           
-            getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
-            if (playerDone2 == true)
+            
+            if (arm2 != 5)
             {
-                playerDone2 = false;
-                UART_1_PutString("\nArm2: Kommer ind i if");
-                choose = 1;
-                flyttil = sendToPlayer2;
-                
-                move = checkNumbersofSteps(arm2, arm1, flyttil);
-                if (move != 10 && move != 0)
-                {
-                    UART_1_PutString("\nArm2: stopper plads");
-                    stopPlads(arm2);
-                    
-                    uint8_t arm2_temp = arm2;
-                    rykArm(choose);
-                    if (stack == 1) {
-                        sendData(arm1-1, arm2_temp, timerValMSB2, timerValLSB2);
-                        stack = 0;
-                    } else {
-                        sendData(0, arm2_temp, timerValMSB2, timerValLSB2);
-                    }
-                    startPlads(arm2);
-                }
-                /*
-                if (arm2 != 5)
-                {
-                    startPlads(5);
-                    arm2 = 5;
-                }
-                */
+                 startPlads(5);
+                 arm2 = 5;
             }
-        } else {
-            led_pin_Write(0);   //Turn off status led
+            
         }
+         
     }
 }
 
