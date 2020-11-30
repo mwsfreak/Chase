@@ -4,9 +4,3 @@ Armstrying: Armstrying.cydwr
 	cy_boot [v6.0] to [v5.90]
 
 
-Last Modified Date & Time: 11/27/2020 14:44:33
-
-Armstrying: Armstrying.cydwr
-	cy_boot [v5.90] to [v5.81]
-
-
