@@ -50,14 +50,19 @@ int main(void)
     UART_1_PutString("p: Print strafpoints\r\n");
     
     CyDelay(1000);
-   
+    
+    for(uint8_t i = 1; i <= 8; i++)
+        {
+            stopPlads(i);   
+        }
+     
    for(;;)
     {
         if (gameRunning) {
             
             if (firstRun == 1) {
-                arm1 = 7;           //Should be 1
-                arm2 = 5;           //Should be 5
+                arm1 = 5;           //Should be 1
+                arm2 = 6;           //Should be 5
                 startPlads(arm1);
                 startPlads(arm2);
                 firstRun = 0;
@@ -69,21 +74,18 @@ int main(void)
             if (playerDone1 == true)
             {
                 playerDone1 = false;  
-                UART_1_PutString("\nArm1: Kommer ind i if");
                 choose = 0;
                 flyttil = sendToPlayer1;
                 
                 move = checkNumbersofSteps(arm1, arm2, flyttil);
                 if (move != 10 && move != 0)
                 {
-                    UART_1_PutString("\nArm1: stopper plads");
                     stopPlads(arm1);
                     uint8_t arm1_temp = arm1;
                     rykArm(choose);
                     if (stack == 1) {
                         sendData(arm2-1, arm1_temp, timerValMSB1, timerValLSB1);
                         startPlads(arm2);
-                        UART_1_PutString("Arm 1: Ude af startplads. Saetter stack = 0");
                         stack = 0;
                     } else {
                         sendData(0, arm1_temp, timerValMSB1, timerValLSB1);
@@ -97,14 +99,12 @@ int main(void)
             if (playerDone2 == true)
             {
                 playerDone2 = false;
-                UART_1_PutString("\nArm2: Kommer ind i if");
                 choose = 1;
                 flyttil = sendToPlayer2;
                 
                 move = checkNumbersofSteps(arm2, arm1, flyttil);
                 if (move != 10 && move != 0)
                 {
-                    UART_1_PutString("\nArm2: stopper plads");
                     stopPlads(arm2);
                     
                     uint8_t arm2_temp = arm2;
@@ -112,7 +112,6 @@ int main(void)
                     if (stack == 1) {
                         sendData(arm1-1, arm2_temp, timerValMSB2, timerValLSB2);
                         startPlads(arm1);
-                        UART_1_PutString("Arm 2: Ude af startplads. Saetter stack = 0");
                         stack = 0;
                     } else {
                         sendData(0, arm2_temp, timerValMSB2, timerValLSB2);
@@ -122,13 +121,15 @@ int main(void)
             }
         } else {
             if (firstRun == 0) {
-                led_pin_Write(0);   //Turn off status 
-                stopPlads(arm1);
-                stopPlads(arm2);
+                led_pin_Write(0);   //Turn off status
                 off();
-                
                 firstRun = 1;
             }
+            
+            for(uint8_t i = 1; i <= 8; i++)
+                {
+                    stopPlads(i);   
+                }
         }
     }
 }

@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#define I2C_DELAY 50
+
 void initPlads()
 {
     I2C_Start(); //Start I2C communication
@@ -21,12 +23,10 @@ void initPlads()
 
 uint8_t startPlads(uint8_t Address)
 {
+    I2C_MasterClearStatus();
     
-    char buffer[100] = {0};
-    sprintf(buffer, "Plads %d startet\n", Address);
-    UART_1_PutString(buffer);
     uint8_t status = I2C_MasterSendStart(Address, 0); //Send start command with write
-     if (status == I2C_MSTR_NO_ERROR) //No error
+    if (status == I2C_MSTR_NO_ERROR) //No error
     {
         I2C_MasterWriteByte(0x01); //Sending 0b00000001
         I2C_MasterSendStop(); //Stop sending
@@ -35,12 +35,16 @@ uint8_t startPlads(uint8_t Address)
     {
         I2C_MasterSendStop(); //Stop sending
     }      
+    
+    CyDelay(I2C_DELAY);
+    
     return status;
 }
 
 uint8_t stopPlads(uint8_t Address)
 {
-    UART_1_PutString("Plads xx Stoppet\n");
+    I2C_MasterClearStatus();
+    
     uint8_t status = I2C_MasterSendStart(Address, 0); //Send start command with write
     if (status == I2C_MSTR_NO_ERROR) //No error
     {
@@ -50,7 +54,10 @@ uint8_t stopPlads(uint8_t Address)
     else //Error in communication
     {
         I2C_MasterSendStop(); //Stop sending
-    }  
+    } 
+    
+    CyDelay(I2C_DELAY);
+    
     return status;
 }
 
@@ -63,6 +70,8 @@ float timeConvert(uint8_t MSB, uint8_t LSB)
 
 uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB, float* timerVal, bool* playerDone, uint8_t* sendToPlayer)
 {
+    I2C_MasterClearStatus();
+    
     uint8_t rxData[3]; //Create array to contain rxData
     
     //Receive data
@@ -92,6 +101,8 @@ uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB
     {
         I2C_MasterSendStop(); //Stop receiving
     }
+    
+    CyDelay(I2C_DELAY);
     
     return status;
 }
