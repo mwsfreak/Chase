@@ -245,7 +245,7 @@ function debug() // Toggle debug functionality if called from console
  ********************************************************************/
 
 // Color index array, to compare PSoC Input
-var colorIndex = ["blue", "brown", "black", "orange", "white", "red", "green", "yellow"];
+var colorIndex = ["yellow", "blue", "black", "orange", "white", "brown", "green", "red"];
 var rankings = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
 
 // Player Object Class
