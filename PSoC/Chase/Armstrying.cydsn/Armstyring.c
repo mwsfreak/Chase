@@ -1,6 +1,21 @@
 #include "Armstyring.h"
 #include "Plads.h"
 
+
+void chaseArmstyringinit()
+{
+    UART_1_Start();
+    choose, choose1 = 0;
+    speed = 1;
+    steps = 0;
+    armtomove = 0;
+    flyttil = 0;
+    move = 10;
+    stack = 0;
+
+//    isr_uart_rx_StartEx(ISR_UART_rx_handler);
+    isr_1_StartEx(Count_Handler);
+}
 void direction(uint8 dir) //sætter direction af armene ved at ændre kontrolregister.
 {
    UART_1_PutString("Direction changed\r\n");
@@ -24,76 +39,73 @@ void pickarm(uint8 choose) //en test funktion hvor man vælger arm ved UART.
 }
 
 
-void handleByteReceived(uint8_t byteReceived) //Uart funktioner til test program
-{
-    switch(byteReceived)
-    {
-        case 'e' :
-         {
-            pickarm(0); // vælger arm 1
-            choose = 0;
-         }
-        break;
-        case 'r' :
-         {
-            pickarm(1); // vælger arm 2
-            choose = 1;
-         }
-        break;
-        case '1' :
-         {
-            startPlads(1);
-            arm2 = 1;
-         }
-        break;
-        case '2' :
-         {
-            startPlads(2);
-            arm2 = 2;
-         }
-        break;
-        case '3' :
-         {
-            startPlads(3);
-            arm2 = 3;
-         }
-        break;
-        case '4' :
-         {
-            startPlads(4);
-            arm2 = 4;
-         }
-        break;
-        case '5' :
-         {
-            startPlads(5);
-            arm2 = 5;
-         }
-        break;
-        case '6' :
-         {
-            startPlads(6);
-            arm2 = 6;
-         }
-        break;
-        case '7' :
-         {
-            startPlads(7);
-            arm2 = 7;
-         }
-        break;
-        case '8' :
-        {
-            startPlads(8);
-            arm2 = 8;
-        }
-        break;
-        case 'p' :
-         {
-            printstrafpoint();
-         }        
-    }
- }
+//void handleByteReceived(uint8_t byteReceived) //Uart funktioner til test program
+//{
+//    switch(byteReceived)
+//    {
+//        case 'e' :
+//         {
+//            pickarm(0); // vælger arm 1
+//            choose = 0;
+//         }
+//        break;
+//        case 'r' :
+//         {
+//            pickarm(1); // vælger arm 2
+//            choose = 1;
+//         }
+//        break;
+//        case '1' :
+//         {
+//            startPlads(1);
+//            arm2 = 1;
+//         }
+//        break;
+//        case '2' :
+//         {
+//            startPlads(2);
+//            arm2 = 2;
+//         }
+//        break;
+//        case '3' :
+//         {
+//            startPlads(3);
+//            arm2 = 3;
+//         }
+//        break;
+//        case '4' :
+//         {
+//            startPlads(4);
+//            arm2 = 4;
+//         }
+//        break;
+//        case '5' :
+//         {
+//            startPlads(5);
+//            arm2 = 5;
+//         }
+//        break;
+//        case '6' :
+//         {
+//            startPlads(6);
+//            arm2 = 6;
+//         }
+//        break;
+//        case '7' :
+//         {
+//            startPlads(7);
+//            arm2 = 7;
+//         }
+//        break;
+//        case '8' :
+//        {
+//            startPlads(8);
+//            arm2 = 8;
+//        }
+//        break;
+//           
+//    }
+// }
 
 int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil) //checker hvor mange steps der skal tages 
 //iforhold til de to arme og flyttil
@@ -144,50 +156,6 @@ bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2) //checker om der er st
     	return false;
 }
 
-
-void printstrafpoint(void) //test funktion
-{
-    sprintf(arrr1,"Daniel Craig har %d strafpoints\r\nArne ildsted har %d strafpoints\r\nLunar aka misterlight har %d strafpoints\r\nArthurPistol har %d strafpoints\r\nAllan'balalan har %d strafpoints\r\nHansi har %d strafpoints\r\nMagnum har %d strafpoints\r\nBananatan har %d strafpoints\r\n", strafpoint1, strafpoint2, strafpoint3, strafpoint4, strafpoint5, strafpoint6, strafpoint7, strafpoint8);
-    UART_1_PutString(arrr1);
-   
-}
-
-void addstrafpoint(uint8 plads) //tilføjer stafpoint, skal ændres med RPI funktion.
-{
-    if (plads == 1)
-    {
-        strafpoint1++;
-    }
-    else if (plads == 2)
-    {
-        strafpoint2++;
-    }
-    else if (plads == 3)
-    {
-        strafpoint3++;
-    }
-    else if (plads == 4)
-    {
-        strafpoint4++;
-    }
-    else if (plads == 5)
-    {
-        strafpoint5++;
-    }
-    else if (plads == 6)
-    {
-        strafpoint6++;
-    }
-    else if (plads == 7)
-    {
-        strafpoint7++;
-    }
-    else if (plads == 8)
-    {
-        strafpoint8++;
-    }
-}
-
 void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen. 
 {  
  if(choose == 0)
@@ -233,7 +201,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                 
              if (move != 10 && move != 0 && stack == 1)
                 {
-                    addstrafpoint(arm2);
+                    
                     direction(0);
                     
                     Control_Reg_2_Write(1); //nødt til at have 2 seperate PWM signaler?
@@ -319,7 +287,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                 }
                if (move != 10 && move != 0 && stack == 1)
                 {
-                   addstrafpoint(arm1);
+                   
                    direction(0);
                     
                    Control_Reg_2_Write(0);
@@ -367,4 +335,34 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
         }
         
 }
-        
+    
+CY_ISR(Count_Handler)
+{ 
+    
+    if(steps >= 1) 
+    {
+        if(steps == (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
+        {
+            off();
+            steps = 0;   
+        }  
+        else 
+        {
+            steps=steps+1;
+        }   
+    }
+    PWM_1_ReadStatusRegister(); 
+}
+
+//CY_ISR(ISR_UART_rx_handler)
+//{
+//    uint8_t bytesToRead = UART_1_GetRxBufferSize();
+//    while (bytesToRead > 0)
+//    {
+//        uint8_t byteReceived = UART_1_ReadRxData();
+//        UART_1_WriteTxData(byteReceived); // echo back
+//        
+//        handleByteReceived(byteReceived);
+//        bytesToRead--;
+//    }
+//}

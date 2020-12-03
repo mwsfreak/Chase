@@ -18,7 +18,20 @@
 
 void initPlads()
 {
-    I2C_Start(); //Start I2C communication
+I2C_Start(); //Start I2C communication
+
+   //Create variables to receive
+timerVal1 = 0;
+timerValMSB1;
+timerValLSB1;
+sendToPlayer1 = 0;
+playerDone1 = false;
+
+timerVal2 = 0;
+timerValMSB2;
+timerValLSB2;
+sendToPlayer2 = 0;
+playerDone2 = false;
 }
 
 uint8_t startPlads(uint8_t Address)

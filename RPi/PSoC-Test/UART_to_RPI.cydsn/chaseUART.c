@@ -15,6 +15,7 @@
 void chaseUARTinit() {
     UART_2_Start();
     isr_uart_2_rx_StartEx(ISR_UART_2_rx_handler);
+    gameRunning = 0; 
 }
 
 void sendData(uint8_t penaltyPlayer, uint8_t timePlayer, uint8_t timeMSB, uint8_t timeLSB) {
