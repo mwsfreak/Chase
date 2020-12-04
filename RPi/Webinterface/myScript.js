@@ -1,15 +1,30 @@
+// Websocket Address
+var wsUri = "ws://192.168.0.1:3000/";
+
+// Game variables
+var gamePlayers;
+var gamePenalty;
+var state;
+
+// Color index array, to compare PSoC Input
+var colorIndex = ["blue", "brown", "black", "orange", "white", "red", "green", "yellow"];
+var rankings = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
+
+// Player Object Class
+class playerObj {
+    constructor(setName, color, penalty = 0, setAvgTime = 0) {
+        this.name = setName; // Name from Start Web Page
+        this.color = color; // Color
+        this.penalty = penalty; // Penalty Variable
+        this.avgTime = setAvgTime; // AVG time Variable
+    }
+}
+
 /********************************************************************
  *
  *                       WEBSOCKET SECTION
  *
  ********************************************************************/
-
-var wsUri = "ws://192.168.0.1:3000/";
-// Game variables
-var gamePlayers;
-var gamePenalty;
-var state;
-var forcePage;
 
 function init() {
     output = document.getElementById("output");
@@ -18,19 +33,19 @@ function init() {
 // Declare Websockets funktions
 function testWebSocket() {
     websocket = new WebSocket(wsUri);
-    websocket.onopen = function(evt) { onOpen(evt) };
-    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onopen = function() { onOpen() };
+    websocket.onclose = function() { onClose() };
     websocket.onmessage = function(evt) { onMessage(evt) };
     websocket.onerror = function(evt) { onError(evt) };
 }
 // Websocket connected
-function onOpen(evt) {
+function onOpen() {
     writeToScreen("The Game is Online and ready to play..!");
     doSend("User connected from webinterface");
 }
 // Websocket disconnected
-function onClose(evt) {
-    writeToScreen("The Game connection is lost, too bad :-(");
+function onClose() {
+    writeToScreen("User has left the interface");
 }
 // Message from Main program
 function onMessage(evt) {
@@ -78,7 +93,7 @@ function doSend(message) {
 function writeToScreen(message) {
     var pre = document.createElement("h1"); // Create element
     pre.style.wordWrap = "break-word"; // Wrap text to fit on page
-    pre.innerHTML = message; // Pu recieved message in inner HTML
+    pre.innerHTML = message; // Put recieved message in inner HTML
     document.getElementById("output").appendChild(pre); // Apped to "output" on page
     console.log(message);
 }
@@ -173,28 +188,16 @@ function newGame() // Shift to Start screen
     };
     doSend(JSON.stringify(JSON_newGame));
     // Change page state
-    if (forcePage === true) {
-        state = "PlayerNames";
-        checkState();
-    }
+    state = "PlayerNames";
+    checkState();
 }
 
 function startGame() // Shift to gameOn - and Update
 {
     createPlayers(); // From index.html
     // Change page state
-    if (forcePage === true) {
-        state = "gameOn";
-        checkState();
-    }
-    // Read Set Player inputs
-    var input = document.getElementById("playerInput").elements;
-    gamePlayers = [];
-    for (i = 0; i < input.length; i++) {
-        if (input[i].type === "text") {
-            gamePlayers[gamePlayers.length] = new playerObj(input[i].value, colorIndex[gamePlayers.length], 0, 0);
-        };
-    };
+    state = "gameOn";
+    checkState();
     // Generate start message
     var JSON_start = {
         gameStatus: 1,
@@ -202,39 +205,29 @@ function startGame() // Shift to gameOn - and Update
         gameMode: 1,
         players: gamePlayers
     };
-    console.log(JSON.stringify(JSON_start));
     doSend(JSON.stringify(JSON_start));
-    deletePenaltyList();
-    deleteavgTimeList();
-    createCards(gamePlayers, 'Penalty');
-    createCards(gamePlayers, 'avgTime');
 }
 
 function stopGame() // Shift to endGame - show winner
 {
-    // Generate stop message
+    // Generator stop message
     var JSON_stop = {
         gameStatus: 2,
     };
-    console.log(JSON.stringify(JSON_stop));
     doSend(JSON.stringify(JSON_stop));
     // Change page state
-    if (forcePage === true) {
-        state = "endGame";
-        checkState();
-    }
+    state = "endGame";
+    checkState();
     sortAVGtime();
     sortPenalty();
 }
 
-function debug() // Toggle debug functionality if called from console
+function debug() // Shift to endGame - show winner
 {
     if (document.getElementById("output").style.display == "none") {
         document.getElementById("output").style.display = "block";
-        forcePage = true;
     } else {
         document.getElementById("output").style.display = "none";
-        forcePage = false;
     }
 }
 
@@ -244,28 +237,15 @@ function debug() // Toggle debug functionality if called from console
  *
  ********************************************************************/
 
-// Color index array, to compare PSoC Input
-var colorIndex = ["yellow", "blue", "black", "orange", "white", "brown", "green", "red"];
-var rankings = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
-
-// Player Object Class
-class playerObj {
-    constructor(setName, color, penalty = 0, setAvgTime = 0) {
-        this.name = setName; // Name from Start Web Page
-        this.color = color; // Color
-        this.penalty = penalty; // Penalty Variable
-        this.avgTime = setAvgTime; // AVG time Variable
-    }
-}
-
+// Called from startGame() function only.
 function createPlayers() {
+    // Retrieve Player Names and max penalty
     var input = document.getElementById("playerInput").elements;
-    var counter = 0;
     gamePlayers = [];
     for (i = 0; i < input.length; i++) {
         if (input[i].type === "text") {
-            gamePlayers[counter] = new playerObj(input[i].value, colorIndex[counter], 0, 0);
-        }
+            gamePlayers[gamePlayers.length] = new playerObj(input[i].value, colorIndex[gamePlayers.length], 0, 0);
+        };
     }
     gamePenalty = document.getElementById("maxPenalty").value;
     // Create Cards
@@ -274,72 +254,55 @@ function createPlayers() {
     updatePenaltyHeader();
 }
 
-// Create cards "input"/"sort" with column. From a given player to a page location(AVGtime or penalty)
+// Create cards from sorted list, with players added to a page location (AVGtime/penalty)
 function createCards(players, location) {
+    var column = document.createElement('div');
+    column.className = 'col';
+    console.log("ALLAN: players: " + players.length);
     for (i = 0; i < players.length; i++) {
-        if ((i + 1) % 2 && i != 0) {
-            var newline = document.createElement('div');
-            newline.className = 'w-100';
-            document.getElementById(location).appendChild(newline);
-        }
-
-        if (i <= 3) {
-            var column = document.createElement('div');
-            column.className = 'col';
-            column.appendChild(CardElement(players[i], i, players[i].color));
-            document.getElementById(location).appendChild(column);
-        } else if (i > 3) {
-            var column = document.createElement('div');
-            column.className = 'col';
-            column.appendChild(CardElement(players[i], i, players[i].color));
-            document.getElementById(location).appendChild(column);
-        }
+        column.appendChild(CardElement(players[i], (location == "avgTime" ? i : 7 - i)));
+        document.getElementById(location).appendChild(column);
     }
 }
 
 // Create card elements
-function CardElement(player, index, color) {
+function CardElement(player, index) {
+    // newCard
     var newCard = document.createElement('div');
-    // newCard.className = 'mb-3';
-    newCard.classList.add(color);
+    newCard.classList.add(player.color);
     newCard.setAttribute("style", "width: 10rem");
     newCard.setAttribute("style", "border: solid; border-color: black");
-    // newCard.
-    // Header text
-    cardHeader = document.createElement('div');
-    cardHeader.setAttribute("id", "bootstrapOpacity");
-    cardHeader.className = 'card-header';
     // cardHeader
+    cardHeader = document.createElement('div');
+    cardHeader.className = 'card-header';
+    // Header text
     headertext = document.createElement('h5');
-    //cardHeader.setAttribute("style", "color: white");
     headertext.innerHTML = player.name;
     cardHeader.appendChild(headertext);
     newCard.appendChild(cardHeader);
     // Body
     var body = document.createElement('small');
     body.className = 'card-body';
+    // Body text
     var title = document.createElement('h3');
     title.className = 'card-title';
     title.innerHTML += rankings[index];
     body.appendChild(title);
-    var textField = document.createElement('p');
-    textField.className = 'card-text';
-
+    // Create status section
+    var statusSection = document.createElement('div');
+    // Penalty section
     var statusPenalty = document.createElement('button');
     statusPenalty.className = 'btn btn-danger btn-sm btn-block';
-    statusPenalty.setAttribute('id', index);
     statusPenalty.innerHTML = 'Antal straf point: ' + player.penalty;
-    statusPenalty.setAttribute("onclick", "updatePenalty(this)");
-    textField.appendChild(statusPenalty);
-
+    statusSection.appendChild(statusPenalty);
+    // AVGtime section
     var avgTime = document.createElement('button');
     avgTime.className = 'btn btn-success btn-sm btn-block';
-    avgTime.setAttribute('id', index);
     avgTime.innerHTML = 'Gennemsnits tid: ' + player.avgTime;
-    avgTime.setAttribute("onclick", "updateAvgTime(this)");
-    textField.appendChild(avgTime);
+    statusSection.appendChild(avgTime);
 
-    body.appendChild(textField);
+    body.appendChild(statusSection);
+
     newCard.appendChild(body);
 
     return newCard;
