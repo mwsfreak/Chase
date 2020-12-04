@@ -8,10 +8,10 @@ int main(void)
 {
     CyGlobalIntEnable; /* Enable global interrupts. */
     
-    uint8_t firstRun = 1;
+    uint8_t firstRun = 1; // Sættes som flag, og sikre at start pladserne kun startes en gang
     
     //Initialize armstyring 
-    chaseArmstyringinit();
+    chaseArmstyringInit();
     
     //Initialize I2C
     initPlads();
@@ -20,9 +20,9 @@ int main(void)
     chaseUARTinit();
     
     
-    CyDelay(1000);
+    CyDelay(1000); // Giver tid til at I2C kan starte op
     
-    for(uint8_t i = 1; i <= 8; i++)
+    for(uint8_t i = 1; i <= 8; i++) // Slukker alle pladser
         {
             stopPlads(i);   
         }
@@ -39,16 +39,20 @@ int main(void)
                 firstRun = 0;
             }
             
-//            led_pin_Write(1);   //Turn on status led
+           led_pin_Write(1);   //Turn on status led
             
+            // Kommunikation med arm1 og den plads den er på, smat vidresending af information til RPI
+        
+            // I2C kommunikation med plads fra arm 1, modtager 5 parameter
             getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
-            if (playerDone1 == true)
-            {
-                playerDone1 = false;  
-                choose = 0;
-                flyttil = sendToPlayer1;
+            if (playerDone1 == true)     // Først tjekkes om playerDone1 er sat til 1, da dette betyder spilleren er færdig
+            {                            // hvis dette ikke er tilfældet gøres intet
+               
+                playerDone1 = false;     // Denne sættes lav, så den ikke sender 2 gange, og stopper forkerte pladser
+                choose = 0;              // Valg af arm
+                flyttil = sendToPlayer1; // Giver den valgt plads videre til flyttil
                 
-                move = checkNumbersofSteps(arm1, arm2, flyttil);
+                move = checkNumbersofSteps(arm1, arm2, flyttil); // Giver move antalet af pladser der skal rykkes
                 if (move != 10 && move != 0)
                 {
                     stopPlads(arm1);
@@ -66,6 +70,7 @@ int main(void)
                 
             }
            
+            // Kommunikation med arm2 og den plads den er på, smat vidresending af information til RPI
             getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
             if (playerDone2 == true)
             {
@@ -90,7 +95,7 @@ int main(void)
                     }
                 }
             }
-        } else {
+        } else { // Slukker for spillet når gamerunning er false
             if (firstRun == 0) {
                 led_pin_Write(0);   //Turn off status
                 off();

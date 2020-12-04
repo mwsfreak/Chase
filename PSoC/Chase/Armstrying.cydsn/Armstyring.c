@@ -2,7 +2,7 @@
 #include "Plads.h"
 
 
-void chaseArmstyringinit()
+void chaseArmstyringInit()
 {
     UART_1_Start();
     choose, choose1 = 0;
@@ -12,32 +12,30 @@ void chaseArmstyringinit()
     flyttil = 0;
     move = 10;
     stack = 0;
-
 //    isr_uart_rx_StartEx(ISR_UART_rx_handler);
-    isr_1_StartEx(Count_Handler);
+    isr_1_StartEx(Count_Handler); 
 }
 void direction(uint8 dir) //sætter direction af armene ved at ændre kontrolregister.
 {
    UART_1_PutString("Direction changed\r\n");
-   Control_Reg_1_Write(dir);
+   Control_Reg_1_Write(dir); // Ændre retning alt efter om dir er 1 eller 0 
 }
 
-void pickarm(uint8 choose) //en test funktion hvor man vælger arm ved UART.
-{
-    Control_Reg_2_Write(choose); //control register der styrer hvilken arm der er valgt
-    armtomove = choose; //har vi ikke slette den?
-    char arr3[20];
-    choose = choose+1;
-    sprintf(arr3,"Arm %d er valgt\r\n", choose);
-    UART_1_PutString(arr3);
-}
-
-   void off(void)
+void off(void)
 {
     UART_1_PutString("Sluk\r\n");
     PWM_1_Stop(); //slukker pwm der styrer motoren.
 }
 
+void on(void)
+{
+    PWM_1_Start();   
+}
+
+void chooseArm(uint choose)
+{
+   Control_Reg_2_Write(choose);
+}
 
 //void handleByteReceived(uint8_t byteReceived) //Uart funktioner til test program
 //{
@@ -107,72 +105,77 @@ void pickarm(uint8 choose) //en test funktion hvor man vælger arm ved UART.
 //    }
 // }
 
-int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil) //checker hvor mange steps der skal tages 
-//iforhold til de to arme og flyttil
-{
-	
+
+// Ikke nødvendigt at tjekke efter om FlytTil at mindre ned 1 eller større end 8, da det kun er tal her imellem
+// der kan sendes af plads
+int8 checkNumbersofSteps(int8 Arm1, int8 Arm2, int8 FlytTil) //checker hvor mange steps der skal tages  
+{                                                            //iforhold til de to arme og flyttil                
+	uint8 numberOfSteps = 0;
 	if (Arm2 == FlytTil && (Arm2 == (Arm1 +1) || (Arm1 == 8 && Arm2 == 1))) //checker om der er stack
 	{
-        Arm1 = 1; //hvis der er stack skal der kun flyttes en plads
+        numberOfSteps = 1; //hvis der er stack skal der kun flyttes en plads
+//        stack = 1; Skal testes
 	}
-	else if (Arm2 == FlytTil) //hvis man vil sende til den anden arms plads, men ikke sikre der er stack
+	else if (Arm2 == FlytTil) //hvis man vil sende til den anden arms plads, men der ikke er stack
 	{
-		Arm1 = 10; //fejlkode
+		numberOfSteps = 10; //fejlkode
   	}
 	else
 	{
-		if (Arm1 > Arm2 && Arm2 > FlytTil)
+        // Logik der sikre at de 2 arme ikke støder ind i hinanden. Tager ud gangspunkt i at der er 4 mulig
+        // kombinationer når en arm skal flytte, når der tages forhold til hvor den anden arm er, og hvor 
+        // der flyttes til
+		if (Arm1 > Arm2 && Arm2 > FlytTil) // Tilfælde 1 
 		{
-			Arm1 = (FlytTil + 8) - Arm1;
+			numberOfSteps = (FlytTil + 8) - Arm1;
 		}
-		else if (Arm1 > Arm2 && Arm2 < FlytTil)
+		else if (Arm1 > Arm2 && Arm2 < FlytTil) // Tilfælde 2 
 		{
-			Arm1 = -(Arm1 - FlytTil);
+			numberOfSteps = -(Arm1 - FlytTil);
 		}
-		else if (Arm1 < Arm2 && Arm2 > FlytTil)
+		else if (Arm1 < Arm2 && Arm2 > FlytTil) // Tilfælde 3 
 		{
-			Arm1 = -(Arm1 - FlytTil);
+			numberOfSteps = -(Arm1 - FlytTil);
 		}
-		else if (Arm1 < Arm2 && Arm2 < FlytTil)
+		else if (Arm1 < Arm2 && Arm2 < FlytTil) // Tilfælde 4
 		{
-			Arm1 = -(Arm1 + 8) + FlytTil;
+			numberOfSteps = -(Arm1 + 8) + FlytTil;
 		}
 	}
-	return Arm1;
+	return numberOfSteps;
 }
 
 bool checkStack(int8 numberOfSteps, int8 Arm1, int8 Arm2) //checker om der er stack og retunerer en bool
 {
-	if (numberOfSteps == 1)
+	if (numberOfSteps == 1) // Da det kun er tilfælde hvor numberOfSteps er 1 der kan være stack tjekkes dette først
     {
-		if(Arm2 == (Arm1+1))
-            return true;
-        
-        else if(Arm1 == 8 && Arm2 == 1)
+		if(Arm2 == (Arm1+1)){ // Hvis NumberOfSteps er 1, skal pladsen til venstre være 
+            return true;     // den anden plads for at der kommer stack, dette tjekeks her
+        }
+        else if(Arm1 == 8 && Arm2 == 1){ // Denne tjekker særtilfældet hvor den krydser fra plads 8 til plads 1
         return true;
-        
+        }
     }       
-
-    	return false;
+    	return false; // Hvis ingen af overstående tilfælder er sande, returneres falsk altså ingen stack. 
 }
 
 void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen. 
 {  
- if(choose == 0)
+ if(choose == 0) // Da choose bestemmer hvilke arm der arbejdes med, tjekkes dette først
         {
-            if (flyttil != 0 && flyttil != arm1) //flyt til kan være over 8?
+            if (flyttil != 0 && flyttil != arm1) //Sikre at det input der er givet er nyt
             {
-                //move = checkNumbersofSteps(arm1, arm2, flyttil);
-                stack = checkStack(move,arm1,arm2);
-                
-                
-                if (move != 10 && move != 0 && stack == 0)
+                stack = checkStack(move,arm1,arm2); // Tjekker for stack, og sætter stack til 1 eller 0
+
+                if (move != 10 && move != 0 && stack == 0) // Tjekker om inputtet er vaild og om der er stack
                 {
-                    Control_Reg_2_Write(0);
-                    arm1 = arm1+move;
-                    PWM_1_Start(); 
+                    chooseArm(0); // Vælger arm 1
+                    arm1 = arm1+move; // Finder armens nye "plads"
+                    on(); // Tænder PWM
                     
-                    if (arm1 > 8)
+                    // Logik der sikre at den flytter til den rigtige plads, så hvis den kommer over 8 eller under 0
+                    // tages der forhold til det, plus den får den til at køre den rigtige vej
+                    if (arm1 > 8) 
                     {
                         arm1 = arm1-8;
                     }
@@ -191,25 +194,25 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                         move = move*-1;
                     }
             
-                    flyttil = 0;
-                    steps = 1;
+                    flyttil = 0; // nulstiller flyttil, så den ikke dobbelt flytter
+                    steps = 1; // Gør det muligt at tælle steps
                     sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
                     UART_1_PutString(arr1);
                     sprintf(arr2,"Flytter %d pladser\r\n", move);
                     UART_1_PutString(arr2);
                 }
                 
-             if (move != 10 && move != 0 && stack == 1)
+             if (move != 10 && move != 0 && stack == 1) // Dette er hvis stack er sat
                 {
                     
-                    direction(0);
+                    direction(0); // Skal altid rykke mod venstre 
                     
-                    Control_Reg_2_Write(1); //nødt til at have 2 seperate PWM signaler?
+                    chooseArm(1); // Vælger først armen der bliver stacket på, så den rykker først og sikre de ikke kolidere
                     
-                    arm2 = arm2+move;
-                    PWM_1_Start(); 
+                    arm2 = arm2+move;  
+                    on(); // Tænder PWM 
                     
-                    if (arm2 > 8)
+                    if (arm2 > 8) 
                     {
                         arm2 = arm2-8;
                     }
@@ -219,12 +222,12 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     }
                     steps =1;
                     
-                    CyDelay(1000);
+                    CyDelay(1000); // Venter 1 sek på at armen er færdig med at rykke, og starter så med at rykke den anden arm
                                        
-                    Control_Reg_2_Write(0);
+                    chooseArm(0); // Vælger så den anden arm, og gør det samme
                     
                     arm1 = arm1+move;
-                    PWM_1_Start(); 
+                    on();
                     
                     if (arm1 > 8)
                     {
@@ -246,7 +249,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
             }
         }
                 
-        else if (choose == 1)
+        else if (choose == 1) // Samme som overnævnte bare med den anden arm
         {
             if(flyttil != 0 && flyttil != arm2)
             {       
@@ -255,9 +258,9 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
 
                 if (move != 10 && move != 0 && stack == 0)
                 {
-                    Control_Reg_2_Write(1);
+                    chooseArm(1);
                     arm2 = arm2+move;
-                    PWM_1_Start(); 
+                    on();
                     
                     if (arm2 > 8)
                     {
@@ -290,10 +293,10 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                    
                    direction(0);
                     
-                   Control_Reg_2_Write(0);
+                   chooseArm(0);
                     
                     arm1 = arm1+move;
-                    PWM_1_Start(); 
+                    on();
                     
                     if (arm1 > 8)
                     {
@@ -308,10 +311,10 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     
                     CyDelay(1000);
                                         
-                    Control_Reg_2_Write(1); //nødt til at have 2 seperate PWM signaler?
+                    chooseArm(1); //nødt til at have 2 seperate PWM signaler?
                     
                     arm2 = arm2+move;
-                    PWM_1_Start(); 
+                    on();
                     
                     if (arm2 > 8)
                     {
@@ -336,22 +339,23 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
         
 }
     
-CY_ISR(Count_Handler)
+CY_ISR(Count_Handler) // Den funktion der holder styr på hvor mange steps der er taget
 { 
     
-    if(steps >= 1) 
+    if(steps >= 1) // Startes hvis steps bliver 1 eller der over
     {
-        if(steps == (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
-        {
-            off();
-            steps = 0;   
+        if(steps == (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte minus 2,
+        {                        // da dette er en systematisk fejl
+            
+            off();               // Slukekr PWM 
+            steps = 0;           // Og sikre at den ikke tæller mere
         }  
         else 
         {
-            steps=steps+1;
+            steps=steps+1;       // Tæller steps op 
         }   
     }
-    PWM_1_ReadStatusRegister(); 
+    PWM_1_ReadStatusRegister(); // Læser på interrupt og clear det
 }
 
 //CY_ISR(ISR_UART_rx_handler)
