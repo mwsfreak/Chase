@@ -195,6 +195,10 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     }
             
                     flyttil = 0; // nulstiller flyttil, så den ikke dobbelt flytter
+                      
+                    while(steps >= 1) //hvis motoren er igang gør intet
+                    {}
+                    
                     steps = 1; // Gør det muligt at tælle steps
                     sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
                     UART_1_PutString(arr1);
@@ -220,9 +224,13 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     {
                         arm2 = arm2+8;
                     }
+                    
+                    
+                    while(steps >= 1) //hvis motoren er igang gør intet
+                    {}
                     steps =1;
                     
-                    CyDelay(1000); // Venter 1 sek på at armen er færdig med at rykke, og starter så med at rykke den anden arm
+                    //CyDelay(1000); // Venter 1 sek på at armen er færdig med at rykke, og starter så med at rykke den anden arm
                                        
                     chooseArm(0); // Vælger så den anden arm, og gør det samme
                     
@@ -238,6 +246,9 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                         arm1 = arm1+8;
                     }
                     flyttil = 0;
+                    
+                    while(steps >= 1) //hvis motoren er igang gør intet
+                    {}
                     steps = 1;   
                     
                     UART_1_PutString("Der er stack\n");
@@ -282,6 +293,9 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     }
             
                     flyttil = 0;
+                    
+                    while(steps >= 1) //hvis motoren er igang gør intet
+                    {}
                     steps = 1;
                     sprintf(arr1,"Arm2's nye plads: %d\r\n", arm2);
                     UART_1_PutString(arr1);
@@ -307,9 +321,11 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                         arm1 = arm1+8;
                     }
                    
+                    while(steps >= 1) //hvis motoren er igang gør intet
+                    {}
                     steps = 1; 
                     
-                    CyDelay(1000);
+                    //CyDelay(1000); Delay ikke nødvendigt når man venter på motor
                                         
                     chooseArm(1); //nødt til at have 2 seperate PWM signaler?
                     
@@ -324,6 +340,10 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     {
                         arm2 = arm2+8;
                     }
+                    
+                    while(steps >= 1) //hvis motoren er igang gør intet
+                    {}
+                    
                     steps =1;
                     flyttil = 0;
                     

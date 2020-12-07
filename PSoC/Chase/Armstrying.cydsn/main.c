@@ -52,7 +52,12 @@ int main(void)
                 choose = 0;              // Valg af arm
                 flyttil = sendToPlayer1; // Giver den valgt plads videre til flyttil
                 
+                while(steps >= 1) //hvis motoren er igang gør intet
+                {}
+                
+                
                 move = checkNumbersofSteps(arm1, arm2, flyttil); // Giver move antalet af pladser der skal rykkes
+                
                 if (move != 10 && move != 0) // Ekstra sikring, så det næste kun gøres hvis den valgte plads er gyldig
                 {
                     stopPlads(arm1); // Stopper en nuværende plads
@@ -77,6 +82,9 @@ int main(void)
                 playerDone2 = false;
                 choose = 1;
                 flyttil = sendToPlayer2;
+                
+                while(steps >= 1) //hvis motoren er igang gør intet
+                {}
                 
                 move = checkNumbersofSteps(arm2, arm1, flyttil);
                 if (move != 10 && move != 0)
