@@ -171,7 +171,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                 {
                     chooseArm(0); // Vælger arm 1
                     arm1 = arm1+move; // Finder armens nye "plads"
-                    on(); // Tænder PWM
+                   
                     
                     // Logik der sikre at den flytter til den rigtige plads, så hvis den kommer over 8 eller under 0
                     // tages der forhold til det, plus den får den til at køre den rigtige vej
@@ -196,10 +196,13 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
             
                     flyttil = 0; // nulstiller flyttil, så den ikke dobbelt flytter
                       
-                    while(steps >= 1) //hvis motoren er igang gør intet
-                    {}
                     
                     steps = 1; // Gør det muligt at tælle steps
+                    on(); // Tænder PWM
+//                    while(steps >= 1) //hvis motoren er igang gør intet
+//                    {}
+                    
+                    
                     sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
                     UART_1_PutString(arr1);
                     sprintf(arr2,"Flytter %d pladser\r\n", move);
@@ -214,7 +217,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     chooseArm(1); // Vælger først armen der bliver stacket på, så den rykker først og sikre de ikke kolidere
                     
                     arm2 = arm2+move;  
-                    on(); // Tænder PWM 
+                    
                     
                     if (arm2 > 8) 
                     {
@@ -225,17 +228,16 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                         arm2 = arm2+8;
                     }
                     
-                    
-                    while(steps >= 1) //hvis motoren er igang gør intet
-                    {}
                     steps =1;
-                    
+                    on(); // Tænder PWM 
+//                    while(steps >= 1) //hvis motoren er igang gør intet
+//                    {}
                     //CyDelay(1000); // Venter 1 sek på at armen er færdig med at rykke, og starter så med at rykke den anden arm
                                        
                     chooseArm(0); // Vælger så den anden arm, og gør det samme
                     
                     arm1 = arm1+move;
-                    on();
+                    
                     
                     if (arm1 > 8)
                     {
@@ -247,9 +249,13 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     }
                     flyttil = 0;
                     
-                    while(steps >= 1) //hvis motoren er igang gør intet
-                    {}
-                    steps = 1;   
+                    
+                    steps = 1; 
+                    on();
+//                    while(steps >= 1) //hvis motoren er igang gør intet
+//                    {}
+                    
+                      
                     
                     UART_1_PutString("Der er stack\n");
                     sprintf(arr1,"Arm1's nye plads: %d\r\n", arm1);
@@ -271,7 +277,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                 {
                     chooseArm(1);
                     arm2 = arm2+move;
-                    on();
+                    
                     
                     if (arm2 > 8)
                     {
@@ -293,10 +299,12 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     }
             
                     flyttil = 0;
-                    
-                    while(steps >= 1) //hvis motoren er igang gør intet
-                    {}
+                   
                     steps = 1;
+                    on();
+//                    while(steps >= 1) //hvis motoren er igang gør intet
+//                    {}
+                    
                     sprintf(arr1,"Arm2's nye plads: %d\r\n", arm2);
                     UART_1_PutString(arr1);
                     sprintf(arr2,"Flytter %d pladser\r\n", move);
@@ -310,7 +318,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                    chooseArm(0);
                     
                     arm1 = arm1+move;
-                    on();
+                    
                     
                     if (arm1 > 8)
                     {
@@ -320,17 +328,20 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     {
                         arm1 = arm1+8;
                     }
-                   
-                    while(steps >= 1) //hvis motoren er igang gør intet
-                    {}
+                  
+                    
                     steps = 1; 
+                   on();
+//                    while(steps >= 1) //hvis motoren er igang gør intet
+//                    {}
+                    
                     
                     //CyDelay(1000); Delay ikke nødvendigt når man venter på motor
                                         
                     chooseArm(1); //nødt til at have 2 seperate PWM signaler?
                     
                     arm2 = arm2+move;
-                    on();
+                    
                     
                     if (arm2 > 8)
                     {
@@ -341,10 +352,12 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                         arm2 = arm2+8;
                     }
                     
-                    while(steps >= 1) //hvis motoren er igang gør intet
-                    {}
-                    
                     steps =1;
+                    on();
+//                    while(steps >= 1) //hvis motoren er igang gør intet
+//                    {}
+                    
+                                        
                     flyttil = 0;
                     
                     UART_1_PutString("Der er stack\n");
@@ -364,7 +377,7 @@ CY_ISR(Count_Handler) // Den funktion der holder styr på hvor mange steps der e
     
     if(steps >= 1) // Startes hvis steps bliver 1 eller der over
     {
-        if(steps == (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte minus 2,
+        if(steps >= (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte minus 2,
         {                        // da dette er en systematisk fejl
             
             off();               // Slukekr PWM 
