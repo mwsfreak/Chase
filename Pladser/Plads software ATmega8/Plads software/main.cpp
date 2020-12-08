@@ -6,8 +6,8 @@
 //Define system constants
 #define OVERFLOW_FREQ 30.518
 #define TIME_RESOLUTION 100
-#define BONUS_TIME 500 //In 1/100 seconds
-#define BLINK_TOGGLE_OVERFLOWS 10
+#define BONUS_TIME 300 //In 1/100 seconds
+#define BLINK_TOGGLE_OVERFLOWS 5
 
 //I2C constants
 #define OWN_SLA_AND_R_RECEIVED 0xA8
