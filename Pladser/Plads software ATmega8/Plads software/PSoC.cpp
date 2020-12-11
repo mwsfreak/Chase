@@ -35,5 +35,7 @@ void PSoC::initiateAddress()
 	PSoC addresses: 1 - 8
 	ATmega8 pins: 0 - 7
 	*/
-	TWAR = (((PINC & 0b00000111) + 1) << 1); //Initiate address register with values from PC0, 1 and 2. The address is in bit 7..1 therefore it needs to be bit-shifted 1 time
+	/*Initiate address register with values from PC0, 1 and 2. 
+	The address is in bit 7..1 therefore it needs to be bit-shifted 1 time*/
+	TWAR = (((PINC & 0b00000111) + 1) << 1); 
 }
