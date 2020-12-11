@@ -44,7 +44,7 @@ int main(void)
             // Kommunikation med arm1 og den plads den er på, smat vidresending af information til RPI
         
             // I2C kommunikation med plads fra arm 1, modtager 5 parameter
-            getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
+            getPladsData(arm1, &timerValMSB1, &timerValLSB1, &playerDone1, &sendToPlayer1);
             if (playerDone1 == true)     // Først tjekkes om playerDone1 er sat til 1, da dette betyder spilleren er færdig
             {                            // hvis dette ikke er tilfældet gøres intet
                
@@ -74,7 +74,7 @@ int main(void)
             }
            
             // Kommunikation med arm2 og den plads den er på, smat vidresending af information til RPI
-            getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
+            getPladsData(arm2, &timerValMSB2, &timerValLSB2, &playerDone2, &sendToPlayer2);
             if (playerDone2 == true)
             {
                 playerDone2 = false;
