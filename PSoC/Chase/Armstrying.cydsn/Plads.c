@@ -21,13 +21,11 @@ void initPlads()
 I2C_Start(); //Start I2C communication
 
    //Create variables to receive
-timerVal1 = 0;
 timerValMSB1;
 timerValLSB1;
 sendToPlayer1 = 0;
 playerDone1 = false;
 
-timerVal2 = 0;
 timerValMSB2;
 timerValLSB2;
 sendToPlayer2 = 0;
@@ -81,7 +79,7 @@ float timeConvert(uint8_t MSB, uint8_t LSB)
     return ((float)timerVal16bit)/100;
 }
 
-uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB, float* timerVal, bool* playerDone, uint8_t* sendToPlayer)
+uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB, bool* playerDone, uint8_t* sendToPlayer)
 {
     I2C_MasterClearStatus();
     
@@ -101,8 +99,6 @@ uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB
         *timerValMSB = rxData[0];
         *timerValLSB = rxData[1];
         
-        //convert rxData[0] and rxData[1] to timerVal
-        *timerVal = timeConvert(rxData[0], rxData[1]);
 
         //Mask out playerDone bit
         *playerDone = ((rxData[2] & 0b10000000) >> 7);
