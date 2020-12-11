@@ -31,7 +31,7 @@ using namespace std;
 #include "Timer.h"
 #include "Servo.h"
 #include "Sensor.h"
-#include "interface.h"
+#include "knappanel.h"
 
 //Create global variable to hold the timer value
 static double timerValDouble = 0;
@@ -39,8 +39,8 @@ static double timerValDouble = 0;
 //Create global value to hold the address of the game station. This variable is set when the PSoC object is initialized
 static int stationAddress = 0;
 
-//Create temporary variable for interface status (button pressed)
-static int interfaceStatus = 0;
+//Create temporary variable for knappanel status (button pressed)
+static int knappanelStatus = 0;
 
 //Create I2C variables
 static uint8_t sendToPlayer = 0; //Player to play next
@@ -72,8 +72,8 @@ int main(void)
 	//Get station address from TWAR I2C register. This register was initiated in the PSoC constructor
 	stationAddress = (TWAR >> 1); //The address is in bit 7..1 therefore it needs to be bit-shifted 1 time
 	
-	//Create interface object
-	interface userInterface;
+	//Create knappanel object
+	knappanel userInterface;
 	
 	//Enable global interrupt
 	sei();
@@ -164,29 +164,29 @@ int main(void)
 					userInterface.RGBblue();
 					
 					//Get user input from interface
-					interfaceStatus = userInterface.getKnapstatus();
+					knappanelStatus = userInterface.getKnapstatus();
 					
-					if (interfaceStatus != 0)
+					if (knappanelStatus != 0)
 					{
-						interfaceStatus += stationAddress;
+						knappanelStatus += stationAddress;
 					}
 				} 
 				else
 				{
 					//Set send to player to the player next to you
-					interfaceStatus = stationAddress + 1;
+					knappanelStatus = stationAddress + 1;
 				}
 				
 				//If the choosen player results in a address > 8, sendToPlayer will have to be substracted with 8
-				if (interfaceStatus > 8)
+				if (knappanelStatus > 8)
 				{
-					interfaceStatus -= 8;
+					knappanelStatus -= 8;
 				}
 				
-				//interfaceStatus has been processed, and will now be transfered to sendToPlayer
-				if (interfaceStatus > 0)
+				//knappanelStatus has been processed, and will now be transfered to sendToPlayer
+				if (knappanelStatus > 0)
 				{
-					sendToPlayer = interfaceStatus;
+					sendToPlayer = knappanelStatus;
 					playerDone = true;
 				}				
 				break;

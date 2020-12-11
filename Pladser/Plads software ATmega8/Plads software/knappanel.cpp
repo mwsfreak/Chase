@@ -1,20 +1,20 @@
 /*
- * buttons.c
+ * knappanel.cpp
  *
  * Created: 13/11/2020 11.23.02
  *  Author: emil-
  */ 
 
-#include "interface.h"
+#include "knappanel.h"
 #include <avr/io.h>
 
 
-	interface::interface()
+	knappanel::knappanel()
 	{
 		init();
 	}
 	
-	void interface::init()
+	void knappanel::init()
 	{
 		//Set buttonpins to inputs
 		DDRB &= ~(1 << PB0 | 1 << PB7 | 1 << PB6);
@@ -36,7 +36,7 @@
 		*/
 	}
 	
-	int interface::getKnapstatus()
+	int knappanel::getKnapstatus()
 	{
 		if (PINB & (1 << PB0)) //Button 1
 		{
@@ -76,33 +76,33 @@
 		return 0;
 	}
 	
-	void interface::RGBgreen()
+	void knappanel::RGBgreen()
 	{
 		LEDsOff();
 		PORTB |= (1 << PB4);
 	}
 
-	void interface::RGBgreenBlink()
+	void knappanel::RGBgreenBlink()
 	{
 		LEDsOff();
 		TCCR0 = (1 << CS00 | 1 << CS02);		//Set prescaler to 1024
 		TCNT0 = 0;								//reset countervalue
 	}
 	
-	void interface::RGBred()
+	void knappanel::RGBred()
 	{
 		LEDsOff();
 		PORTB |= (1 << PB2);		//Turn red LED on
 	}
 	
-	void interface::RGBblue()
+	void knappanel::RGBblue()
 	{
 		LEDsOff();
 		PORTB |= (1 << PB3);		//Turn blue LED on
 	}
 
 
-	void interface::LEDsOff()
+	void knappanel::LEDsOff()
 	{
 		//Stop blink timer
 		TCCR0 = 0;

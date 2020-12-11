@@ -1,20 +1,20 @@
 /*
- * interface.h
+ * knappanel.h
  *
  * Created: 13/11/2020 11.22.39
  *  Author: emil-
  */ 
 
 
-#ifndef INTERFACE_H_
-#define INTERFACE_H_
+#ifndef KNAPPANEL_H_
+#define KNAPPANEL_H_
 
 
 #pragma once
-class interface
+class knappanel
 {
 public:
-	interface();
+	knappanel();
 	int getKnapstatus();
 	void RGBgreen();
 	void RGBgreenBlink();
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif /* INTERFACE_H_ */
+#endif /* KNAPPANEL_H_ */
