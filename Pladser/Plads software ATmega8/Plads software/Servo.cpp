@@ -15,12 +15,12 @@ Servo::Servo()
 
 void Servo::open()
 {
-	OCR1A = DUTY_CYCLE_OPEN; //Set duty cycle to 10%
+	OCR1A = DUTY_CYCLE_OPEN; //Set duty cycle to 8%
 }
 
 void Servo::close()
 {
-	OCR1A = DUTY_CYCLE_CLOSED; //Set duty cycle to 5%
+	OCR1A = DUTY_CYCLE_CLOSED; //Set duty cycle to 10%
 }
 
 void Servo::init()
