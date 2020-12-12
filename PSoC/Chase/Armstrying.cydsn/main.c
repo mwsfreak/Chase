@@ -61,8 +61,8 @@ int main(void)
         if (gameRunning) {
             
             if (firstRun == 1) {
-                arm1 = 5;           //Should be 1
-                arm2 = 6;           //Should be 5
+                arm1 = 1;           //Should be 1
+                arm2 = 5;           //Should be 5
                 startPlads(arm1);
                 startPlads(arm2);
                 firstRun = 0;
@@ -82,9 +82,12 @@ int main(void)
                 {
                     stopPlads(arm1);
                     uint8_t arm1_temp = arm1;
+                    uint8_t arm2_temp = arm2;
                     rykArm(choose);
+                    while(steps > 0)
+                    {}
                     if (stack == 1) {
-                        sendData(arm2-1, arm1_temp, timerValMSB1, timerValLSB1);
+                        sendData(arm2_temp, arm1_temp, timerValMSB1, timerValLSB1);
                         startPlads(arm2);
                         stack = 0;
                     } else {
@@ -106,11 +109,13 @@ int main(void)
                 if (move != 10 && move != 0)
                 {
                     stopPlads(arm2);
-                    
+                    uint8_t arm1_temp = arm1;
                     uint8_t arm2_temp = arm2;
                     rykArm(choose);
+                    while(steps > 0)
+                    {}
                     if (stack == 1) {
-                        sendData(arm1-1, arm2_temp, timerValMSB2, timerValLSB2);
+                        sendData(arm1_temp, arm2_temp, timerValMSB2, timerValLSB2);
                         startPlads(arm1);
                         stack = 0;
                     } else {
@@ -139,14 +144,14 @@ CY_ISR(Count_Handler)
     
     if(steps >= 1) 
     {
-        if(steps == (75*move)-2) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
+        if(steps >= (75*move)-3) // 75 Svare til en plads, denne ganes med hvor mange pladser den skal flytte plus 1.
         {
             off();
             steps = 0;   
         }  
         else 
         {
-            steps=steps+1;
+            steps++;
         }   
     }
     PWM_1_ReadStatusRegister(); 
