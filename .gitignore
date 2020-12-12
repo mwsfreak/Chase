@@ -418,3 +418,4 @@ MigrationBackup/
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,c++,psoccreator,visualstudio
 
+.vscode/settings.json
