@@ -1,3 +1,9 @@
+/*
+* Title:        webinterface.cpp
+* Description:  Webinterface handling the grafical user interface, and  communications to webserver
+* Authors:      Magnus Bisgård Franks, Allan Lassesen
+*/
+
 // Websocket Address
 var wsUri = "ws://192.168.0.1:3000/";
 
