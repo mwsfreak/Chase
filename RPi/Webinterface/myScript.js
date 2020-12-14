@@ -1,6 +1,6 @@
 /*
-* Title:        webinterface.cpp
-* Description:  Webinterface handling the grafical user interface, and  communications to webserver
+* Title:        myScript.js
+* Description:  Webinterface handling the graphical user interface, and communications to webserver
 * Authors:      Magnus Bisgård Franks, Allan Lassesen
 */
 
