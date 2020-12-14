@@ -56,7 +56,7 @@ int main(void)
                 move = checkNumbersofSteps(arm1, arm2, flyttil); // Giver move antalet af pladser der skal rykkes
                 
                 if (flyttil != 0 && flyttil != arm1) //Sikre at det input der er givet er nyt
-                {                  
+                {
                     stack = checkStack(move,arm1,arm2); // Tjekker for stack, og sætter stack til 1 eller 0
                 }
                 
@@ -89,7 +89,11 @@ int main(void)
                              
                 move = checkNumbersofSteps(arm2, arm1, flyttil);
              
-                
+                if(flyttil != 0 && flyttil != arm2)
+                {       
+                    //move = checkNumbersofSteps(arm2, arm1, flyttil);
+                    stack = checkStack(move,arm2,arm1);
+                }
                 if(flyttil != 0 && flyttil != arm2)
                 {       
                     //move = checkNumbersofSteps(arm2, arm1, flyttil);
