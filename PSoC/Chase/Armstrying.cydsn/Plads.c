@@ -72,13 +72,6 @@ uint8_t stopPlads(uint8_t Address)
     return status;
 }
 
-float timeConvert(uint8_t MSB, uint8_t LSB)
-{
-    uint16_t timerVal16bit = (uint16_t)LSB;
-    timerVal16bit += (uint16_t)(MSB << 8);
-    return ((float)timerVal16bit)/100;
-}
-
 uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB, bool* playerDone, uint8_t* sendToPlayer)
 {
     I2C_MasterClearStatus();

@@ -16,7 +16,6 @@
 void initPlads();
 uint8_t startPlads(uint8_t Address);
 uint8_t stopPlads(uint8_t Address);
-float timeConvert(uint8_t MSB, uint8_t LSB);
 uint8_t getPladsData(uint8_t Address, uint8_t* timerValMSB, uint8_t* timerValLSB, bool* playerDone, uint8_t* sendToPlayer);
 
 
