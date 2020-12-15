@@ -53,18 +53,22 @@ int main(void)
                 flyttil = sendToPlayer1; // Giver den valgt plads videre til flyttil
                 
                               
-                move = checkNumbersofSteps(arm1, arm2, flyttil); // Giver move antalet af pladser der skal rykkes
-                
                 if (flyttil != 0 && flyttil != arm1) //Sikre at det input der er givet er nyt
                 {
                     stack = checkStack(move,arm1,arm2); // Tjekker for stack, og sætter stack til 1 eller 0
                 }
+                
+                move = checkNumbersofSteps(arm1, arm2, flyttil); // Giver move antalet af pladser der skal rykkes
                 
                 if (move != 10 && move != 0) // Ekstra sikring, så det næste kun gøres hvis den valgte plads er gyldig
                 {
                     stopPlads(arm1); // Stopper en nuværende plads
                     uint8_t arm1_temp = arm1; // Laver en variable der gennem pladsen der hvor den var på (bruges i stack)
                     uint8_t arm2_temp = arm2;
+                    
+                    while(steps >= 1)
+                    {}
+                    
                     rykArm(choose); // Rykker armen
                     if (stack == 1) { // Hvis der er stack sendes dette til RPI
                         sendData(arm2_temp, arm1_temp, timerValMSB1, timerValLSB1); // Sender tid og strafpoint til RPI
@@ -85,27 +89,26 @@ int main(void)
                 playerDone2 = false;
                 choose = 1;
                 flyttil = sendToPlayer2;
+
+                
+                if(flyttil != 0 && flyttil != arm2)
+                {       
+                    stack = checkStack(move,arm2,arm1);
+                }
                 
                              
                 move = checkNumbersofSteps(arm2, arm1, flyttil);
              
-                if(flyttil != 0 && flyttil != arm2)
-                {       
-                    //move = checkNumbersofSteps(arm2, arm1, flyttil);
-                    stack = checkStack(move,arm2,arm1);
-                }
-                if(flyttil != 0 && flyttil != arm2)
-                {       
-                    //move = checkNumbersofSteps(arm2, arm1, flyttil);
-                    stack = checkStack(move,arm2,arm1);
-                }
-                
                 if (move != 10 && move != 0)
                 {
                     stopPlads(arm2);
                     
                     uint8_t arm1_temp = arm1;
                     uint8_t arm2_temp = arm2;
+                    
+                    while(stack >= 1)
+                    {}
+                    
                     rykArm(choose);
                     if (stack == 1) {
                         sendData(arm1_temp, arm2_temp, timerValMSB2, timerValLSB2);
