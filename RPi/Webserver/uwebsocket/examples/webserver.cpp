@@ -19,6 +19,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
@@ -28,7 +29,7 @@
 #include "../src/json.hpp"    
 #include "../src/Game.h"
 #include "../src/Player.h"
-#include "../src/UartControl.h"
+#include "../src/PSoC.h"
 #include <string_view>
 
 using namespace std;

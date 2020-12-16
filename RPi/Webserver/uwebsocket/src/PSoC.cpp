@@ -1,4 +1,4 @@
-#include "UartControl.h"
+#include "PSoC.h"
 
 int uartInit() {
   int fd;
