@@ -17,17 +17,18 @@ CY_ISR_PROTO(Count_Handler);    // Holder styr på, hvor mange steps der er blev
 
 
 // Alle variabler til flytning af armene
-volatile uint8 choose, choose1, speed, arm1, arm2, flyttil, move, armtomove, stack; 
+volatile uint8 choose, choose1, speed, flyttil, armtomove, stack; 
+volatile int8 move, arm1, arm2; // Ny rettelse burde fikse at den bliver ved med at snurrer rundt når den skal rykke baglæns
 volatile uint16 steps; 
 char arrr1[255];
-char arr1[20] ;
-char arr2[20] ;
+char arr1[20];
+char arr2[20];
 //volatile uint8 choose1;
 //volatile uint8 speed;
 //volatile int8 arm1,arm2;
 //volatile uint8 flyttil;
 //volatile int8 move;
 //volatile uint8 armtomove;
-//volatile int8 stack;
+//volatile uint8 stack;
 
 
