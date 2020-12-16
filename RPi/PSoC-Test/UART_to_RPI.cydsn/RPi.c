@@ -32,19 +32,16 @@ void handleByteReceived2(uint8_t byteReceived) {
         case 0x01:
             //Start game
             gameRunning = 1;
-            //led_pin_Write(1);
             break;
         
         case 0x02:
             //Stop game
             gameRunning = 0;
-            //led_pin_Write(0);
             break;
         
         default:
             break;
     }
-    
 }
 
 CY_ISR(ISR_UART_2_rx_handler)
