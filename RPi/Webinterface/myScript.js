@@ -1,3 +1,9 @@
+/*
+* Title:        myScript.js
+* Description:  Webinterface handling the graphical user interface, and communications to webserver
+* Authors:      Magnus Bisgård Franks, Allan Lassesen
+*/
+
 // Websocket Address
 var wsUri = "ws://192.168.0.1:3000/";
 
@@ -5,10 +11,11 @@ var wsUri = "ws://192.168.0.1:3000/";
 var gamePlayers;
 var gamePenalty;
 var state;
+var forcePage;
 
 // Color index array, to compare PSoC Input
-var colorIndex = ["blue", "brown", "black", "orange", "white", "red", "green", "yellow"];
-var rankings = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "waterboy", "Homeless Guy"];
+var colorIndex =["yellow", "blue", "black", "orange", "white", "brown", "green", "red"];
+var rankings = ["Chief Engineer", "Technician", "Mechanic", "Designer", "Student", "Random Person", "Waterboy", "Homeless Guy"];
 
 // Player Object Class
 class playerObj {
@@ -188,16 +195,20 @@ function newGame() // Shift to Start screen
     };
     doSend(JSON.stringify(JSON_newGame));
     // Change page state
-    state = "PlayerNames";
-    checkState();
+    if (forcePage === true) {
+        state = "PlayerNames";
+        checkState();
+    }
 }
 
 function startGame() // Shift to gameOn - and Update
 {
     createPlayers(); // From index.html
     // Change page state
-    state = "gameOn";
-    checkState();
+    if (forcePage === true) {
+        state = "gameOn";
+        checkState();
+    }
     // Generate start message
     var JSON_start = {
         gameStatus: 1,
@@ -216,18 +227,22 @@ function stopGame() // Shift to endGame - show winner
     };
     doSend(JSON.stringify(JSON_stop));
     // Change page state
-    state = "endGame";
-    checkState();
+    if (forcePage === true) {
+        state = "endGame";
+        checkState();
+    }
     sortAVGtime();
     sortPenalty();
 }
 
-function debug() // Shift to endGame - show winner
+function debug() // Toggle debug functionality if called from console
 {
     if (document.getElementById("output").style.display == "none") {
         document.getElementById("output").style.display = "block";
+        forcePage = true;
     } else {
         document.getElementById("output").style.display = "none";
+        forcePage = false;
     }
 }
 

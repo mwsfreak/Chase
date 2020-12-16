@@ -1,6 +1,6 @@
 #include "Armstyring.h"
 #include "Plads.h"
-#include "chaseUART.h"
+#include "RPi.h"
 
 
 
@@ -44,7 +44,7 @@ int main(void)
             // Kommunikation med arm1 og den plads den er på, smat vidresending af information til RPI
         
             // I2C kommunikation med plads fra arm 1, modtager 5 parameter
-            getPladsData(arm1, &timerValMSB1, &timerValLSB1, &timerVal1, &playerDone1, &sendToPlayer1);
+            getPladsData(arm1, &timerValMSB1, &timerValLSB1, &playerDone1, &sendToPlayer1);
             if (playerDone1 == true)     // Først tjekkes om playerDone1 er sat til 1, da dette betyder spilleren er færdig
             {                            // hvis dette ikke er tilfældet gøres intet
                
@@ -53,6 +53,11 @@ int main(void)
                 flyttil = sendToPlayer1; // Giver den valgt plads videre til flyttil
                 
                               
+                if (flyttil != 0 && flyttil != arm1) //Sikre at det input der er givet er nyt
+                {
+                    stack = checkStack(move,arm1,arm2); // Tjekker for stack, og sætter stack til 1 eller 0
+                }
+                
                 move = checkNumbersofSteps(arm1, arm2, flyttil); // Giver move antalet af pladser der skal rykkes
                 
                 if (move != 10 && move != 0) // Ekstra sikring, så det næste kun gøres hvis den valgte plads er gyldig
@@ -60,6 +65,10 @@ int main(void)
                     stopPlads(arm1); // Stopper en nuværende plads
                     uint8_t arm1_temp = arm1; // Laver en variable der gennem pladsen der hvor den var på (bruges i stack)
                     uint8_t arm2_temp = arm2;
+                    
+                    while(steps >= 1)
+                    {}
+                    
                     rykArm(choose); // Rykker armen
                     if (stack == 1) { // Hvis der er stack sendes dette til RPI
                         sendData(arm2_temp, arm1_temp, timerValMSB1, timerValLSB1); // Sender tid og strafpoint til RPI
@@ -74,22 +83,32 @@ int main(void)
             }
            
             // Kommunikation med arm2 og den plads den er på, smat vidresending af information til RPI
-            getPladsData(arm2, &timerValMSB2, &timerValLSB2, &timerVal2, &playerDone2, &sendToPlayer2);
+            getPladsData(arm2, &timerValMSB2, &timerValLSB2, &playerDone2, &sendToPlayer2);
             if (playerDone2 == true)
             {
                 playerDone2 = false;
                 choose = 1;
                 flyttil = sendToPlayer2;
+
                 
-             
+                if(flyttil != 0 && flyttil != arm2)
+                {       
+                    stack = checkStack(move,arm2,arm1);
+                }
                 
+                             
                 move = checkNumbersofSteps(arm2, arm1, flyttil);
+             
                 if (move != 10 && move != 0)
                 {
                     stopPlads(arm2);
                     
                     uint8_t arm1_temp = arm1;
                     uint8_t arm2_temp = arm2;
+                    
+                    while(stack >= 1)
+                    {}
+                    
                     rykArm(choose);
                     if (stack == 1) {
                         sendData(arm1_temp, arm2_temp, timerValMSB2, timerValLSB2);

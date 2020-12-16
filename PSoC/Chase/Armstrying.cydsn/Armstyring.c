@@ -163,9 +163,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
 {  
  if(choose == 0) // Da choose bestemmer hvilke arm der arbejdes med, tjekkes dette først
         {
-            if (flyttil != 0 && flyttil != arm1) //Sikre at det input der er givet er nyt
-            {
-                stack = checkStack(move,arm1,arm2); // Tjekker for stack, og sætter stack til 1 eller 0
+            
 
                 if (move != 10 && move != 0 && stack == 0) // Tjekker om inputtet er vaild og om der er stack
                 {
@@ -263,15 +261,11 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     sprintf(arr2,"Arm2's nye plads: %d\r\n", arm2);
                     UART_1_PutString(arr2);
                 }
-            }
+            
         }
                 
         else if (choose == 1) // Samme som overnævnte bare med den anden arm
         {
-            if(flyttil != 0 && flyttil != arm2)
-            {       
-                //move = checkNumbersofSteps(arm2, arm1, flyttil);
-                stack = checkStack(move,arm2,arm1);
 
                 if (move != 10 && move != 0 && stack == 0)
                 {
@@ -367,7 +361,7 @@ void rykArm(uint8 choose) //skal også få flyt til fra ic2 bussen.
                     UART_1_PutString(arr2);
                 } 
                
-            }
+            
         }
         
 }

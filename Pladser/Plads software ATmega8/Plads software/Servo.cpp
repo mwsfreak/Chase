@@ -1,5 +1,5 @@
 #define F_CPU 8000000
-#define RELEASE_TIME_MS 2000
+#define RELEASE_TIME_MS 500
 #define DUTY_CYCLE_OPEN 9200
 #define DUTY_CYCLE_CLOSED 9000
 
@@ -15,12 +15,12 @@ Servo::Servo()
 
 void Servo::open()
 {
-	OCR1A = DUTY_CYCLE_OPEN; //Set duty cycle to 10%
+	OCR1A = DUTY_CYCLE_OPEN; //Set duty cycle to 8%
 }
 
 void Servo::close()
 {
-	OCR1A = DUTY_CYCLE_CLOSED; //Set duty cycle to 5%
+	OCR1A = DUTY_CYCLE_CLOSED; //Set duty cycle to 10%
 }
 
 void Servo::init()
