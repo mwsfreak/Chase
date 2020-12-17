@@ -65,11 +65,15 @@ void async(uWS::Hub* h, Game* Chase)
         } 
 
         /* Broadcast new status */
-        package = *Chase;                                                     // Assign data from Game object to JSON package (see Game function 'to_json()')
-        cout << "WEBSERVER SENDING: " << endl << package.dump(4) << endl;     // Print package contents to terminal
-        ostringstream ss;                                                     // Create string stream object for broadcast
+        package = *Chase;                         // Assign data from Game object to JSON package
+        cout << "WEBSERVER SENDING: "
+             << endl << package.dump(4) << endl;  // Print package contents to terminal
+        ostringstream ss;                         // Create string stream object for broadcast
         ss << package;
-        h->broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);  // Broadcast string stream object on Websocket
+        h->broadcast(
+          ss.str().c_str(),ss.str().length(),
+          uWS::OpCode::TEXT
+          );  // Broadcast string stream object on Websocket
       }
     }
   }
@@ -84,7 +88,12 @@ int main()
   Game Chase;
 
   /* Lambda function to be executed when Websocket message is received */
-  hub.onMessage([&Chase, &hub](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
+  hub.onMessage(
+    [&Chase, &hub](uWS::WebSocket<uWS::SERVER> *ws,
+                    char *message,
+                    size_t length,
+                    uWS::OpCode opCode) 
+    {
     string messageString(message, length);
 
     /* If received data is a JSON Package, interpret 'gameStatus' */
@@ -94,8 +103,8 @@ int main()
       json receivedJson = json::parse(messageString);
       cout << "WEBSERVER RECEIVED JSON: " << receivedJson.dump(2) << endl;
 
-      Chase = receivedJson;     // Assign data from JSON package to Game object (see Game function 'from_json()')
-
+      Chase = receivedJson; //Assign data from JSON package to Game object 
+     
       int status = receivedJson.at("gameStatus"); 
       switch (status) {
         case 0:   // Interface showing init screen, waiting for user interaction
@@ -121,13 +130,19 @@ int main()
 
     /* Broadcast new status */
     json statusPackage;
-    statusPackage = Chase;                                                      // Assign data from Game object to JSON package (see Game function 'to_json()')
-    cout << "Broadcasting statusPackage: " << statusPackage.dump(2) << endl;    // Print package contents to terminal
-    ostringstream ss;                                                           // Create string stream object for broadcast 
-    ss << statusPackage;                                                        
-    hub.broadcast(ss.str().c_str(),ss.str().length(), uWS::OpCode::TEXT);       // Broadcast string stream object on Websocket
 
-    ws->send(message, length, opCode);                                          // Echo message to sender for debug purposes                 
+
+    statusPackage = Chase;                // Assign data from Game object to JSON package                        
+    cout << "Broadcasting statusPackage: "  
+         << statusPackage.dump(2) << endl;    
+    ostringstream ss;                     // Create string stream object for broadcast 
+    ss << statusPackage;                                                        
+    hub.broadcast(
+      ss.str().c_str(),ss.str().length(),
+      uWS::OpCode::TEXT
+  );                                      // Broadcast string stream object on Websocket
+
+    ws->send(message, length, opCode);    // Echo message to sender for debug purposes                 
   }); /* End of lambda function */
 
   if (hub.listen(3000)) {                 // If websocket initialised successfully
